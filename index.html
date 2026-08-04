@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陳詠芸 Chen, Yong-Yun | 個人作品集 & 履歷簡介 Portfolio</title>
+  <meta name="description" content="中原大學雙主修應用外語與財務金融，陳詠芸 Yong-Yun 的個人求職靜態作品集網站。展現專業技能、精選專案經驗與工作歷程。">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="navbar-brand">
+      <span class="brand-dot"></span>
+      <span>陳詠芸 Yong-Yun</span>
+    </a>
+    
+    <ul class="nav-links">
+      <li><a href="#self-intro" class="nav-link">關於我</a></li>
+      <li><a href="#skills" class="nav-link">專業技能</a></li>
+      <li><a href="#projects" class="nav-link">精選作品</a></li>
+      <li><a href="#experience" class="nav-link">經歷與成果</a></li>
+      <li><a href="#contact" class="nav-link">聯絡方式</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="btn-icon" id="theme-toggle" title="切換深色/淺色模式">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="btn-primary" id="open-resume-btn">
+        <i class="fa-solid fa-file-pdf"></i> 檢視履歷
+      </button>
+      <button class="mobile-toggle" id="mobile-menu-btn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-pulse"></span>
+          <span>尋求新挑戰 · 開放工作機會招募中</span>
+        </div>
+        <h1 class="hero-title">
+          嗨，我是 <span class="gradient-text">陳詠芸 Yong-Yun</span><br>
+          具備外語優勢與財金思維的跨域人才
+        </h1>
+        <p class="hero-subtitle">
+          就讀中原大學應用外語系與財務金融學系雙主修。具備優秀的跨國溝通與財務分析背景，並積極投入前瞻科技競賽、人資實務與數位影像創作，探索科技與商業的多元應用。
+        </p>
+        
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">
+            瀏覽專案作品 <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#contact" class="btn-secondary">
+            <i class="fa-regular fa-envelope"></i> 與我聯繫
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number gradient-text">3.7</div>
+            <div class="stat-label">在校 GPA 分數</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number gradient-text">770 分</div>
+            <div class="stat-label">多益聽讀成績 (TOEIC)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number gradient-text">前二名</div>
+            <div class="stat-label">首屆前瞻科技競賽優等</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatar & Graphic -->
+      <div class="hero-avatar">
+        <div class="avatar-wrapper">
+          <div class="avatar-card">
+            <img src="assets/IMG_3547.jpeg" alt="陳詠芸 Yong-Yun Profile Avatar" class="avatar-img">
+          </div>
+          <div class="floating-badge badge-1">
+            <span class="badge-icon">💬</span>
+            <div>
+              <strong style="display:block; font-size:0.9rem;">Applied Languages</strong>
+              <small style="color:var(--text-muted); font-size:0.75rem;">English / Spanish / AFL</small>
+            </div>
+          </div>
+          <div class="floating-badge badge-2">
+            <span class="badge-icon">📊</span>
+            <div>
+              <strong style="display:block; font-size:0.9rem;">Financial Math</strong>
+              <small style="color:var(--text-muted); font-size:0.75rem;">Corporate Finance / EViews</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Self-Introduction Section -->
+  <section id="self-intro" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="self-intro-box">
+        <h3 style="font-size: 1.35rem; margin-bottom: 16px; color: var(--accent-primary);"><i class="fa-regular fa-face-smile" style="margin-right: 8px;"></i> 關於我 / Self-Introduction</h3>
+        <p>
+          嗨，我是 <strong>陳詠芸 Yong-Yun</strong>。目前就讀於中原大學應用外語學系與財務金融學系雙主修。
+        </p>
+        <p style="margin-top: 12px;">
+          在個人特質上，我是一位<strong>認真負責且具備創意力</strong>的人，面對學習與專案挑戰時，展現出<strong>堅韌不拔</strong>的求知態度與毅力。我非常熱愛學習，總是主動<strong>跨出舒適圈去挑戰未知領域</strong>。具備<strong>「斜槓」</strong>多元能力的特質，讓我能融合語文溝通優勢、財金量化分析與影音多媒體創作，為團隊與專案帶來創新的跨域價值。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle">ABOUT ME</div>
+        <h2 class="section-title">核心價值與個人優勢</h2>
+        <p style="color: var(--text-muted);">我專注於跨國語言溝通與財務分析的多元整合，致力在各項專案中帶入創意思維與高執行力。</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="card-icon"><i class="fa-solid fa-language"></i></div>
+          <h3>語文與跨國溝通</h3>
+          <p>精通英語（多益 770 分，雅思準備中，目標 7 分）與西班牙文（FLPT 92分 / A1，DELE A2 準備中），能進行流暢的跨文化交流。</p>
+        </div>
+
+        <div class="about-card">
+          <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>財金與分析邏輯</h3>
+          <p>精通財務報表分析與資料庫操作，熟練運用 Excel 進行大數據整理與報表製作，並操作 EViews、TEJ 台灣經濟新報資料庫。</p>
+        </div>
+
+        <div class="about-card">
+          <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>前瞻科技與多媒體</h3>
+          <p>熱衷前瞻科技應用，曾獲首屆科技競賽優等。擅長使用 AI 工具（ChatGPT/Claude）進行計畫排程，並熟練操作影音剪輯（CapCut、Buzz）。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle">SKILLS & TOOLS</div>
+        <h2 class="section-title">專業技能與工具地圖</h2>
+      </div>
+
+      <div class="skills-wrapper">
+        <div class="skills-tabs">
+          <button class="tab-btn active" data-category="all">全部領域</button>
+          <button class="tab-btn" data-category="frontend">語言與商務溝通</button>
+          <button class="tab-btn" data-category="backend">財金與分析</button>
+          <button class="tab-btn" data-category="tools">數位工具與 AI 應用</button>
+        </div>
+
+        <div class="skills-grid" id="skills-container">
+          <!-- Dynamically populated / Default render -->
+          <div class="skill-item" data-category="frontend">
+            <div class="skill-info">
+              <span>英語溝通 (TOEIC 770 / IELTS 準備中)</span>
+              <span class="gradient-text">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="frontend">
+            <div class="skill-info">
+              <span>西班牙語 (FLPT 92分 / A1 / DELE A2)</span>
+              <span class="gradient-text">70%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="70%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="frontend">
+            <div class="skill-info">
+              <span>團隊溝通與跨部門協調 (活動統籌)</span>
+              <span class="gradient-text">90%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="backend">
+            <div class="skill-info">
+              <span>Excel 大數據處理 (樞紐分析與函數)</span>
+              <span class="gradient-text">92%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="92%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="backend">
+            <div class="skill-info">
+              <span>財金軟體與資料庫 (EViews / TEJ)</span>
+              <span class="gradient-text">80%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="80%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="tools">
+            <div class="skill-info">
+              <span>AI 工具應用 (ChatGPT / Claude 專案管理)</span>
+              <span class="gradient-text">90%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item" data-category="tools">
+            <div class="skill-info">
+              <span>多媒體影音剪輯 (CapCut / Buzz)</span>
+              <span class="gradient-text">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" data-progress="85%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle">PORTFOLIO SHOWCASE</div>
+        <h2 class="section-title">精選專案與競賽成果</h2>
+        <p style="color: var(--text-muted);">呈現實際參與之競賽、活動企劃與多媒體創作成果。</p>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1 -->
+        <div class="project-card">
+          <div class="project-img-container">
+            <img src="assets/截圖 2026-08-04 下午3.00.37.png" alt="前瞻場域科技競賽專案" class="project-img">
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">互動設計</span>
+              <span class="tag">AI 工具生成</span>
+              <span class="tag">多面牆投影</span>
+            </div>
+            <h3 class="project-title">前瞻場域科技競賽專案（優等第二名）</h3>
+            <p class="project-desc">
+              獨立規劃並製作沉浸式互動體驗空間，設計連動式多面牆投影內容，並在影音創作中導入 AI 工具進行影片素材生成與修剪。
+            </p>
+            <div class="project-footer">
+              <span style="font-size:0.85rem; color:var(--text-sub);">Interactive Media</span>
+              <a href="#" class="project-link" onclick="openProjectModal('前瞻場域科技競賽專案', '首屆科技競賽優等（第二名）', '獨立規劃沉浸式空間投影展示，並結合 AI 工具生成高質感影片素材，以出色的多媒體整合呈現榮獲競賽第二名優等獎。專案作品影片連結：https://reurl.cc/nxVX16'); return false;">
+                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+          <div class="project-img-container">
+            <img src="assets/中原嘻研J49.jpeg" alt="活動統籌與專案管理" class="project-img">
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">專案管理</span>
+              <span class="tag">團隊協作</span>
+              <span class="tag">活動策劃</span>
+            </div>
+            <h3 class="project-title">嘻哈文化研究社 - 迎新活動總召</h3>
+            <p class="project-desc">
+              負責策劃與統籌 30 餘人的工作團隊分工，包含節目設計、進度掌控與社課教學進度安排，具備卓越的專案溝通與執行力。
+            </p>
+            <div class="project-footer">
+              <span style="font-size:0.85rem; color:var(--text-sub);">Leadership & Event Planning</span>
+              <a href="#" class="project-link" onclick="openProjectModal('迎新活動總召與舞蹈社課教學', '大型活動統籌與領導力', '統籌 30 多人團隊，規劃詳細工作進度與跨部門分工細節，並擔任主課老師在短時間內完成教學，成功促成活動順利執行並展現出色的團隊執行力與組織調度才能。'); return false;">
+                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Experience Section -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle">WORK & MILESTONES</div>
+        <h2 class="section-title">經歷與成果</h2>
+      </div>
+
+      <div class="timeline">
+        <!-- Education -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="border-color: var(--accent-cyan);"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2022.09 - 2027 (預計)</div>
+            <h3 class="timeline-role">應用外國語文學系 主修 / 財務金融學系 雙主修</h3>
+            <div class="timeline-company">中原大學 (Chung Yuan Christian University) · GPA: 3.7</div>
+            <ul class="timeline-bullets">
+              <li>學業表現優越，財金核心學門（經濟學、會計學、統計學、財務管理、財務報表分析）。</li>
+              <li>實務應用：熟練操作財務分析軟體 EViews 進行迴歸模型建立與 TEJ 台灣經濟新報資料庫。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2025.09 - 現今</div>
+            <h3 class="timeline-role">教學助理 (Teaching Assistant)</h3>
+            <div class="timeline-company">中原大學 應用外語學系 (英文遠距課程)</div>
+            <ul class="timeline-bullets">
+              <li>管理課程影片上傳與校內教學系統維護，協助影片字幕編輯與影音校對。</li>
+              <li>支援遠距監考、學生平時成績登記與總分計算，熟練運用 Excel 進行大量數據整理與自動化分析。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2026.03 - 現今</div>
+            <h3 class="timeline-role">沈浸展覽空間工讀生</h3>
+            <div class="timeline-company">中原大學 藝術中心/前瞻場域</div>
+            <ul class="timeline-bullets">
+              <li>負責沈浸式互動展覽空間之日常營運、投影系統巡檢維護與參觀者接待。</li>
+              <li>協助展區多媒體內容操作與導覽，具備優良的現場危機處理與溝通技巧。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2023.09 - 現今</div>
+            <h3 class="timeline-role">英文課輔老師</h3>
+            <div class="timeline-company">中原大學 應用外語學系</div>
+            <ul class="timeline-bullets">
+              <li>針對個別學生學習困難，規劃專屬的課後英文輔導進度與教學解說。</li>
+              <li>有效幫助多位學生突破學習瓶頸，提升學習動機與測驗表現。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job 4 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2026.01 - 2026.02</div>
+            <h3 class="timeline-role">人力資源部實習生 (HR Intern)</h3>
+            <div class="timeline-company">希伯倫股份有限公司 (大家說英語/空中英語教室)</div>
+            <ul class="timeline-bullets">
+              <li>協助招募流程、維護應徵者資料與內部人資行政庶務。</li>
+              <li>透過每日反思與主動溝通，有效提升跨部門溝通與職場環境之適應能力。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job 5 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2025.09 - 2026.06</div>
+            <h3 class="timeline-role">通識中心工讀生</h3>
+            <div class="timeline-company">中原大學 通識教育中心</div>
+            <ul class="timeline-bullets">
+              <li>處理通識教育課程行政作業、公文收發與相關資料歸檔整理。</li>
+              <li>支援通識講座活動場地布置與引導接待事宜。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="section-subtitle">GET IN TOUCH</div>
+          <h2 style="font-size: 2rem; margin-bottom: 16px;">期待與您攜手合作！</h2>
+          <p style="color: var(--text-muted);">
+            如果您正在尋找一位具備多元學科背景、優秀溝通協調能力與高度執行力的跨領域人才，歡迎隨時聯絡我！
+          </p>
+
+          <div class="contact-info-list">
+            <div class="contact-info-item" onclick="copyEmail()">
+              <div class="contact-icon"><i class="fa-regular fa-envelope"></i></div>
+              <div>
+                <strong style="display:block; font-size:0.95rem;">電子郵件 Email</strong>
+                <span style="color:var(--accent-cyan); font-size:0.9rem;">yungyun85@gmail.com <i class="fa-regular fa-copy" style="font-size:0.8rem; margin-left:4px;"></i></span>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+              <div>
+                <strong style="display:block; font-size:0.95rem;">LinkedIn</strong>
+                <span style="color:var(--text-muted); font-size:0.9rem;">www.linkedin.com/in/chen-anna-423779389</span>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon"><i class="fa-brands fa-github"></i></div>
+              <div>
+                <strong style="display:block; font-size:0.95rem;">GitHub</strong>
+                <span style="color:var(--text-muted); font-size:0.9rem;">github.com/yungyun85-lab</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <label for="name">您的姓名 Name</label>
+            <input type="text" id="name" class="form-input" placeholder="例如：王小明" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">電子郵件 Email</label>
+            <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="message">訊息內容 Message</label>
+            <textarea id="message" class="form-input" placeholder="請填寫您想說的話或職缺相關資訊..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="justify-content: center; padding: 14px;">
+            發送訊息 <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 陳詠芸 Chen, Yong-Yun. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Resume Preview Modal -->
+  <div class="modal-overlay" id="resume-modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('resume-modal')">&times;</button>
+      <h2 style="margin-bottom: 8px;">陳詠芸 Yong-Yun - 個人履歷摘要</h2>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">中原大學 應用外語系 × 財務金融系（雙主修）</p>
+
+      <div style="background:var(--bg-primary); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:24px; font-size:0.95rem; line-height:1.7;">
+        <p><strong>【核心優勢】</strong> 具備優秀的跨國語文溝通（多益 770分 / 西班牙文 FLPT 92分）與嚴謹的財金數據分析（EViews / Excel 樞紐分析）邏輯。擅長團隊溝通協調與專案策劃。</p>
+        <p style="margin-top:10px;"><strong>【重要專案】</strong> 榮獲首屆前瞻科技競賽個人參賽優等（第二名），並於知名英語教育機構（大家說英語/空中英語教室）人資部實習。</p>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button class="btn-secondary" onclick="closeModal('resume-modal')">關閉視窗</button>
+        <a href="陳詠芸_CV.pdf" download="陳詠芸_CV.pdf" class="btn-primary">
+          <i class="fa-solid fa-download"></i> 下載完整履歷檔案
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Detail Modal -->
+  <div class="modal-overlay" id="project-modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('project-modal')">&times;</button>
+      <h2 id="modal-project-title" style="margin-bottom: 8px;">專案名稱</h2>
+      <p id="modal-project-subtitle" style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:20px;">專案副標題</p>
+
+      <div style="background:var(--bg-primary); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:24px;">
+        <p id="modal-project-desc" style="color:var(--text-muted); font-size:0.95rem; line-height:1.7;">專案詳細說明內容...</p>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn-primary" onclick="closeModal('project-modal')">完成並關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast">訊息已發送成功！</div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
