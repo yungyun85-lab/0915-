@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua | 專利交互概念產品模型 (App Test Model)</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #64748b;
+      --border-color: #e2e8f0;
+      
+      --accent-primary: #0f766e;   /* Teal */
+      --accent-secondary: #0d9488; /* Mint */
+      --accent-sky: #0284c7;       /* Sky Blue */
+      --accent-bg: rgba(15, 118, 110, 0.05);
+      
+      --radius-md: 16px;
+      --radius-sm: 8px;
+      --radius-full: 9999px;
+      --shadow-flat: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-glow: 0 10px 30px rgba(15, 118, 110, 0.06);
+      
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 24px;
+    }
+
+    .header-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.1rem;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .btn-back {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-normal);
+    }
+
+    .btn-back:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background-color: var(--accent-bg);
+    }
+
+    /* Main Container (App Simulator Frame) */
+    .simulator-container {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .app-frame {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 375px;
+      height: 680px;
+      border-radius: 40px;
+      box-shadow: 0 25px 50px -12px rgba(15, 118, 110, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 12px solid #1e293b; /* Phone border look */
+    }
+
+    /* Status Bar Mock */
+    .status-bar {
+      height: 24px;
+      background-color: #1e293b;
+      color: #ffffff;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+    }
+
+    /* Timer / Hourglass Section */
+    .timer-section {
+      padding: 20px;
+      text-align: center;
+      background-color: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hourglass-container {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--accent-primary);
+    }
+
+    .hourglass-spinning {
+      animation: spin 2s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .timer-text {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .timer-progress-bg {
+      width: 100%;
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: var(--radius-full);
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .timer-progress-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+      transition: width 1s linear;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex-grow: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Dyslexic Font Simulator style */
+    .dyslexic-mode {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.12em !important;
+      word-spacing: 0.22em !important;
+      text-shadow: 0 2px 2px rgba(15, 118, 110, 0.15) !important;
+    }
+
+    .word-card {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      width: 100%;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition-normal);
+    }
+
+    .word-card-eng {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      margin-bottom: 8px;
+    }
+
+    .word-card-ipa {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    /* Interactive Options */
+    .options-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      width: 100%;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn:hover {
+      border-color: var(--accent-primary);
+      background-color: var(--accent-bg);
+    }
+
+    .option-btn.correct {
+      border-color: #10b981;
+      background-color: #ecfdf5;
+      color: #065f46;
+    }
+
+    .option-btn.incorrect {
+      border-color: #ef4444;
+      background-color: #fef2f2;
+      color: #991b1b;
+    }
+
+    /* Sensory Settings Controls */
+    .settings-bar {
+      background-color: var(--bg-primary);
+      border-top: 1px solid var(--border-color);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .control-btn {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition-normal);
+    }
+
+    .control-btn:hover,
+    .control-btn.active {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background-color: var(--accent-bg);
+      box-shadow: 0 4px 10px rgba(15, 118, 110, 0.15);
+    }
+
+    .control-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent-primary);
+      border-radius: 50%;
+    }
+
+    /* Haptic Feedback Wave Effect Overlay */
+    .haptic-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+      border: 0px solid var(--accent-secondary);
+    }
+
+    .haptic-overlay.active {
+      animation: rippleEffect 0.3s ease-out;
+    }
+
+    @keyframes rippleEffect {
+      0% { border: 0px solid rgba(13, 148, 136, 0.6); opacity: 1; }
+      50% { border: 20px solid rgba(13, 148, 136, 0.3); opacity: 0.8; }
+      100% { border: 40px solid rgba(13, 148, 136, 0); opacity: 0; }
+    }
+
+    /* Particle Fireworks Canvas */
+    #fireworks-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Modal Victory Popup */
+    .success-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .success-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .success-card {
+      background-color: var(--bg-secondary);
+      border-radius: 24px;
+      width: 85%;
+      padding: 24px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: var(--transition-normal);
+    }
+
+    .success-modal.active .success-card {
+      transform: scale(1);
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      color: #10b981;
+      margin-bottom: 12px;
+      animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .btn-next {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.95rem;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="#" class="brand">
+        <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h1 class="brand-title">FocusLingua App</h1>
+      </a>
+      <a href="prd_dashboard.html" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> 返回產品規格書
+      </a>
+    </div>
+  </header>
+
+  <!-- Simulator Container -->
+  <main class="simulator-container">
+    <div class="app-frame" id="app-frame">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span>09:41</span>
+        <span>
+          <i class="fa-solid fa-signal" style="margin-right: 4px;"></i>
+          <i class="fa-solid fa-wifi" style="margin-right: 4px;"></i>
+          <i class="fa-solid fa-battery-three-quarters"></i>
+        </span>
+      </div>
+
+      <!-- Haptic Wave Overlay -->
+      <div class="haptic-overlay" id="haptic-wave"></div>
+
+      <!-- Fireworks Canvas -->
+      <canvas id="fireworks-canvas"></canvas>
+
+      <!-- Timer Section -->
+      <div class="timer-section">
+        <div class="hourglass-container">
+          <i class="fa-solid fa-hourglass-half hourglass-spinning" id="hourglass-icon"></i>
+        </div>
+        <div class="timer-text" id="timer-display">90s</div>
+        <div class="timer-progress-bg">
+          <div class="timer-progress-fill" id="timer-fill"></div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Word Card -->
+        <div class="word-card" id="word-card">
+          <div class="word-card-eng" id="card-english">FOCUS</div>
+          <div class="word-card-ipa" id="card-ipa">/ˈfoʊ.kəs/</div>
+        </div>
+
+        <!-- Options -->
+        <div class="options-container" id="options-container">
+          <!-- Options injected by JS -->
+        </div>
+      </div>
+
+      <!-- Settings Bar (Sensory controls) -->
+      <div class="settings-bar">
+        <!-- Dyslexic font toggle -->
+        <button class="control-btn" id="font-toggle" title="閱讀障礙友善字型" onclick="toggleDyslexicFont()">
+          <i class="fa-solid fa-font"></i>
+        </button>
+        <!-- BGM / White noise toggle -->
+        <button class="control-btn" id="sound-toggle" title="播放專注白噪音" onclick="toggleWhiteNoise()">
+          <i class="fa-solid fa-headphones"></i>
+        </button>
+        <!-- Audio TTS / Speak word -->
+        <button class="control-btn" id="speak-btn" title="朗讀發音" onclick="speakCurrentWord()">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+
+      <!-- Success Victory Modal -->
+      <div class="success-modal" id="success-modal">
+        <div class="success-card">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">完美回答！</h3>
+          <p id="success-stat" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            專注點擊反應時間: 284ms<br>連續專注日數: +1 天
+          </p>
+          <button class="btn-next" onclick="nextQuestion()">挑戰下一個 <i class="fa-solid fa-forward"></i></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sound & Interaction Scripts -->
+  <script>
+    // Audio Context Setup (Web Audio API)
+    let audioCtx = null;
+    let noiseNode = null;
+    let isNoisePlaying = false;
+
+    // Timer Variables
+    let timerValue = 90;
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    // Words Database
+    const wordList = [
+      { english: "FOCUS", ipa: "/ˈfoʊ.kəs/", chinese: "專注", options: ["模糊", "放鬆", "專注"] },
+      { english: "CALM", ipa: "/kɑːm/", chinese: "冷靜", options: ["慌亂", "冷靜", "刺激"] },
+      { english: "LEARN", ipa: "/lɜːrn/", chinese: "學習", options: ["遺忘", "學習", "運動"] },
+      { english: "MIND", ipa: "/maɪnd/", chinese: "心智", options: ["身體", "地圖", "心智"] }
+    ];
+    let currentWordIndex = 0;
+    let reactionStartTime = 0;
+
+    // Page Load Setup
+    window.addEventListener('load', () => {
+      loadQuestion();
+      startTimer();
+    });
+
+    // Load Question
+    function loadQuestion() {
+      const currentWord = wordList[currentWordIndex];
+      document.getElementById('card-english').innerText = currentWord.english;
+      document.getElementById('card-ipa').innerText = currentWord.ipa;
+      
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+      
+      currentWord.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-angle-right"></i>`;
+        btn.onclick = () => selectOption(btn, opt);
+        optionsContainer.appendChild(btn);
+      });
+
+      reactionStartTime = Date.now();
+    }
+
+    // Select Option
+    function selectOption(btn, value) {
+      const currentWord = wordList[currentWordIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+      
+      // Stop timer for calculation
+      pauseTimer();
+      const reactionTime = Date.now() - reactionStartTime;
+
+      if (value === currentWord.chinese) {
+        btn.classList.add('correct');
+        btn.innerHTML = `<span>${value}</span> <i class="fa-solid fa-circle-check"></i>`;
+        
+        // Trigger Haptic Wave & Sound & Particles
+        triggerHapticWave();
+        playSuccessBeep();
+        triggerFireworks();
+        
+        // Show Success Modal
+        setTimeout(() => {
+          document.getElementById('success-stat').innerHTML = `專注點擊反應時間: <strong>${reactionTime}ms</strong><br>連續專注日數: <strong>+1 天</strong>`;
+          document.getElementById('success-modal').classList.add('active');
+        }, 600);
+      } else {
+        btn.classList.add('incorrect');
+        btn.innerHTML = `<span>${value}</span> <i class="fa-solid fa-circle-xmark"></i>`;
+        playErrorBeep();
+        
+        // Visual vibration shake on card
+        const card = document.getElementById('word-card');
+        card.style.transform = 'translateX(-10px)';
+        setTimeout(() => card.style.transform = 'translateX(10px)', 100);
+        setTimeout(() => card.style.transform = 'translateX(-5px)', 200);
+        setTimeout(() => card.style.transform = 'translateX(0)', 300);
+
+        // Resume timer
+        setTimeout(() => startTimer(), 1000);
+      }
+    }
+
+    // Go to Next Question
+    function nextQuestion() {
+      document.getElementById('success-modal').classList.remove('active');
+      currentWordIndex = (currentWordIndex + 1) % wordList.length;
+      loadQuestion();
+      resetTimer();
+      startTimer();
+    }
+
+    // Timer Controls
+    function startTimer() {
+      if (isTimerRunning) return;
+      isTimerRunning = true;
+      document.getElementById('hourglass-icon').classList.add('hourglass-spinning');
+      
+      timerInterval = setInterval(() => {
+        timerValue--;
+        document.getElementById('timer-display').innerText = timerValue + 's';
+        
+        const progressPercent = (timerValue / 90) * 100;
+        document.getElementById('timer-fill').style.width = progressPercent + '%';
+
+        if (timerValue <= 0) {
+          clearInterval(timerInterval);
+          alert("專注關卡挑戰結束，請讓大腦稍作休息！");
+          resetTimer();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      document.getElementById('hourglass-icon').classList.remove('hourglass-spinning');
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerValue = 90;
+      document.getElementById('timer-display').innerText = '90s';
+      document.getElementById('timer-fill').style.width = '100%';
+    }
+
+    // Settings Toggle: Dyslexic Font Simulator
+    function toggleDyslexicFont() {
+      const engCardText = document.getElementById('card-english');
+      const btn = document.getElementById('font-toggle');
+      
+      engCardText.classList.toggle('dyslexic-mode');
+      btn.classList.toggle('active');
+    }
+
+    // Settings Toggle: White Noise Generator (Web Audio API)
+    function toggleWhiteNoise() {
+      const btn = document.getElementById('sound-toggle');
+      
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (isNoisePlaying) {
+        // Stop white noise
+        if (noiseNode) {
+          noiseNode.disconnect();
+          noiseNode = null;
+        }
+        isNoisePlaying = false;
+        btn.classList.remove('active');
+      } else {
+        // Start white noise
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        
+        // Populate buffer with random noise (white noise)
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+        
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = noiseBuffer;
+        noiseNode.loop = true;
+        
+        // Lowpass filter to make it brownian/calm pink noise
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(400, audioCtx.currentTime); // Deep rumbling white noise
+        
+        // Volume Control
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime); // Low background volume
+        
+        noiseNode.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        noiseNode.start();
+        isNoisePlaying = true;
+        btn.classList.add('active');
+      }
+    }
+
+    // Speech TTS Speaker
+    function speakCurrentWord() {
+      const text = wordList[currentWordIndex].english;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.85; // Slightly slower for dyslexic learners
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Synthesize Success Beep (Web Audio API)
+    function playSuccessBeep() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+      
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    // Synthesize Error Beep (Web Audio API)
+    function playErrorBeep() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3 low buzz
+      
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    }
+
+    // Trigger Visual Haptic Ripple Wave
+    function triggerHapticWave() {
+      const wave = document.getElementById('haptic-wave');
+      wave.classList.remove('active');
+      // Trigger reflow
+      void wave.offsetWidth;
+      wave.classList.add('active');
+      
+      // Native Vibrate API
+      if (navigator.vibrate) {
+        navigator.vibrate([80, 50, 80]); // Dual tactile pulses
+      }
+    }
+
+    // Canvas Particles Fireworks
+    const canvas = document.getElementById('fireworks-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerFireworks() {
+      resizeCanvas();
+      particles = [];
+      const particleCount = 40;
+      const x = canvas.width / 2;
+      const y = canvas.height * 0.6; // Center of word card area
+      
+      const colors = ['#0f766e', '#0d9488', '#0284c7', '#38bdf8', '#34d399'];
+
+      for (let i = 0; i < particleCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 2;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5, // Gravity drift
+          radius: Math.random() * 3 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.02 + 0.015
+        });
+      }
+      
+      requestAnimationFrame(updateParticles);
+    }
+
+    function updateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.08; // Gravity
+        p.alpha -= p.decay;
+
+        if (p.alpha > 0) {
+          alive = true;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+        }
+      });
+
+      if (alive) {
+        requestAnimationFrame(updateParticles);
+      }
+    }
+  </script>
+</body>
+</html>

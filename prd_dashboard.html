@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua | 產品規格說明書 (PRD) 線上動態網站</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #64748b;
+      --border-color: #e2e8f0;
+      
+      --accent-primary: #0f766e;   /* Teal */
+      --accent-secondary: #0d9488; /* Mint */
+      --accent-sky: #0284c7;       /* Sky Blue */
+      --accent-bg: rgba(15, 118, 110, 0.05);
+      
+      --radius-md: 16px;
+      --radius-sm: 8px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -5px rgba(15, 118, 110, 0.08), 0 8px 10px -6px rgba(15, 118, 110, 0.08);
+      
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Header */
+    .header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 24px;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      background-color: var(--accent-bg);
+      color: var(--accent-primary);
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+
+    /* Test Model Button (Top-Right) */
+    .btn-test-model {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.2);
+      transition: var(--transition-normal);
+      cursor: pointer;
+    }
+
+    .btn-test-model:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 118, 110, 0.3);
+      filter: brightness(1.05);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 60px 24px 30px 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-subtitle {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Dashboard Grid */
+    .grid-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+
+    /* Interactive Card */
+    .prd-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-normal);
+    }
+
+    .prd-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-sky) 100%);
+    }
+
+    .prd-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(15, 118, 110, 0.2);
+    }
+
+    .card-meta {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent-sky);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--accent-primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+      margin-top: auto;
+    }
+
+    .card-footer span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      width: 90%;
+      max-width: 650px;
+      padding: 36px;
+      position: relative;
+      transform: scale(0.95);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      transition: var(--transition-normal);
+    }
+
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-sub);
+      transition: var(--transition-fast);
+    }
+
+    .modal-close:hover {
+      color: var(--text-main);
+    }
+
+    .modal-header {
+      margin-bottom: 24px;
+    }
+
+    .modal-meta {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .modal-body {
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .spec-block {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .spec-block h4 {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent-primary);
+    }
+
+    .spec-block ul {
+      list-style-position: inside;
+      padding-left: 8px;
+      color: var(--text-muted);
+    }
+
+    .spec-block li {
+      margin-bottom: 6px;
+    }
+
+    /* Footer */
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-secondary);
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="#" class="brand">
+        <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div>
+          <h1 class="brand-title">FocusLingua</h1>
+          <span class="brand-badge">PRD Dashboard</span>
+        </div>
+      </a>
+      <!-- Test Model Button (Top-Right) -->
+      <a href="app_model.html" class="btn-test-model">
+        <i class="fa-solid fa-cubes"></i> test model
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-subtitle">FocusLingua Specs</div>
+    <h2 class="hero-title">注意力不足與學習障礙<br><span class="gradient-text">英語學習產品規模書</span></h2>
+    <p class="hero-desc">
+      專為 ADHD/Dyslexia 學習者設計的感官協同學習解決方案。點擊下方六大項目，檢視詳細的產品設計規格與工程實作方案。
+    </p>
+  </section>
+
+  <!-- Dashboard Grid -->
+  <main class="grid-container">
+    <!-- Card 1 -->
+    <div class="prd-card" onclick="openSpec('definition')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-compass"></i> 規劃</div>
+        <h3 class="card-title">產品定義書</h3>
+        <p class="card-desc">一句話講清楚：為誰、解決什麼問題。界定核心受眾痛點與價值主張。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="prd-card" onclick="openSpec('stories')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-users"></i> 需求</div>
+        <h3 class="card-title">User Story</h3>
+        <p class="card-desc">從使用者角度：他想做什麼、為了什麼。定義核心 Persona 的使用情境與驗收標準。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="prd-card" onclick="openSpec('specs')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-list-check"></i> 需求</div>
+        <h3 class="card-title">功能規格表</h3>
+        <p class="card-desc">把故事拆成可執行的功能、規則、優先度 (P0, P1, P2)。明確核心模組的系統邏輯。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="prd-card" onclick="openSpec('architecture')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-network-wired"></i> 設計</div>
+        <h3 class="card-title">架構圖 & 資料模型</h3>
+        <p class="card-desc">三層怎麼分工，資料結構長什麼樣。劃分展示層、邏輯層與資料層數據實體。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="prd-card" onclick="openSpec('stateflows')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-route"></i> 設計</div>
+        <h3 class="card-title">狀態流 & 畫面示意</h3>
+        <p class="card-desc">狀態怎麼流動，每頁大概長什麼樣。定義 90s 學習體驗狀態機與介面線索。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="prd-card" onclick="openSpec('assets')">
+      <div>
+        <div class="card-meta"><i class="fa-solid fa-folder-open"></i> 素材</div>
+        <h3 class="card-title">素材清單</h3>
+        <p class="card-desc">資料與內容從哪裡來、怎麼整理。涵蓋字型、音效、白噪音與震動回饋描述。</p>
+      </div>
+      <div class="card-footer">
+        <span>詳細規格 <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal" id="spec-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeSpec()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-meta" id="modal-meta">Meta Info</div>
+        <h3 class="modal-title" id="modal-title">Spec Title</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 FocusLingua. Crafted with Passion & Assistive Technology. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Specs Database -->
+  <script>
+    const specsData = {
+      definition: {
+        meta: "規劃 (Planning)",
+        title: "產品定義書",
+        body: `
+          <div class="spec-block">
+            <h4>🎯 核心定位與願景</h4>
+            <p><strong>FocusLingua</strong> 是一款「注意力友善 (Attention-Friendly)」的微感官英語學習應用程式，旨在幫助 ADHD/Dyslexia 學習者以低負荷、高回饋的感官協同方式學習英語。</p>
+          </div>
+          <div class="spec-block">
+            <h4>⚡ 核心痛點解決</h4>
+            <ul>
+              <li><strong>為誰而做</strong>：注意力不足過動症 (ADHD) 患者、閱讀障礙 (Dyslexia) 學習者、短暫注意力人群。</li>
+              <li><strong>解決什麼問題</strong>：解決大篇幅密集文字引起的注意力崩潰、傳統單字記憶的強大心理抗拒感、以及因無法獲得即時反饋造成的快速挫折放棄。</li>
+              <li><strong>核心主張</strong>：用多感官（視覺 OpenDyslexic、聽覺 40Hz 專注波、觸覺線性震動）協同學習，將認知啟動成本降低 80%，讓受眾以「高頻率、超短時間」有效吸收。</li>
+            </ul>
+          </div>
+        `
+      },
+      stories: {
+        meta: "需求 (Requirements)",
+        title: "User Story",
+        body: `
+          <div class="spec-block">
+            <h4>👤 使用者故事對照表</h4>
+            <p><strong>故事 1 (ADHD 學習者)</strong>：<br>
+            作為一名注意力易分散的成人，我希望每次學習單元控制在 90 秒內且有視覺化計時，使我不會因為課程過長而產生焦慮或直接放棄。</p>
+            <p style="margin-top:8px;"><strong>故事 2 (閱讀障礙學生)</strong>：<br>
+            作為一名閱讀障礙學生，我希望網頁能切換為 OpenDyslexic 字型與可調間距，讓我能清晰辨識單字字母而不跳行。</p>
+            <p style="margin-top:8px;"><strong>故事 3 (特教輔導員/家長)</strong>：<br>
+            作為一名家長，我希望查看孩子的專注度反應時間分析，以便瞭解何種學習刺激對他最有效。</p>
+          </div>
+        `
+      },
+      specs: {
+        meta: "需求 (Requirements)",
+        title: "功能規格表",
+        body: `
+          <div class="spec-block">
+            <h4>🛠️ 功能清單與優先級</h4>
+            <ul>
+              <li><strong>P0 - 90s 沙漏計時器</strong>：強制限制學習單元在 90 秒內結束，提供即時進度條。</li>
+              <li><strong>P0 - Dyslexic 友善設定</strong>：支援 OpenDyslexic 字型切換、字距放大及高對比配色。</li>
+              <li><strong>P0 - 觸覺多巴胺反饋</strong>：答對時觸發物理震動（行動裝置）與粒子特效（網頁端），給予即時大腦刺激。</li>
+              <li><strong>P1 - 減壓專注背景音 (BGM)</strong>：整合 40Hz 雙耳節拍、粉紅噪音與白噪音，阻絕環境噪音干擾。</li>
+              <li><strong>P1 - 專注度自我適應系統</strong>：若使用者點擊延遲 (Latency) 異常拉長，系統自動調降難度並給予提示。</li>
+            </ul>
+          </div>
+        `
+      },
+      architecture: {
+        meta: "設計 (Design)",
+        title: "架構圖 & 資料模型",
+        body: `
+          <div class="spec-block">
+            <h4>🌐 三層分工架構 (3-Tier Architecture)</h4>
+            <ul>
+              <li><strong>前端展示層 (Client)</strong>：極簡 Web 單頁面應用，使用 HTML5/CSS3 變數以及 HTML5 Audio + Canvas 實現極致流暢、無延遲的即時感官反饋。</li>
+              <li><strong>中間伺服器層 (API/Server)</strong>：Node.js API Gateway 與專注力曲線分析模組，將點擊延遲與錯誤率轉化為專注指數。</li>
+              <li><strong>後端資料層 (Database)</strong>：使用 PostgreSQL 記錄使用者設定與通關進度；ClickHouse 串流寫入點擊 Latency 與學習時長。</li>
+            </ul>
+          </div>
+          <div class="spec-block">
+            <h4>📊 核心資料結構</h4>
+            <ul>
+              <li><strong>USER 表</strong>：id, email, settings (儲存 Dyslexic 字型、白噪音主題、觸覺開關等偏好)。</li>
+              <li><strong>PROGRESS 表</strong>：user_id, lesson_id, accuracy_rate, consecutive_days (連續登入天數)。</li>
+              <li><strong>FOCUS_SESSION 表</strong>：session_id, user_id, start_time, duration, latency_spikes (紀錄專注點擊反應延遲峰值次數)。</li>
+            </ul>
+          </div>
+        `
+      },
+      stateflows: {
+        meta: "設計 (Design)",
+        title: "狀態流 & 畫面示意",
+        body: `
+          <div class="spec-block">
+            <h4>🔄 狀態流動 (State Transitions)</h4>
+            <p>系統流程：<strong>開啟 App (Idle)</strong> ➡️ <strong>載入關卡與背景音 (Loading)</strong> ➡️ <strong>進行 90s 限時挑戰 (Focus Active)</strong> ➡️ <strong>單字呈現 (Word Show)</strong> ➡️ <strong>拖曳/連線互動 (Interaction)</strong> ➡️ <strong>多巴胺勝利慶賀 (Celebration)</strong> ➡️ <strong>超時或通關退出</strong>。</p>
+          </div>
+          <div class="spec-block">
+            <h4>📱 基本頁面結構示意</h4>
+            <ul>
+              <li><strong>主頁面 Dashboard</strong>：極簡無干擾設計，僅有一個顯眼的「開始專注」按鈕與歷史專注曲線。</li>
+              <li><strong>學習艙 Focus Room</strong>：上方為 90s 沙漏進度條，中央為 Dyslexic 字型單字卡，下方為白噪音開關。</li>
+              <li><strong>獎勵彈出視窗 Reward Modal</strong>：成功通關時大面積灑花，並顯示「連續專注天數」勳章。</li>
+            </ul>
+          </div>
+        `
+      },
+      assets: {
+        meta: "素材 (Assets)",
+        title: "素材清單",
+        body: `
+          <div class="spec-block">
+            <h4>📦 數位素材內容與整理來源</h4>
+            <ul>
+              <li><strong>視覺素材</strong>：
+                <ul>
+                  <li>OpenDyslexic 字型檔 (開源下載自 OpenDyslexic 官網，放置於 <code>/assets/fonts/</code>)。</li>
+                  <li>物理碰撞粒子特效檔 (基於 HTML5 Canvas 動態渲染)。</li>
+                </ul>
+              </li>
+              <li><strong>聽覺素材</strong>：
+                <ul>
+                  <li>40Hz 專注波形音檔 (由音訊合成器生成並設定為 seamless loop 格式)。</li>
+                  <li><code>success_pop.wav</code> 啵啵回饋聲 (採集自 ASMR 減壓音效庫)。</li>
+                </ul>
+              </li>
+              <li><strong>觸覺素材</strong>：
+                <ul>
+                  <li>裝置微幅震動設定檔 (對應 W3C Vibrator API)。</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        `
+      }
+    };
+
+    function openSpec(key) {
+      const spec = specsData[key];
+      if (spec) {
+        document.getElementById('modal-meta').innerText = spec.meta;
+        document.getElementById('modal-title').innerText = spec.title;
+        document.getElementById('modal-body').innerHTML = spec.body;
+        document.getElementById('spec-modal').classList.add('active');
+      }
+    }
+
+    function closeSpec() {
+      document.getElementById('spec-modal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
