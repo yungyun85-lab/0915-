@@ -470,6 +470,10 @@
 
       <!-- Timer Section -->
       <div class="timer-section">
+        <!-- Streak display (v2.0) -->
+        <div style="font-size: 0.85rem; font-weight: 800; color: #d97706; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-fire"></i> 連續學習 7 天 (今天已打卡！)
+        </div>
         <div class="hourglass-container">
           <i class="fa-solid fa-hourglass-half hourglass-spinning" id="hourglass-icon"></i>
         </div>
@@ -513,11 +517,11 @@
       <div class="success-modal" id="success-modal">
         <div class="success-card">
           <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
-          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">完美回答！</h3>
+          <h3 id="success-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">完美回答！</h3>
           <p id="success-stat" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
             專注點擊反應時間: 284ms<br>連續專注日數: +1 天
           </p>
-          <button class="btn-next" onclick="nextQuestion()">挑戰下一個 <i class="fa-solid fa-forward"></i></button>
+          <button class="btn-next" onclick="nextQuestion()">先學下 1 個字就好 <i class="fa-solid fa-forward"></i></button>
         </div>
       </div>
     </div>
@@ -584,14 +588,37 @@
         btn.classList.add('correct');
         btn.innerHTML = `<span>${value}</span> <i class="fa-solid fa-circle-check"></i>`;
         
-        // Trigger Haptic Wave & Sound & Particles
+        // Trigger Haptic Wave & Sound
         triggerHapticWave();
         playSuccessBeep();
-        triggerFireworks();
+
+        // 🎲 v2.0 隨機化多巴胺獎勵機制 (Slot-Machine Style Random Rewards)
+        const rand = Math.random();
+        let rewardTitle = "完美回答！";
+        let rewardDesc = `專注點擊反應時間: <strong>${reactionTime}ms</strong><br>連續專注日數: <strong>+1 天</strong>`;
+
+        if (rand < 0.25) {
+          // 1. 標準版
+          rewardTitle = "非常棒！🌟";
+        } else if (rand < 0.50) {
+          // 2. 驚喜版 - 全螢幕彩帶煙火
+          rewardTitle = "太精彩了！🎉";
+          rewardDesc += `<br><span style="color: #0d9488; font-weight: 700;"><i class="fa-solid fa-wand-magic-sparkles"></i> 觸發全螢幕多巴胺彩色煙火！</span>`;
+          triggerFireworks();
+        } else if (rand < 0.75) {
+          // 3. 幽默/趣味反饋版
+          rewardTitle = "大腦偷偷開心了一下 🧠";
+          rewardDesc = `反應時間: <strong>${reactionTime}ms</strong><br><span style="color: #0284c7; font-weight: 700;">做得好！您的大腦多巴胺正歡樂分泌中！</span>`;
+        } else {
+          // 4. 累積/保護盾版
+          rewardTitle = "獲得保護盾！🛡️";
+          rewardDesc = `反應時間: <strong>${reactionTime}ms</strong><br><span style="color: #b45309; font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> 獲得 1 個連續天數保護盾！</span><br>即使明天休息，專注紀錄也不會中斷喔！`;
+        }
         
-        // Show Success Modal
+        // Show Success Modal with random content
         setTimeout(() => {
-          document.getElementById('success-stat').innerHTML = `專注點擊反應時間: <strong>${reactionTime}ms</strong><br>連續專注日數: <strong>+1 天</strong>`;
+          document.getElementById('success-title').innerHTML = rewardTitle;
+          document.getElementById('success-stat').innerHTML = rewardDesc;
           document.getElementById('success-modal').classList.add('active');
         }, 600);
       } else {
