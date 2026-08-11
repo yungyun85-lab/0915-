@@ -1,155 +1,130 @@
-# 📱 FocusLingua | 英語學習 App 介面設計規格藍圖 v2.0
-### (新增：ADHD/ADD 留存機制版)
+# 📱 FocusLingua | 英語學習 App 介面設計規格藍圖 v2.1
+### (新增：受眾分流、句子輔助與特教教師後台模組)
 
-本版在原有六大畫面基礎上，加入五項核心留存機制：**連續天數(Streak)**、**隨機化獎勵**、**微入口(Micro-entry)**、**溫柔召回**、**動態主題色**。目標是把「靜態展示進度」升級為「製造想打開 App 的衝動」。
-
----
-
-## 🔑 新增機制總覽
-
-| 機制 | 解決的問題 | 套用畫面 |
-|---|---|---|
-| 🔥 連續天數 Streak | 進度條只會累積、不會製造損失感 | 首頁、進度頁 |
-| 🎲 隨機化獎勵 | 固定獎勵會習慣化、失去多巴胺效果 | 測驗頁 |
-| 👆 微入口 | 「開始今天的單字」暗示要完成一整組任務，啟動門檻太高 | 首頁 |
-| 💌 溫柔召回 | 中斷後只有「繼續上次」，沒有喚回機制 | 全新畫面：召回卡片 |
-| 🎨 動態主題色 | 六畫面色調統一，長期使用容易乏味 | 全域 |
+本版規格書新增三項核心變革：**首頁受眾雙分流（閱讀障礙/ADHD）**、**單字卡輔助句子折疊器**、**設定頁特教教師端（學生進度追蹤與教材上傳機制）**。
 
 ---
 
-## 1. 首頁 (Home Screen) — 改版
+## 🔑 v2.1 新增功能架構與效果分析
 
-### ① 新增需求
-- **連續天數計數器**：畫面最上方，比進度條更顯眼，使用火焰圖示 + 天數。若使用者今天還沒學習，計數器旁顯示「保護你的紀錄」的柔性提醒（非威脅語氣）。
-- **微入口按鈕**：主按鈕文字從「開始今天的單字」改為「先學 1 個字就好」，降低啟動門檻；使用者完成第 1 個字後，App 自然銜接下一個字，不需要重新點擊。
-- **今日主題色**：背景色從固定薄荷綠，改為依據星期幾或連續天數里程碑輪替 5-6 組莫蘭迪色系，保留同一套排版但降低視覺疲乏。
+### 1. 受眾分流與句子折疊（對學習障礙學生的效果評估）
+* **首頁選擇「閱讀障礙」與「ADHD」雙分流**：
+  * **效果**：**極佳。** 這兩種障礙的認知瓶頸不同：ADHD 需要**防止注意力漂移與任務啟動障礙**（以計時器與隨機獎勵為主）；而閱讀障礙需要**防止字元識別疲勞與跳行**（以 OpenDyslexic、高對比、TTS 發音為主）。分流能防止對 ADHD 而言多餘的視覺輔助反而成為分心源，也防止閱讀障礙者被過度晃動的動態干擾。
+* **單字卡「輔助句子折疊按鈕」**：
+  * **效果**：**極佳。** ADHD 大腦在看到密密麻麻的一長串段落時會直接觸發**「任務癱瘓 (Task Paralysis)」**而放棄。採用折疊機制，預設「僅展示單字」，使用者可以自己決定是否展開例句，這將資訊負載主導權還給學生，能顯著降低焦慮。
+
+### 2. 設定頁「教師/學生切換與教材管理」
+* **學生端**：維持專注學習功能。
+* **教師端**：
+  * **學生學習成果看板**：檢視所有綁定學生的完成率、平均反應時間（Latency）、連續專注天數與錯題簿。
+  * **自訂教材上傳**：支援上傳 CSV 或輸入單字與例句，並設定為 `公開 (Public)`（開放給全社群）或 `私人 (Private)`（僅自己班級學生可見）。
+
+---
+
+## 1. 首頁 (Home Screen) — v2.1 分流改版
+
+### ① 需求 (Requirements)
+* **目的**：第一次開啟 App 時，引導使用者進行分流選擇，並將選擇記錄於 User Profile。
+* **畫面元素**：
+  * **分流引導卡片**：
+    * **左按鈕 (ADHD/專注挑戰模式)**：強調 90s 沙漏、白噪音、遊戲化多巴胺回饋。
+    * **右按鈕 (閱讀障礙/視覺優化模式)**：預設啟用 OpenDyslexic 字型、寬行高、無突兀動態。
+  * **今日進度、微入口與連續天數**：根據所選模式微調 UI 複雜度。
 
 ### ② 線稿 WIREFRAME
-```
+```text
 +---------------------------------------+
 |  [Logo] FocusLingua           (User)  |
 +---------------------------------------+
 |                                       |
-|   🔥 連續學習 7 天  (今天還沒打卡！)      |
+|  🌟 請選擇最適合您的學習模式：         |
 |                                       |
 |  +---------------------------------+  |
-|  |  🌟 今日進度 (Today's Progress)  |  |
-|  |  [====== 60% Progress Bar =====] |  |
-|  |  今日已學: 3 / 5 個單字          |  |
+|  |  🔘 ADHD 專注挑戰模式           |  |
+|  |  (90s 計時器、背景白噪音、驚喜獎勵) |  |
+|  +---------------------------------+  |
+|  |  🔘 閱讀障礙視覺模式            |  |
+|  |  (OpenDyslexic 字型、高對比字距) |  |
 |  +---------------------------------+  |
 |                                       |
-|  +---------------------------------+  |
-|  |     [ 先學 1 個字就好 (P0) ]      |  |
-|  |    (大面積主導按鈕，今日主題色)      |  |
-|  +---------------------------------+  |
+|  [ 確定進入學習 ]                     |
 |                                       |
-|  +---------------------------------+  |
-|  |           [ 繼續上次 ]          |  |
-|  +---------------------------------+  |
-|                                       |
-|  "Take it one word at a time."        |
-|                                       |
-+---------------------------------------+
-|  [今日任務]  [字卡]  [測驗]  [進度]      |
 +---------------------------------------+
 ```
-> 底部導覽從 5 個分頁減為 4 個，把「設定」移進右上角 icon，降低選擇項目、減少決策負擔。
 
 ### ③ PROMPT
-> A high-fidelity mobile app home screen UI for FocusLingua, ADHD-friendly English learning app. At the top, a warm flame-icon streak counter shows "7 day streak" in amber. Below it, a soft progress card shows "3/5 words today". A large rounded primary button in today's rotating accent color (currently dusty rose) says "Just Learn 1 Word". A ghost button below says "Continue Last Session". Calming, low-clutter, premium mobile UI, warm and encouraging tone rather than clinical.
+> A mobile app onboarding screen UI for FocusLingua. Features a clean, soothing background. In the center, two large, friendly card-style selectors are presented side-by-side or stacked: "ADHD Focus Mode" (with an hourglass and music icon) and "Dyslexia Visual Mode" (with a large font letter A and reading ruler icon). Below them is a large primary button "Enter Learning Cabin". Distraction-free, friendly and welcoming illustration.
 
 ---
 
-## 2. 測驗頁 (Quiz Screen) — 改版
+## 2. 單字卡頁 (Flashcard Screen) — v2.1 輔助句子折疊
 
-### ① 新增需求
-- **選項數固定為 3 個**（原線稿與需求文字不一致，統一收斂為 3，降低選擇負荷）。
-- **隨機化獎勵系統**：答對後，系統從獎勵池中隨機抽取一種回饋，而非每次都相同：
-  1. 標準版：輕微震動 + 綠色勾勾
-  2. 驚喜版（約 20% 機率）：全螢幕彩帶 + 音效
-  3. 幽默版（約 10% 機率）：彈出一句俏皮小評語（如「你的大腦剛剛偷偷開心了一下」）
-  4. 累積版（約 10% 機率）：額外贈送 1 個「連續天數保護盾」，可在漏學一天時自動補上 streak
+### ① 需求 (Requirements)
+* **目的**：提供單字卡片，並將句子作為「輔助工具」做成可折疊開關。
+* **畫面元素**：
+  * **單字正面卡**：單字 + 音標。
+  * **展開句子開關 (Toggle Sentence)**：一個小眼睛或展開圖示。點擊後才由下方滑出英文例句，例句中的單字會自動高亮。
 
 ### ② 線稿 WIREFRAME
-```
+```text
 +---------------------------------------+
-|  [X] 結束專注                  [⏳ 56s] |
+|  < 返回                               |
 +---------------------------------------+
 |                                       |
 |       +-----------------------+       |
 |       |         FOCUS         |       |
+|       |        /ˈfoʊ.kəs/       |       |
 |       +-----------------------+       |
 |                                       |
+|  [👁️ 顯示輔助例句 (Show Sentence) ]  |
+|                                       |
 |  +---------------------------------+  |
-|  |  A. 模糊或不清晰                |  |
-|  +---------------------------------+  |
-|  |  B. 專注、集中注意力            |  |
-|  +---------------------------------+  |
-|  |  C. 忽視與遺忘                  |  |
+|  | 例句：You need to FOCUS on your   |  |
+|  | study. (點擊發音)               |  |
 |  +---------------------------------+  |
 |                                       |
-|  [答對後隨機觸發 4 種獎勵之一，見上方說明]  |
+|  [ 標記熟悉 ✔️ ]   [ 繼續學習 ❌ ]  |
 +---------------------------------------+
 ```
 
 ### ③ PROMPT
-> A mobile quiz screen UI for FocusLingua. Three multiple-choice options (not four) for lower cognitive load. On correct answer, randomly show ONE of: a subtle checkmark micro-animation, a full-screen confetti burst, a playful text toast ("Your brain just had a tiny party"), or a shield icon indicating a streak-protection reward earned. The variability should feel like a slot-machine style surprise, not a fixed pattern.
+> A mobile flashcard UI with an expandable text block. The main card shows "FOCUS" in big bold font. Below the card is an elegant outline button with an eye-icon labeled "Show Example Sentence". When clicked, a secondary soft tinted card slides out below containing: "Example: You need to FOCUS on your study." with a small audio icon next to it. Low-clutter, clean Morandi green accents.
 
 ---
 
-## 3. 溫柔召回卡片 (Re-engagement Screen) — 全新畫面
+## 3. 設定頁 (Settings Screen) — v2.1 教師/學生切換與教材上傳
 
-### ① 需求
-- **觸發時機**：使用者超過 48 小時未開啟 App。
-- **目的**：用同理而非指責的語氣召回，避免罪惡感式推播（那類語氣通常會讓 ADHD 使用者選擇乾脆刪除 App，而不是回來）。
-- **畫面元素**：
-  * 溫暖插畫（不使用哭臉或警告色）
-  * 文案：「你的字卡在等你，休息幾天也沒關係」
-  * 顯示「你上次的連續紀錄是 7 天，現在重新開始也完全可以」，降低重啟的心理門檻
-  * 單一按鈕：「先學 1 個字就好」，與首頁微入口邏輯一致
+### ① 需求 (Requirements)
+* **目的**：允許特教老師切換為「教師模式」，進行班級進度追蹤與教材發佈管理。
+* **畫面元素**：
+  * **模式切換開關**：學生 (Student) / 教師 (Teacher) 切換 Slider。
+  * **教師專屬管理面板 (切換為教師後顯示)**：
+    * **學生學情追蹤 (Student Roster)**：點擊展開各學生名單，顯示完成率、平均反應時間及連續專注天數。
+    * **自訂教材上傳區 (Lesson Uploader)**：
+      * 文字輸入欄（單字與輔助句子）。
+      * 權限單選鈕：`● 公開使用 (Public)`（所有使用者皆可下載）、`○ 私人使用 (Private)`（僅綁定該教師的學號可看）。
 
 ### ② 線稿 WIREFRAME
-```
+```text
++---------------------------------------+
+|  設定與管理 (Settings & Dashboard)     |
 +---------------------------------------+
 |                                       |
-|          [溫暖插畫：字卡在打盹]           |
+|  身份角色設定                          |
+|  模式切換： [ 學生 (Student) | 教師 (Teacher) ]|
 |                                       |
-|      你的字卡在等你，                    |
-|      休息幾天也沒關係。                   |
+|  [ 以下為教師專屬管理區 ]               |
+|  👥 學生學習追蹤 (Student Dashboard)    |
+|  - 王小明：進度 85% | 平均延遲 240ms   |
+|  - 李小華：進度 40% | 平均延遲 410ms   |
 |                                       |
-|      上次連續紀錄：7 天                  |
-|      現在重新開始，也完全可以。             |
-|                                       |
-|  +---------------------------------+  |
-|  |     [ 先學 1 個字就好 ]           |  |
-|  +---------------------------------+  |
-|                                       |
+|  📤 自訂教材上傳 (Upload Materials)    |
+|  課程名稱: [ 基礎感官單字組-A        ] |
+|  上傳 CSV: [ 選擇檔案...             ] |
+|  權限設定: (● 公開共享  ○ 私人專屬)     |
+|  [ 確定發布教材 ]                     |
 +---------------------------------------+
 ```
 
 ### ③ PROMPT
-> A gentle re-engagement screen for FocusLingua, shown after a user has been away for 2+ days. Soft illustration of flashcards "napping" (no sad faces, no red warning colors). Warm copy: "Your flashcards missed you. It's okay to take breaks." Shows previous streak count with encouraging reframe. Single low-pressure CTA button "Just Learn 1 Word". Tone: compassionate, zero guilt, cozy pastel palette.
-
----
-
-## 4. 進度頁 (Progress Screen) — 局部改版
-
-### 新增元素
-- 圓環進度圖旁新增「🔥 最長連續紀錄」與「目前連續天數」並列顯示，讓使用者同時看到「歷史最佳」與「現在狀態」，製造想超越自己紀錄的動機。
-- 三色量化區維持原設計不變（已學/待複習/已熟悉），僅在配色上跟隨當日主題色微調。
-
----
-
-## 5. 單字卡頁、複習頁、設定頁
-
-維持原藍圖設計，僅需配合「動態主題色」全域套用當日配色，其餘互動邏輯不變。
-
----
-
-## 📋 實作優先順序建議
-
-1. **連續天數 Streak（首頁 + 進度頁）** — 影響留存率最大，且開發成本相對低
-2. **隨機化獎勵（測驗頁）** — 次要優先，需要設計獎勵池與觸發機率
-3. **溫柔召回畫面** — 需搭配推播通知邏輯，中期實作
-4. **微入口按鈕文案** — 純文案調整，可立即上線測試
-5. **動態主題色** — 視覺優化，優先順序最低，可留到 polish 階段
+> A premium mobile app settings screen for teachers in FocusLingua app. In the upper part, a segmented switch allows toggling between "Student" and "Teacher" mode. The Teacher section expands below, featuring: 1. A clean student monitoring list showing completion percentages and click latency metrics. 2. A drag-and-drop file upload section for CSV lesson plans with a permission toggle: "Public (Share with community)" / "Private (Classroom only)". Calm slate, teal, and white theme.
