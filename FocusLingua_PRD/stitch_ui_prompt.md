@@ -1,57 +1,71 @@
-# 🎨 FocusLingua | Stitch UI 生成 Prompt 彙整指南
+# 🎨 FocusLingua | Stitch UI Prompts Guide (v2.1)
 
-本文件專門彙整 **FocusLingua v2.0** 所有核心介面的 Stitch / AI UI 生成器專用 Prompt。您可以直接複製以下 Prompt 貼入 Stitch, v0.dev, Claude Artifacts 或其他 AI 前端生成工具中，快速產出符合 ADHD/Dyslexia 友善設計的高保真 UI。
+This document aggregates all the high-fidelity UI generator prompts for **FocusLingua v2.1** (ADHD/Dyslexia-friendly English learning app). You can directly copy and paste these English prompts into **Stitch**, **v0.dev**, **Claude Artifacts**, or other AI front-end code generation tools to instantly generate responsive, premium mobile app interfaces.
 
 ---
 
-## 1. 首頁 (Home Screen)
-* **設計要點**：突出「微入口」按鈕，顯示火焰 Streak，使用溫和的主題色（如莫蘭迪玫瑰色/灰綠色）。
+## 1. Onboarding & Mode Selection Screen (New in v2.1)
+* **Design Core**: Guides users to select their optimal cognitive profile. Simple layout, low anxiety, card-style toggle selectors.
 
 ```text
-A high-fidelity mobile app home screen UI for FocusLingua, an ADHD-friendly English learning app. Calming sand and white background. At the very top, a warm flame-icon streak counter shows "7 day streak" in amber orange. Below the streak, a clean container card shows today's learning progress: "3/5 words today" with a soft, glowing progress bar. In the center, a large prominent rounded primary button in a warm dusty rose color says "Just Learn 1 Word" in bold text. A smaller ghost button below says "Continue Last Session". At the bottom, a minimalist text card displaying a quote "Take it one word at a time" in low-contrast font. Distraction-free, premium mobile UI.
+A premium mobile app onboarding screen for FocusLingua. Features a clean, soothing background in off-white. In the center, two large card-style selectors are stacked vertically with rounded corners:
+1. "ADHD Focus Mode" (includes icons for a sand hourglass and headphones, text describing 90s countdown timer, ambient noise generator, and dopamine rewards).
+2. "Dyslexia Visual Mode" (includes icons for a reading ruler and text-to-speech, text describing OpenDyslexic font integration, wide letter spacing, and high-contrast color themes).
+Below the cards, a prominent rounded primary button says "Enter Learning Cabin" in a warm teal gradient. Clutter-free and welcoming design.
 ```
 
 ---
 
-## 2. 單字卡頁 (Flashcard Screen)
-* **設計要點**：中央單字卡使用大字距、底加重字體（模擬 OpenDyslexic），無其他雜亂按鈕，支援翻卡手勢。
+## 2. Home Screen
+* **Design Core**: Highlight the low-friction entry button, Amber/Flame Streak counter, and today's Morandi background color.
 
 ```text
-A minimalist mobile app flashcard screen UI for FocusLingua. The font is styled like OpenDyslexic (heavy bottom, wide letter spacing). The main word card is clean white with rounded corners, casting a soft shadow on a quiet mint green background. On the card, the English word "CALM" and its pronunciation "/kɑːm/" are displayed in dark slate color. Below the card, two intuitive tactile buttons are placed side-by-side: "Mastered" in a soft green button with a check icon, and "Still Learning" in a light outline style button. Low cognitive load, zero clutter.
+A high-fidelity mobile app home screen UI for FocusLingua. Soothing warm sand background. At the top, a prominent amber orange flame icon streak counter shows "7 Day Streak". Below it, a progress card displays "Today's Progress: 3/5 words" with a soft blue progress bar. In the center, a large rounded primary button in a warm dusty rose gradient says "Just Learn 1 Word" in bold text. A smaller ghost button below says "Continue Last Session". At the bottom, a minimalist text card quotes "Take it one word at a time" in low-contrast, muted font. Modern, distraction-free, low cognitive load.
 ```
 
 ---
 
-## 3. 測驗與回饋頁 (Quiz & Reward Screen)
-* **設計要點**：頂部放置 90s 沙漏進度，題目卡片乾淨，下方僅有 3 個選項以降低決策負荷。
+## 3. Flashcard Screen (Updated in v2.1)
+* **Design Core**: Large word card in OpenDyslexic font style, audio pronunciation trigger, and a toggle button to expand auxiliary example sentences.
 
 ```text
-A high-fidelity mobile app quiz screen UI for FocusLingua. At the top, a stylized teal hourglass timer shows "5:42" remaining in a 90-second session. In the center, a large white card displays the word "FOCUS" in a bold, bottom-heavy, dyslexia-friendly font. Below the card are three minimalist multiple-choice option buttons (A, B, C) with wide padding. On the correct choice selection, show a visual representation of haptic ripple feedback and confetti particles bursting around the card. Tone is warm, encouraging, and game-like.
+A minimalist mobile app flashcard screen UI for FocusLingua. The main flashcard is crisp white with rounded corners, displaying the English word "FOCUS" and its phonetic translation "/ˈfoʊ.kəs/" in dark slate. The font is styled like OpenDyslexic (heavy-bottom, wide letter spacing). Below the card is an elegant outline button with an eye-icon labeled "Show Example Sentence". When clicked, a secondary card slides out below displaying "Example: You need to FOCUS on your study." with a small audio volume icon. At the bottom, two side-by-side action buttons read "Mastered ✔️" (soft green) and "Still Learning ❌" (outline style).
 ```
 
 ---
 
-## 4. 溫柔召回頁 (Re-engagement Screen)
-* **設計要點**：用溫馨插畫與同理心文案，避免警告色，提供一鍵「只學1個字」的超低心理阻力按鈕。
+## 4. Quiz & Variable Reward Screen
+* **Design Core**: strict 90s countdown timer, 3 choice options (not 4) to reduce decision fatigue, and visual cues for slot-machine style variable rewards.
 
 ```text
-A gentle re-engagement screen for FocusLingua app, shown after a user has been away for 2+ days. Features a soft pastel illustration of a cute flashcard character "napping" cozy under a blanket (no sad faces, no red warning colors). Warm copy in dark slate: "Your flashcards missed you. It's okay to take breaks." Shows a message about their previous 7-day streak with encouraging reframe: "Ready to start again? No pressure." A single large primary button at the bottom says "Just Learn 1 Word". Calming cozy aesthetic.
+A high-fidelity mobile app quiz screen UI for FocusLingua. At the top, a stylized teal hourglass timer shows "5:42" remaining in a 90-second session. In the center, a white question card displays the word "FOCUS". Below the card are three minimalist multiple-choice option buttons (A, B, C) with wide padding and clear border states. On correct answer selection, display a visual representation of haptic ripple feedback and confetti particles bursting around the card. Tone is warm, encouraging, and gamified.
 ```
 
 ---
 
-## 5. 進度統計頁 (Progress Screen)
-* **設計要點**：使用圓環圖表呈現，並列展示「歷史最佳紀錄」與「目前天數」，三色區塊分明。
+## 5. Re-engagement Screen
+* **Design Core**: Warm, guilt-free text illustration to avoid shame-based drop-offs. Very welcoming.
 
 ```text
-A high-fidelity mobile app progress dashboard UI for FocusLingua. In the upper half, it features a clean circular donut progress chart displaying "75% Complete" in the center. Below the chart, three cards show progress metrics with light colored progress bars: "Learned: 120 words" with a teal bar, "To Review: 15 words" with a soft yellow bar, and "Mastered: 90 words" with a green bar. Under the stats, show two columns: "Best Streak: 14 Days" and "Current Streak: 7 Days" with small flame icons. Slate, white, and teal colors. Premium clean design.
+A cozy mobile app re-engagement screen for FocusLingua, shown after a user has been inactive for 2+ days. Features a soft pastel illustration of a cute flashcard character sleeping under a blanket (no sad expressions, no red warning colors). Warm copy reads: "Your flashcards missed you. It's okay to take breaks." Displays previous streak count: "7-day streak saved. Ready to start again? No pressure." A single, low-pressure primary button at the bottom says "Just Learn 1 Word". Compassionate tone.
 ```
 
 ---
 
-## 6. 設定偏好頁 (Settings Screen)
-* **設計要點**：自訂偏好開關，開關按鈕圓潤大顆防誤觸，字體大且間距寬。
+## 6. Progress & Statistics Screen
+* **Design Core**: Circular donut chart, dual streak logs (Best vs Current) for gamified motivation.
 
 ```text
-A clean mobile settings screen UI for FocusLingua app. Contains option lists with large toggle switches and segmented controls: "Daily Word Count" (shows input selector), "Daily Reminder Time", and a segment selector for "Translation Explanations" (English-Chinese / English Only). Below are sensory toggles: "Haptic Vibration Strength" (Light / Medium / Off) and "Focus Background Noise" (Binaural 40Hz / Pink Noise / Off). Standard slate and white premium clean theme, large easy-to-tap targets.
+A high-fidelity mobile app progress dashboard UI for FocusLingua. Features a clean circular donut progress chart displaying "75% Complete" in the center. Below the chart, three cards show progress metrics with light colored progress bars: "Learned: 120 words" with a teal bar, "To Review: 15 words" with a soft yellow bar, and "Mastered: 90 words" with a green bar. Under the stats, show two columns: "Best Streak: 14 Days" and "Current Streak: 7 Days" with small flame icons. Slate, white, and teal colors. Premium clean design.
+```
+
+---
+
+## 7. Teacher Settings & Dashboard (New in v2.1)
+* **Design Core**: On/Off roles segment toggle, list of student progress metrics, and CSV file uploader with Public/Private access selector.
+
+```text
+A premium mobile app settings screen for teachers in FocusLingua app. In the upper part, a segmented switch allows toggling between "Student" and "Teacher" mode. The Teacher section expands below, featuring:
+1. A clean student monitoring list showing student names, completion percentages (e.g., "Wang: 85%"), and click latency metrics (e.g., "Avg Latency: 240ms").
+2. A drag-and-drop file upload section for CSV lesson plans labeled "Upload Custom Wordlist", with a permission selector toggle: "Public (Share with community)" and "Private (Classroom only)". Calm slate, teal, and white theme with large easy-to-tap targets.
 ```
