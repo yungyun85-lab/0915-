@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua 專案規劃書簡報與 PDF 輸出檔</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0f766e;
+      --secondary: #0284c7;
+      --text: #0f172a;
+      --text-light: #475569;
+      --border: #cbd5e1;
+      --bg-page: #ffffff;
+      --bg-accent: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      line-height: 1.6;
+      padding: 40px 0;
+    }
+
+    /* Print Controller (No Print) */
+    .no-print-bar {
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      background-color: #ffffff;
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .no-print-info {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-print:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 118, 110, 0.3);
+    }
+
+    /* Report Container */
+    .report-container {
+      background-color: var(--bg-page);
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border-radius: 8px;
+    }
+
+    /* Print page-break controls */
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 900px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-bottom: 40px;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+      min-height: auto;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 900px;
+    }
+
+    .cover-logo {
+      font-size: 4rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .cover-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .cover-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-light);
+      margin-bottom: 80px;
+    }
+
+    .cover-meta {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .cover-meta p {
+      margin-bottom: 6px;
+    }
+
+    /* Section Styles */
+    .section-num {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--secondary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text-light);
+      font-size: 1rem;
+      text-align: justify;
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    /* Lists */
+    ul {
+      margin-bottom: 20px;
+      padding-left: 20px;
+      color: var(--text-light);
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Mockups Grid */
+    .mockup-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+      page-break-inside: avoid;
+    }
+
+    .mockup-item {
+      text-align: center;
+    }
+
+    .mockup-img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    .mockup-caption {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    /* Footer Pagination */
+    .page-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+      .no-print-bar {
+        display: none;
+      }
+      .report-container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print Control Bar -->
+  <div class="no-print-bar">
+    <div class="no-print-info">
+      <strong>📄 規格書 PDF 列印模式</strong><br>
+      請點選右側按鈕，並於列印對話框中選擇<strong>「另存為 PDF (Save as PDF)」</strong>。
+    </div>
+    <button class="btn-print" onclick="window.print()">
+      儲存成 PDF / 列印
+    </button>
+  </div>
+
+  <!-- Main Document -->
+  <div class="report-container">
+    
+    <!-- PAGE 1: COVER -->
+    <div class="page cover-page">
+      <div class="cover-logo">📘</div>
+      <h1 class="cover-title">FocusLingua</h1>
+      <h2 class="cover-subtitle">注意力不足與學習障礙英語學習產品規格書 (PRD)</h2>
+      <div class="cover-meta">
+        <p><strong>專案代號：</strong>FocusLingua</p>
+        <p><strong>文件版本：</strong>v1.1.0 (PDF 輸出簡報版)</p>
+        <p><strong>目標受眾：</strong>ADHD / Dyslexia 與短暫注意力學習者</p>
+        <p><strong>日期：</strong>2026 年 8 月</p>
+      </div>
+    </div>
+
+    <!-- PAGE 2: DEFINITION -->
+    <div class="page">
+      <div class="section-num">Item 01</div>
+      <h3 class="section-title">產品定義書 (Product Definition)</h3>
+      <p>專為注意力不集中 (ADHD) 及閱讀障礙 (Dyslexia) 學習者設計的「90秒微感官英語學習應用程式」。利用視覺字型優化、聽覺減壓背景音及觸覺多巴胺即時反饋，解決目標受眾在傳統學習中容易焦慮、分心及認知負荷過載的痛點。</p>
+      
+      <h4 style="margin-bottom:12px; margin-top:20px; font-weight:700;">核心受眾痛點分析：</h4>
+      <ul>
+        <li><strong>認知負荷過載</strong>：市面上英語軟體（如 Duolingo）關卡時間過長（5-15分鐘），對 ADHD 而言，前 3 分鐘後即進入分心期。</li>
+        <li><strong>文字排版不友善</strong>：傳統密集字體與大量單色段落容易引起閱讀障礙者跳行、漏字，導致挫折感加倍。</li>
+        <li><strong>反饋延遲</strong>：缺乏即時、連續且適度的「多巴胺反饋機制」，學習進度停滯時極易放棄。</li>
+        <li><strong>學習效率不對等</strong>：學習障礙者平均需要花費普通人 2 倍以上的精力與重複次數才能內化相同的單字量。</li>
+      </ul>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 2</span>
+      </div>
+    </div>
+
+    <!-- PAGE 3: USER STORIES -->
+    <div class="page">
+      <div class="section-num">Item 02</div>
+      <h3 class="section-title">使用者故事 (User Story)</h3>
+      <p>從使用者角度出發，我們界定了以下核心情境與驗收標準：</p>
+      
+      <div style="margin-top:20px;">
+        <p><strong>故事 1 (ADHD 學習者)：</strong><br>
+        作為一名注意力易分散的成人，我希望每次學習單元控制在 90 秒內且有視覺化計時，使我不會因為課程過長而產生焦慮或直接放棄。</p>
+        
+        <p style="margin-top:12px;"><strong>故事 2 (閱讀障礙學生)：</strong><br>
+        作為一名閱讀障礙學生，我希望網頁能切換為 OpenDyslexic 字型與可調間距，讓我能清晰辨識單字字母而不跳行。</p>
+        
+        <p style="margin-top:12px;"><strong>故事 3 (特教輔導員/家長)：</strong><br>
+        作為一名家長，我希望查看孩子的專注度反應時間分析，以便瞭解何種學習刺激對他最有效。</p>
+      </div>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 3</span>
+      </div>
+    </div>
+
+    <!-- PAGE 4: FUNCTIONAL SPECS -->
+    <div class="page">
+      <div class="section-num">Item 03</div>
+      <h3 class="section-title">功能規格表 (Functional Specifications)</h3>
+      <p>把故事拆成可執行的功能、規劃與優先度：</p>
+      
+      <ul style="margin-top:20px;">
+        <li><strong>P0 - 90s 沙漏計時器</strong>：強制限制學習單元在 90 秒內結束，提供即時進度條。</li>
+        <li><strong>P0 - Dyslexic 友善設定</strong>：支援 OpenDyslexic 字型切換、字距放大及高對比配色。</li>
+        <li><strong>P0 - 觸覺多巴胺反饋</strong>：答對時觸發物理震動（行動裝置）與粒子特效（網頁端），給予即時大腦刺激。</li>
+        <li><strong>P1 - 減壓專注背景音 (BGM)</strong>：整合 40Hz 雙耳節拍、粉紅噪音與白噪音，阻絕環境噪音干擾。</li>
+        <li><strong>P1 - 專注度自我適應系統</strong>：若使用者點擊延遲 (Latency) 異常拉長，系統自動調降難度並給予提示。</li>
+      </ul>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 4</span>
+      </div>
+    </div>
+
+    <!-- PAGE 5: ARCHITECTURE & DATA -->
+    <div class="page">
+      <div class="section-num">Item 04</div>
+      <h3 class="section-title">架構與資料模型 (Architecture & Data)</h3>
+      <p><strong>三層分工分立設計：</strong></p>
+      <ul>
+        <li><strong>前端展示層 (Client)</strong>：極簡 Web 單頁面應用，使用 HTML5/CSS 變數以及 HTML5 Audio + Canvas 實現極致流暢、無延遲的即時感官反饋。</li>
+        <li><strong>中間伺服器層 (API/Server)</strong>：Node.js API Gateway 與專注力曲線分析模組，將點擊延遲與錯誤率轉化為專注指數。</li>
+        <li><strong>後端資料層 (Database)</strong>：使用 PostgreSQL 記錄使用者設定與通關進度；ClickHouse 串流寫入點擊 Latency 與學習時長。</li>
+      </ul>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 5</span>
+      </div>
+    </div>
+
+    <!-- PAGE 6: STATE FLOWS & MOCKUPS -->
+    <div class="page">
+      <div class="section-num">Item 05</div>
+      <h3 class="section-title">狀態流與畫面示意 (State Flow & UI Mockups)</h3>
+      <p>狀態流動流程：<strong>開啟 App (Idle)</strong> ➡️ <strong>載入關卡與背景音 (Loading)</strong> ➡️ <strong>進行 90s 限時挑戰 (Focus Active)</strong> ➡️ <strong>單字呈現 (Word Show)</strong> ➡️ <strong>拖曳/連線互動 (Interaction)</strong> ➡️ <strong>多巴胺勝利慶賀 (Celebration)</strong>。</p>
+      
+      <!-- App Mockup Image Assistance -->
+      <div class="mockup-container">
+        <div class="mockup-item">
+          <img src="../assets/focuslingua_learning_ui.jpg" alt="FocusActive 學習艙畫面" class="mockup-img">
+          <div class="mockup-caption">圖 1：90s 沙漏學習卡片 (OpenDyslexic)</div>
+        </div>
+        <div class="mockup-item">
+          <img src="../assets/focuslingua_victory_ui.jpg" alt="Dopamine Celebration 畫面" class="mockup-img">
+          <div class="mockup-caption">圖 2：通關結算與多巴胺獎勵回饋</div>
+        </div>
+      </div>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 6</span>
+      </div>
+    </div>
+
+    <!-- PAGE 7: ASSETS -->
+    <div class="page">
+      <div class="section-num">Item 06</div>
+      <h3 class="section-title">素材清單 (Asset Inventory)</h3>
+      <p>本專案包含以下多感官多媒體素材，以保障學習障礙者的感官協作：</p>
+      
+      <ul style="margin-top:20px;">
+        <li><strong>視覺素材</strong>：
+          <ul>
+            <li>OpenDyslexic 字型檔 (開源下載自 OpenDyslexic 官網，放置於 <code>/assets/fonts/</code>)。</li>
+            <li>物理碰撞粒子特效檔 (基於 HTML5 Canvas 動態渲染)。</li>
+          </ul>
+        </li>
+        <li><strong>聽覺素材</strong>：
+          <ul>
+            <li>40Hz 專注波形音檔 (由音訊合成器生成並設定為 seamless loop 格式)。</li>
+            <li><code>success_pop.wav</code> 啵啵回饋聲 (採集自 ASMR 減壓音效庫)。</li>
+          </ul>
+        </li>
+        <li><strong>觸覺素材</strong>：
+          <ul>
+            <li>裝置微幅震動設定檔 (對應 W3C Vibrator API)。</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="page-footer">
+        <span>FocusLingua 專案規劃書</span>
+        <span>Page 7</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
