@@ -1073,8 +1073,73 @@
       gap: 6px;
       transition: 0.15s;
     }
-    .nav-btn:hover {
-      background: #F8F6F0;
+    /* =========================================================================
+       PRINT TO PDF STYLES (Supports 16:9 Landscape Slide PDF Export)
+       ========================================================================= */
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0;
+      }
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-sizing: border-box !important;
+      }
+      html, body {
+        background: #FAF8F5 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 16in !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .presentation-layout {
+        display: block !important;
+        width: 16in !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .pitch-sidebar, .sidebar-bottom, .side-nav-menu, .nav-controls, .keyboard-hint, .modal-backdrop, #iepModal, .modal-box {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      .deck-container {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 16in !important;
+        max-width: 16in !important;
+        overflow: visible !important;
+      }
+      .slide-card {
+        display: flex !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        width: 16in !important;
+        min-height: 9in !important;
+        height: 9in !important;
+        max-height: 9in !important;
+        max-width: 16in !important;
+        box-sizing: border-box !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 35px 55px 25px 55px !important;
+        margin: 0 !important;
+        position: relative !important;
+        overflow: hidden !important;
+      }
+      .slide-card + .slide-card {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
+      .slide-card#slide-8 {
+        padding: 16px 36px 10px 36px !important;
+      }
+      .sandbox-container {
+        max-height: 480px !important;
+      }
     }
   </style>
 </head>
@@ -1153,7 +1218,7 @@
             下一頁 <i class="fa-solid fa-chevron-right"></i>
           </button>
         </div>
-        <a href="index.html" class="side-portfolio-link">
+        <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="side-portfolio-link">
           <i class="fa-solid fa-house-user"></i> 個人作品集首頁
         </a>
       </div>
@@ -1321,7 +1386,11 @@
               </div>
               <h3 style="font-size:1.45rem; font-weight:800; color:var(--sage-primary); margin-bottom:4px;">陳詠芸 Anna Chen</h3>
               <div style="font-size:0.95rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">中原大學四年級學生</div>
-              <div style="font-size:0.9rem; color:var(--text-muted); font-weight:600;">科系：應用外語＆財務金融學系</div>
+              <div style="font-size:0.9rem; color:var(--text-muted); font-weight:600; margin-bottom:10px;">科系：應用外語＆財務金融學系</div>
+              <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" style="background:#FFFFFF; border:1.5px solid var(--sage-primary); border-radius:10px; padding:6px 14px; display:inline-flex; align-items:center; gap:8px; text-decoration:none; box-shadow:0 2px 8px rgba(45,90,67,0.08);">
+                <i class="fa-solid fa-globe" style="color:var(--sage-primary); font-size:0.9rem;"></i>
+                <span style="font-size:0.82rem; font-weight:800; color:var(--sage-primary);">個人作品集：https://yungyun85-lab.github.io/0915-/</span>
+              </a>
             </div>
 
             <!-- Right Experience Cards -->
@@ -1705,11 +1774,14 @@
             <h2 class="slide-title">雙端實操模擬：教師端 Web ＋ 學生端 App 即時交互</h2>
             <p class="slide-subtitle">左側：國小教材上傳 ➔ AI 30 秒切片 ➔ 二次修改 ➔ 派發 ｜ 右側：國小學生手機 90 秒微任務多階段操作體驗</p>
           </div>
-          <div style="display:flex; gap:8px;">
-            <a href="focuslingua_live_app.html" target="_blank" class="nav-btn" style="text-decoration:none; background:#0284c7; color:#fff; border:none; padding:8px 14px; font-weight:700;">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟獨立全屏系統
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8" target="_blank" class="nav-btn" style="text-decoration:none; background:var(--terracotta-cta); color:#fff; border:none; padding:8px 16px; font-weight:800; font-size:0.85rem; box-shadow:0 3px 10px rgba(224,122,95,0.3);">
+              <i class="fa-solid fa-play"></i> 線上雙端實操模擬：https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8
             </a>
-            <button class="nav-btn" onclick="openIepModal()" style="background:var(--sage-primary); color:#fff; border:none; padding:8px 14px;">
+            <a href="https://yungyun85-lab.github.io/0915-/focuslingua_live_app.html" target="_blank" class="nav-btn" style="text-decoration:none; background:#0284c7; color:#fff; border:none; padding:8px 12px; font-weight:700; font-size:0.82rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> 獨立全屏系統
+            </a>
+            <button class="nav-btn" onclick="openIepModal()" style="background:var(--sage-primary); color:#fff; border:none; padding:8px 12px; font-size:0.82rem;">
               <i class="fa-solid fa-file-pdf"></i> 預覽 IEP 報表
             </button>
           </div>
@@ -2270,8 +2342,22 @@
           <div style="font-size: 1.45rem; font-weight: 700; color: var(--terracotta-cta); margin-bottom: 14px;">
             FocusLingua 成果專題簡報 ｜ 敬請指教
           </div>
-          <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-main); margin-bottom: 32px;">
+          <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-main); margin-bottom: 20px;">
             陳詠芸 Anna Chen
+          </div>
+
+          <!-- Prominent Link Cards -->
+          <div style="background:#FFFFFF; border:2px solid var(--sage-primary); border-radius:16px; padding:16px 28px; margin-bottom:28px; display:inline-flex; flex-direction:column; align-items:center; gap:8px; box-shadow:0 8px 24px rgba(45,90,67,0.08); max-width:680px;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:800; color:var(--sage-primary);">
+              <i class="fa-solid fa-link"></i> 線上完整互動簡報網址：
+            </div>
+            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html" target="_blank" style="color:var(--sage-primary); font-weight:900; font-size:1.08rem; text-decoration:underline; font-family:'Plus Jakarta Sans', monospace; word-break:break-all;">
+              https://yungyun85-lab.github.io/0915-/pitch_presentation.html
+            </a>
+            <div style="font-size:0.88rem; color:var(--text-muted); margin-top:4px; display:flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-globe" style="color:var(--terracotta-cta);"></i> 個人作品集網站：
+              <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" style="color:var(--terracotta-cta); font-weight:700; text-decoration:underline;">https://yungyun85-lab.github.io/0915-/</a>
+            </div>
           </div>
 
           <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
@@ -2281,7 +2367,7 @@
             <button class="nav-btn" onclick="goToSlide(2)" style="padding:10px 20px; font-size:0.9rem;">
               <i class="fa-solid fa-list-check"></i> 查看簡報目錄
             </button>
-            <a href="index.html" class="nav-btn" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
+            <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="nav-btn" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
               <i class="fa-solid fa-house-user"></i> 前往個人作品集首頁
             </a>
           </div>
