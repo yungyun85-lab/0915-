@@ -18,8 +18,8 @@ function initThemeToggle() {
   const htmlEl = document.documentElement;
   const icon = toggleBtn.querySelector('i');
 
-  // Check saved theme preference
-  const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+  // Check saved theme preference - default to 'light'
+  const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
   htmlEl.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme, icon);
 
@@ -39,7 +39,7 @@ function updateThemeIcon(theme, icon) {
     icon.style.color = '#f59e0b';
   } else {
     icon.className = 'fa-solid fa-moon';
-    icon.style.color = '#4f46e5';
+    icon.style.color = '#0284c7';
   }
 }
 
@@ -110,8 +110,20 @@ function closeModal(modalId) {
 function openProjectModal(title, subtitle, desc) {
   document.getElementById('modal-project-title').innerText = title;
   document.getElementById('modal-project-subtitle').innerText = subtitle;
-  document.getElementById('modal-project-desc').innerText = desc;
+  document.getElementById('modal-project-desc').innerHTML = desc;
   openModal('project-modal');
+}
+
+/* Horizontal Timeline Scroll Controls */
+function scrollTimeline(direction) {
+  const track = document.getElementById('timeline-track');
+  if (track) {
+    const scrollAmount = 340;
+    track.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
 }
 
 // Close modal when clicking on overlay
@@ -127,11 +139,11 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
    4. Copy Email & Toast Notification
    -------------------------------------------------------------------------- */
 function copyEmail() {
-  const email = "chen.yongyun@example.com";
+  const email = "yungyun85@gmail.com";
   navigator.clipboard.writeText(email).then(() => {
     showToast("已複製電子郵件地址至剪貼簿！");
   }).catch(() => {
-    showToast("複製失敗，請手動複製 chen.yongyun@example.com");
+    showToast("複製失敗，請手動複製 yungyun85@gmail.com");
   });
 }
 
@@ -185,3 +197,135 @@ function initMobileMenu() {
     });
   }
 }
+
+/* --------------------------------------------------------------------------
+   7. In-Browser Live Edit Mode for Portfolio (線上即時編輯)
+   -------------------------------------------------------------------------- */
+let isPortfolioEditMode = false;
+const PORTFOLIO_STORAGE_KEY = 'portfolio_custom_content_cache';
+
+function togglePortfolioEdit() {
+  isPortfolioEditMode = !isPortfolioEditMode;
+  document.body.classList.toggle('portfolio-edit-active', isPortfolioEditMode);
+  
+  const toolbar = document.getElementById('portfolioEditToolbar');
+  if (toolbar) toolbar.style.display = isPortfolioEditMode ? 'block' : 'none';
+
+  const btn = document.getElementById('btn-live-edit');
+  if (btn) {
+    btn.innerHTML = isPortfolioEditMode 
+      ? '<i class="fa-solid fa-xmark"></i> 結束編輯' 
+      : '<i class="fa-solid fa-pen-to-square"></i> 線上編輯';
+    btn.style.background = isPortfolioEditMode ? '#ef4444' : '#fef3c7';
+    btn.style.color = isPortfolioEditMode ? '#ffffff' : '#b45309';
+    btn.style.borderColor = isPortfolioEditMode ? '#dc2626' : '#f59e0b';
+  }
+
+  // Make all main textual elements editable
+  const editableSelectors = [
+    'h1', 'h2', 'h3', 'h4', 'p', 'li',
+    '.hero-title', '.hero-subtitle', '.section-title', '.section-subtitle',
+    '.project-title', '.project-desc', '.timeline-title', '.timeline-desc',
+    '.about-highlight-box', '.stat-label'
+  ];
+
+  const elements = document.querySelectorAll(editableSelectors.join(','));
+  elements.forEach(el => {
+    if (!el.closest('.nav-actions') && !el.closest('#portfolioEditToolbar') && !el.closest('.btn-primary') && !el.closest('.project-link')) {
+      el.setAttribute('contenteditable', isPortfolioEditMode ? 'true' : 'false');
+    }
+  });
+
+  if (isPortfolioEditMode) {
+    showPortfolioToast('✍️ 作品集即時編輯模式已啟動！點擊畫面上任何文字即可直接修改。');
+  } else {
+    showPortfolioToast('🔒 已退出編輯模式');
+  }
+}
+
+function savePortfolioEdits() {
+  const sections = document.querySelectorAll('section');
+  const cache = {};
+  sections.forEach(sec => {
+    if (sec.id) cache[sec.id] = sec.innerHTML;
+  });
+  localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(cache));
+  showPortfolioToast('💾 修改已成功儲存至本機瀏覽器！重新整理不會消失。');
+}
+
+function resetPortfolioDefault() {
+  if (confirm('確定要清除所有本機修改，恢復初始版本嗎？')) {
+    localStorage.removeItem(PORTFOLIO_STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function downloadPortfolioHtml() {
+  const wasEdit = isPortfolioEditMode;
+  if (wasEdit) togglePortfolioEdit();
+
+  const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'index.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  if (wasEdit) togglePortfolioEdit();
+  showPortfolioToast('📥 最新修改後的 index.html 已下載至您的「下載」資料夾！');
+}
+
+function showPortfolioToast(msg) {
+  let toast = document.getElementById('portfolio-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'portfolio-toast';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      font-size: 0.88rem;
+      font-weight: 700;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(20px);
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+  }, 3500);
+}
+
+// Restore saved portfolio content on startup
+window.addEventListener('DOMContentLoaded', () => {
+  const savedCache = localStorage.getItem(PORTFOLIO_STORAGE_KEY);
+  if (savedCache) {
+    try {
+      const cache = JSON.parse(savedCache);
+      Object.keys(cache).forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.innerHTML = cache[id];
+      });
+    } catch (e) {
+      console.warn('Failed to restore portfolio cache', e);
+    }
+  }
+});

@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua 修正版 UI/UX 線稿規格書 (教師端 Web & 學生端 App 完整線稿架構)</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    /* ==========================================================================
+       Wireframe Theme Variables & Global Styles
+       ========================================================================== */
+    :root {
+      --bg-canvas: #f1f5f9;
+      --bg-surface: #ffffff;
+      --wf-border: #94a3b8;
+      --wf-border-dark: #334155;
+      --wf-border-light: #cbd5e1;
+      --wf-line-sub: #e2e8f0;
+      --wf-fill: #f8fafc;
+      --wf-fill-active: #e2e8f0;
+      --wf-fill-dark: #475569;
+      --wf-accent: #0284c7;
+      --wf-accent-light: #e0f2fe;
+      --wf-redline: #e11d48;
+      --wf-redline-bg: #ffe4e6;
+      --wf-green: #059669;
+      --wf-amber: #d97706;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font-ui: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --shadow-frame: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --shadow-screen: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Redline Annotations Mode */
+    body.show-redlines .redline-badge {
+      display: inline-flex !important;
+    }
+    body.show-redlines .wf-annotate {
+      outline: 2px dashed var(--wf-redline) !important;
+      outline-offset: 2px;
+      position: relative;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* ==========================================================================
+       Top Navigation & Control Bar
+       ========================================================================== */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--wf-border-light);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: var(--text-main);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: 1.15rem;
+      border: 2px solid var(--text-main);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-filters {
+      display: flex;
+      gap: 6px;
+      background: var(--wf-fill);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--wf-border-light);
+    }
+
+    .filter-btn {
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+      background: rgba(0,0,0,0.03);
+    }
+
+    .filter-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      border: 1px solid var(--wf-border-light);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-toggle-btn {
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--bg-surface);
+      border: 1px solid var(--wf-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      transition: all 0.2s;
+    }
+
+    .action-toggle-btn.active {
+      background: var(--wf-redline-bg);
+      border-color: var(--wf-redline);
+      color: var(--wf-redline);
+    }
+
+    .btn-return {
+      padding: 7px 14px;
+      background: var(--text-main);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==========================================================================
+       Hero Banner / Context Overview
+       ========================================================================== */
+    .hero-banner {
+      max-width: 1300px;
+      margin: 28px auto 10px;
+      padding: 0 24px;
+    }
+
+    .banner-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--wf-border-dark);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 28px;
+      box-shadow: 4px 4px 0px rgba(15, 23, 42, 0.1);
+    }
+
+    .banner-left h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .banner-left p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .pill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-tag {
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: var(--wf-fill);
+      border: 1px solid var(--wf-border);
+      padding: 3px 10px;
+      border-radius: 999px;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .banner-right {
+      background: var(--wf-fill);
+      border: 1px dashed var(--wf-border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .banner-right h4 {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .banner-right ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .banner-right li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .banner-right li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: var(--wf-green);
+      font-size: 0.8rem;
+    }
+
+    /* ==========================================================================
+       Wireframe Section & Showcase Container
+       ========================================================================== */
+    .wireframe-container {
+      max-width: 1300px;
+      margin: 32px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .section-title-bar {
+      border-bottom: 3px solid var(--text-main);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .section-title-bar h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title-bar .section-meta {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Single Wireframe Card Wrapper */
+    .wf-card-wrapper {
+      background: var(--bg-surface);
+      border: 2px solid var(--wf-border-dark);
+      border-radius: var(--radius-lg);
+      box-shadow: 6px 6px 0px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .wf-card-header {
+      background: var(--text-main);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wf-id-badge {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.05em;
+    }
+
+    .wf-card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wf-role-tag {
+      font-size: 0.74rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      background: var(--wf-fill-dark);
+      color: #fff;
+    }
+
+    /* Wireframe Viewport Canvas */
+    .wf-viewport-canvas {
+      background: #f8fafc;
+      padding: 32px 24px;
+      border-bottom: 2px dashed var(--wf-border);
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    /* ==========================================================================
+       Wireframe Aesthetics (Blueprint / Wireframe Elements)
+       ========================================================================== */
+    .wf-web-frame {
+      width: 100%;
+      max-width: 1080px;
+      background: #ffffff;
+      border: 2px solid var(--wf-border-dark);
+      border-radius: 12px;
+      box-shadow: var(--shadow-frame);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wf-browser-bar {
+      background: #f1f5f9;
+      border-bottom: 2px solid var(--wf-border-dark);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wf-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .wf-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--wf-border-dark);
+      background: #e2e8f0;
+    }
+
+    .wf-url-bar {
+      flex: 1;
+      background: #ffffff;
+      border: 1.5px solid var(--wf-border);
+      border-radius: 4px;
+      padding: 3px 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Web Inner Layout */
+    .wf-web-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 480px;
+      background: #ffffff;
+    }
+
+    .wf-sidebar {
+      background: #f8fafc;
+      border-right: 2px solid var(--wf-border-light);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wf-side-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      cursor: default;
+    }
+
+    .wf-side-item.active {
+      background: #ffffff;
+      border: 1.5px solid var(--wf-border-dark);
+      color: var(--text-main);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.06);
+    }
+
+    .wf-content-area {
+      padding: 24px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Mobile Frame Aesthetics */
+    .wf-phone-wrapper {
+      width: 380px;
+      background: #ffffff;
+      border: 4px solid var(--wf-border-dark);
+      border-radius: 40px;
+      padding: 14px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.12), 4px 4px 0px rgba(15,23,42,0.15);
+      position: relative;
+    }
+
+    .wf-notch {
+      width: 120px;
+      height: 18px;
+      background: var(--wf-border-dark);
+      border-radius: 0 0 12px 12px;
+      margin: 0 auto 12px;
+    }
+
+    .wf-phone-screen {
+      background: #f8fafc;
+      border: 2px solid var(--wf-border-light);
+      border-radius: 28px;
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 16px 16px 20px;
+      position: relative;
+    }
+
+    /* Common Wireframe Structural Components */
+    .wf-box {
+      background: #ffffff;
+      border: 2px solid var(--wf-border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      position: relative;
+    }
+
+    .wf-box.dark-accent {
+      background: #f1f5f9;
+      border-color: var(--wf-border-dark);
+    }
+
+    .wf-box.dashed {
+      border-style: dashed;
+      background: #f8fafc;
+    }
+
+    .wf-btn-wire {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border: 2px solid var(--wf-border-dark);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+
+    .wf-btn-wire.filled {
+      background: var(--text-main);
+      color: #ffffff;
+    }
+
+    .wf-btn-wire.accent {
+      background: var(--wf-accent-light);
+      border-color: var(--wf-accent);
+      color: var(--wf-accent);
+    }
+
+    .wf-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1.5px solid var(--wf-border-dark);
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .wf-pill.alert {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+    }
+
+    .wf-pill.success {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
+    }
+
+    .wf-input-wire {
+      border: 1.5px solid var(--wf-border);
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      width: 100%;
+      color: var(--text-muted);
+    }
+
+    .wf-progress-wire {
+      height: 12px;
+      background: #e2e8f0;
+      border: 1.5px solid var(--wf-border);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wf-progress-fill {
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--wf-border-dark),
+        var(--wf-border-dark) 8px,
+        #475569 8px,
+        #475569 16px
+      );
+    }
+
+    /* Redline Annotations (Visible when toggled) */
+    .redline-badge {
+      display: none;
+      background: var(--wf-redline);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      z-index: 50;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* ==========================================================================
+       Wireframe Explanation Panel (Below Wireframe)
+       ========================================================================== */
+    .wf-explanation-panel {
+      padding: 24px 28px;
+      background: #ffffff;
+      border-top: 1px solid var(--wf-border-light);
+    }
+
+    .explanation-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1.6fr 1fr;
+      gap: 24px;
+    }
+
+    .exp-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .exp-column h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1.5px solid var(--wf-border-light);
+      padding-bottom: 6px;
+    }
+
+    .exp-feature-list {
+      list-style: none;
+      font-size: 0.85rem;
+    }
+
+    .exp-feature-list li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    .exp-feature-list li::before {
+      content: "▪";
+      position: absolute;
+      left: 0;
+      color: var(--wf-border-dark);
+    }
+
+    .adhd-rationale-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 0.83rem;
+      color: #166534;
+      line-height: 1.5;
+    }
+
+    .adhd-rationale-box strong {
+      color: #14532d;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .data-flow-box {
+      background: #f8fafc;
+      border: 1.5px solid var(--wf-border-light);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .data-flow-box strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Comparison Dual Screen Layout */
+    .dual-screen-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 1024px) {
+      .banner-card {
+        grid-template-columns: 1fr;
+      }
+      .wf-web-body {
+        grid-template-columns: 1fr;
+      }
+      .wf-sidebar {
+        display: none;
+      }
+      .explanation-grid {
+        grid-template-columns: 1fr;
+      }
+      .dual-screen-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Header -->
+  <header class="top-header">
+    <div class="brand-section">
+      <div class="brand-logo">FL</div>
+      <div>
+        <div class="brand-title">FocusLingua 修正版・雙端線框圖規格書</div>
+        <div class="brand-subtitle">
+          <span><i class="fa-solid fa-graduation-cap"></i> 特教注意力專用英語教材系統</span>
+          <span>•</span>
+          <span style="color: var(--wf-green); font-weight:700;"><i class="fa-solid fa-circle-check"></i> 教師 Web & 學生 App 完整線稿</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Filters -->
+    <div class="nav-filters">
+      <button class="filter-btn active" onclick="filterWireframes('all')"><i class="fa-solid fa-layer-group"></i> 全部線稿 (10)</button>
+      <button class="filter-btn" onclick="filterWireframes('teacher')"><i class="fa-solid fa-chalkboard-user"></i> 教師端 Web (5)</button>
+      <button class="filter-btn" onclick="filterWireframes('student')"><i class="fa-solid fa-mobile-screen"></i> 學生端 App (5)</button>
+      <button class="filter-btn" onclick="filterWireframes('dual')"><i class="fa-solid fa-arrows-split-up-and-left"></i> 雙端對照架構</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="action-toggle-btn" id="redline-toggle" onclick="toggleRedlines()">
+        <i class="fa-solid fa-pen-ruler"></i> 特教人因標註 (Redlines)
+      </button>
+      <a href="focuslingua_live_app.html" class="btn-return" style="background:#0284c7; color:#fff; border-color:#0284c7;">
+        <i class="fa-solid fa-window-restore"></i> 雙端實體系統 (Live App)
+      </a>
+      <a href="pitch_presentation.html" class="btn-return">
+        <i class="fa-solid fa-arrow-left"></i> 成果簡報艙
+      </a>
+      <a href="index.html" class="btn-return">
+        <i class="fa-solid fa-house"></i> 首頁
+      </a>
+    </div>
+  </header>
+
+  <!-- Context & Product Architecture Overview -->
+  <div class="hero-banner">
+    <div class="banner-card">
+      <div class="banner-left">
+        <h1>FocusLingua 修正版：線稿設計核心規範</h1>
+        <p>
+          本套線稿專為<strong>注意力不集中特定族群（注意力不足過動症 ADHD / ADD）與低專注耐受度學習者</strong>量身打造。遵循「<strong>教師 Web 智能切片與二次審核</strong>」與「<strong>學生 App 90 秒微感官沉浸沙盒</strong>」之雙端分離架構，實現由特教機構/學校買單、教師主導教學、學生無痛專注的閉環。
+        </p>
+        <div class="pill-tags">
+          <span class="pill-tag"><i class="fa-solid fa-clock"></i> 90 秒認知負載上限</span>
+          <span class="pill-tag"><i class="fa-solid fa-font"></i> 抗分心高清晰字型與音節切片</span>
+          <span class="pill-tag"><i class="fa-solid fa-headphones"></i> 40Hz 專注波雙耳節拍</span>
+          <span class="pill-tag"><i class="fa-solid fa-file-arrow-up"></i> 多元格式課綱切片 (PDF/PPT/MP3)</span>
+          <span class="pill-tag"><i class="fa-solid fa-pen-to-square"></i> 教師二次題型審核工作台</span>
+          <span class="pill-tag"><i class="fa-solid fa-chart-pie"></i> 專注崩潰拐點與 IEP 報告導出</span>
+        </div>
+      </div>
+      <div class="banner-right">
+        <h4><i class="fa-solid fa-sliders"></i> 線框圖人因設計四原則</h4>
+        <ul>
+          <li><strong>單向視線引導 (Single Focal Line)</strong>：消除邊緣閃爍元件，視線強制收束於中央。</li>
+          <li><strong>動態鷹架提示 (Scaffolding on Demand)</strong>：偵測延遲即時給予字根提示，防止挫折中斷。</li>
+          <li><strong>非侵入式倒數 (Non-stressful Timer)</strong>：漸進圓環替代跳動數字，消解 ADHD 時間焦慮。</li>
+          <li><strong>多巴胺即時回饋 (Instant Haptic Gratification)</strong>：答對即刻觸覺震動與微粒子，活化大腦獎勵迴路。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Wireframe Showcase Section -->
+  <main class="wireframe-container">
+
+    <!-- ========================================================================
+         PART 1: TEACHER WEB WIREFRAMES (教師端 Web 系統 - 5 大介面)
+         ======================================================================== -->
+    <div class="wf-category-group" data-category="teacher">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-chalkboard-user"></i> 第一部：教師端 Web 系統線稿規格 (Teacher Web Studio)</h2>
+        <div class="section-meta">適用環境：Chrome / Safari 桌面端 1080p+ ｜ 目標買單者：學校、特教機構、英語任課教師</div>
+      </div>
+
+      <!-- TW-01: 教師儀表板與注意力監控中心 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">TW-01</span>
+            <span>教師儀表板與班級專注力即時監控中心</span>
+          </div>
+          <span class="wf-role-tag">教師專屬 Web</span>
+        </div>
+
+        <!-- Wireframe Canvas -->
+        <div class="wf-viewport-canvas">
+          <div class="wf-web-frame">
+            <!-- Browser Top Bar -->
+            <div class="wf-browser-bar">
+              <div class="wf-dots"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span></div>
+              <div class="wf-url-bar"><i class="fa-solid fa-lock"></i> https://edu.focuslingua.com/teacher/dashboard</div>
+              <div class="wf-pill success"><i class="fa-solid fa-circle"></i> 系統連線正常</div>
+            </div>
+
+            <!-- Web Body -->
+            <div class="wf-web-body">
+              <!-- Sidebar -->
+              <aside class="wf-sidebar">
+                <div style="font-weight:800; font-size:0.9rem; padding: 6px 12px; margin-bottom:8px; border-bottom:1.5px solid var(--wf-border-light);">
+                  <i class="fa-solid fa-shapes"></i> FocusLingua Edu
+                </div>
+                <div class="wf-side-item active"><i class="fa-solid fa-chart-line"></i> 班級專注儀表板</div>
+                <div class="wf-side-item"><i class="fa-solid fa-cloud-arrow-up"></i> 教材上傳與切片</div>
+                <div class="wf-side-item"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 題型審核台</div>
+                <div class="wf-side-item"><i class="fa-solid fa-user-graduate"></i> 學生 IEP 分析報告</div>
+                <div class="wf-side-item"><i class="fa-solid fa-sliders"></i> 特教感官參數庫</div>
+                <div style="margin-top:auto; padding:10px 12px; border-top:1.5px solid var(--wf-border-light); font-size:0.75rem; color:var(--text-muted);">
+                  林老師 (特教雙語班)<br><span style="color:var(--wf-accent);">中原附小 資源班</span>
+                </div>
+              </aside>
+
+              <!-- Main Content Area -->
+              <div class="wf-content-area">
+                <!-- Top Row Metric Badges -->
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;">
+                  <div class="wf-box dark-accent">
+                    <span class="redline-badge">R1.1</span>
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">班級平均專注指數</div>
+                    <div style="font-size:1.5rem; font-weight:900; margin:4px 0;">84.2% <span style="font-size:0.75rem; color:var(--wf-green);">▲ +5.8%</span></div>
+                    <div class="wf-progress-wire"><div class="wf-progress-fill" style="width:84%;"></div></div>
+                  </div>
+                  <div class="wf-box">
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">今日微單元完成數</div>
+                    <div style="font-size:1.5rem; font-weight:900; margin:4px 0;">42 次</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">人均完成 3.5 個 90s 單元</div>
+                  </div>
+                  <div class="wf-box" style="border-color:#f87171;">
+                    <span class="redline-badge">R1.2</span>
+                    <div style="font-size:0.75rem; color:#dc2626; font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> 注意力中斷警報</div>
+                    <div style="font-size:1.5rem; font-weight:900; color:#dc2626; margin:4px 0;">2 位學生</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">第 55s 點擊延遲明顯攀升</div>
+                  </div>
+                  <div class="wf-box">
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">108 課綱吻合度</div>
+                    <div style="font-size:1.5rem; font-weight:900; color:var(--wf-green); margin:4px 0;">98.5%</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">符合特教英語階段指標</div>
+                  </div>
+                </div>
+
+                <!-- Middle: Chart & Student Attention Status -->
+                <div style="display:grid; grid-template-columns: 1.8fr 1.2fr; gap:16px;">
+                  <!-- Chart Box -->
+                  <div class="wf-box">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                      <strong style="font-size:0.9rem;"><i class="fa-solid fa-wave-square"></i> 90秒專注力維持曲線 (班級即時對比)</strong>
+                      <span class="wf-pill">動態取樣：200ms/次</span>
+                    </div>
+                    <!-- Wireframe Vector Wave Chart -->
+                    <div style="height:140px; border:1.5px dashed var(--wf-border); background:#fafafa; border-radius:4px; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <svg width="90%" height="80%" viewBox="0 0 400 100" style="overflow:visible;">
+                        <line x1="0" y1="90" x2="400" y2="90" stroke="#cbd5e1" stroke-width="1.5" />
+                        <line x1="0" y1="10" x2="400" y2="10" stroke="#f1f5f9" stroke-width="1" />
+                        <!-- Normal Focus Curve -->
+                        <path d="M 0,40 Q 100,20 200,30 T 400,60" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4" />
+                        <!-- High Attention Peak with Scaffolding -->
+                        <path d="M 0,35 Q 120,15 220,25 T 320,30 T 400,45" fill="none" stroke="#0284c7" stroke-width="2.5" />
+                        <!-- Drop-off Warning Point -->
+                        <circle cx="260" cy="28" r="5" fill="#ef4444" />
+                        <text x="268" y="24" font-size="10" fill="#ef4444" font-family="monospace">55s 拐點提示觸發</text>
+                      </svg>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:6px;">
+                      <span>0s (任務開始)</span>
+                      <span>30s (第一道刺激)</span>
+                      <span style="color:#ef4444; font-weight:700;">60s (注意力極限考驗)</span>
+                      <span>90s (微單元完成)</span>
+                    </div>
+                  </div>
+
+                  <!-- Right Alert List -->
+                  <div class="wf-box">
+                    <strong style="font-size:0.9rem; display:block; margin-bottom:10px;">
+                      <i class="fa-solid fa-bell"></i> 個別化關懷推薦清單
+                    </strong>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                      <div style="background:#fff1f2; border:1px solid #fecdd3; padding:8px 10px; border-radius:4px; font-size:0.78rem;">
+                        <div style="display:flex; justify-content:space-between; font-weight:700; color:#9f1239;">
+                          <span>王同學 (ADHD 輕度)</span>
+                          <span>延遲 3.2s</span>
+                        </div>
+                        <div style="color:#881337; margin-top:2px;">單元 3 第 2 題停滯，已自適應發送首字母提示。</div>
+                      </div>
+                      <div style="background:#f8fafc; border:1px solid var(--wf-border-light); padding:8px 10px; border-radius:4px; font-size:0.78rem;">
+                        <div style="display:flex; justify-content:space-between; font-weight:700;">
+                          <span>李同學 (ADHD 分心型)</span>
+                          <span style="color:var(--wf-green);">穩定進步</span>
+                        </div>
+                        <div style="color:var(--text-muted); margin-top:2px;">微感官聚焦模式下專注持續度提升 40%。</div>
+                      </div>
+                      <button class="wf-btn-wire" style="width:100%; font-size:0.75rem; padding:6px; margin-top:4px;">
+                        <i class="fa-solid fa-sliders"></i> 一鍵調整全班鷹架強度
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Quick Action Row -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f1f5f9; padding:12px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--wf-border);">
+                  <div style="font-size:0.84rem; font-weight:700;">
+                    <i class="fa-solid fa-folder-plus"></i> 備課準備：將明日英語教案轉為 90 秒注意力微教材？
+                  </div>
+                  <button class="wf-btn-wire filled"><i class="fa-solid fa-plus"></i> 新增教案上傳與切片</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wireframe Explanation -->
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>班級注意力即時儀表板</strong>：統整特教班或普通班 ADHD 學生的專注時長與完成度。</li>
+                <li><strong>注意力中斷警報卡 (R1.2)</strong>：以紅色警示提示第 55 秒停滯的學生，避免挫折感堆積。</li>
+                <li><strong>90s 專注曲線圖譜</strong>：以秒為單位繪製注意力流失曲線，視覺化呈現鷹架提示的效果。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>為什麼老師需要這張儀表板？</strong>
+                傳統成績單只能反映「對與錯」，但 ADHD 與特教學生最大的痛點在於<strong>「專注耐力崩潰」</strong>。本介面讓老師一目了然看見學生是在第 30 秒、第 55 秒還是第 80 秒失去注意力，從而能精準調整教案長度，不再盲目指責學生不專心。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>Student App ➔ Teacher Web</strong>
+                學生在 App 端每一毫秒的觸摸反應延遲 (Touch Latency) 與題目停留時間，經由輕量 WebSocket 即時串流至本儀表板，每 2 秒更新一次專注力狀態。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- TW-02: 多元格式教材上傳與課綱切片艙 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">TW-02</span>
+            <span>多元格式教材上傳與 108 課綱切片艙</span>
+          </div>
+          <span class="wf-role-tag">教材智能解析端</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-web-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-dots"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span></div>
+              <div class="wf-url-bar"><i class="fa-solid fa-lock"></i> https://edu.focuslingua.com/teacher/curriculum-slice</div>
+              <div class="wf-pill"><i class="fa-solid fa-bolt"></i> AI 解析引擎 Ready</div>
+            </div>
+
+            <div class="wf-web-body">
+              <aside class="wf-sidebar">
+                <div style="font-weight:800; font-size:0.9rem; padding: 6px 12px; margin-bottom:8px; border-bottom:1.5px solid var(--wf-border-light);">
+                  <i class="fa-solid fa-shapes"></i> FocusLingua Edu
+                </div>
+                <div class="wf-side-item"><i class="fa-solid fa-chart-line"></i> 班級專注儀表板</div>
+                <div class="wf-side-item active"><i class="fa-solid fa-cloud-arrow-up"></i> 教材上傳與切片</div>
+                <div class="wf-side-item"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 題型審核台</div>
+                <div class="wf-side-item"><i class="fa-solid fa-user-graduate"></i> 學生 IEP 分析報告</div>
+                <div class="wf-side-item"><i class="fa-solid fa-sliders"></i> 特教感官參數庫</div>
+              </aside>
+
+              <div class="wf-content-area">
+                <!-- Step Breadcrumb -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid var(--wf-border-light); padding-bottom:12px;">
+                  <div>
+                    <h3 style="font-size:1.1rem; font-weight:800;">108 課綱多元教材切片工作台</h3>
+                    <p style="font-size:0.78rem; color:var(--text-muted);">支援學校現行課本 PDF、PPT 簡報、英語有聲書 MP3 與影片字幕快速結構化切片</p>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <span class="wf-pill success">步驟 1: 檔案解析</span>
+                    <span class="wf-pill">步驟 2: 課綱錨定</span>
+                    <span class="wf-pill" style="opacity:0.5;">步驟 3: 題型生成</span>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1.4fr 1.6fr; gap:20px;">
+                  <!-- Left: Multimodal Dropzone -->
+                  <div>
+                    <label style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:6px;">
+                      上傳多元英語教材檔案 (支援多選或混合格式)
+                    </label>
+                    <div class="wf-box dashed" style="min-height:220px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; position:relative;">
+                      <span class="redline-badge">R2.1</span>
+                      <i class="fa-solid fa-file-arrow-up" style="font-size:2.4rem; color:var(--wf-border-dark); margin-bottom:10px;"></i>
+                      <strong style="font-size:0.92rem;">拖曳檔案至此區域，或點擊瀏覽檔案</strong>
+                      <p style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                        支援格式：PDF 課本、Word/DOCX、PPTX 簡報、MP3 聽力音檔、SRT 字幕
+                      </p>
+                      <div style="display:flex; gap:6px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
+                        <span class="wf-pill"><i class="fa-regular fa-file-pdf"></i> PDF 課綱</span>
+                        <span class="wf-pill"><i class="fa-regular fa-file-powerpoint"></i> 投影片</span>
+                        <span class="wf-pill"><i class="fa-regular fa-file-audio"></i> 聽力 MP3</span>
+                        <span class="wf-pill"><i class="fa-solid fa-link"></i> YouTube 連結</span>
+                      </div>
+                    </div>
+
+                    <!-- Uploaded File Item Preview -->
+                    <div style="margin-top:12px; background:#f8fafc; border:1px solid var(--wf-border); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;">
+                      <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem;">
+                        <i class="fa-solid fa-file-pdf" style="color:#ef4444; font-size:1.1rem;"></i>
+                        <div>
+                          <div style="font-weight:700;">G4_English_Unit3_Food_Festival.pdf</div>
+                          <div style="font-size:0.7rem; color:var(--text-muted);">4.2 MB • 已辨識出 12 個核心單字、4 組目標句型</div>
+                        </div>
+                      </div>
+                      <span class="wf-pill success"><i class="fa-solid fa-check"></i> 解析完成</span>
+                    </div>
+                  </div>
+
+                  <!-- Right: Curriculum Alignment Settings -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R2.2</span>
+                    <strong style="font-size:0.92rem; display:block; margin-bottom:12px;">
+                      <i class="fa-solid fa-sliders"></i> 108 課綱年段與特教認知階梯配對
+                    </strong>
+
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <div>
+                        <label style="font-size:0.78rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                          適用學習階段與對象：
+                        </label>
+                        <select class="wf-input-wire">
+                          <option>國小第二學習階段 (三~四年級) • 特教資源班特製階梯</option>
+                          <option>國小第三學習階段 (五~六年級) • ADHD 輕量聚焦組</option>
+                          <option>國中特教融合班 • 零挫折微單元組</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label style="font-size:0.78rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                          108 課綱核心素養錨定代碼：
+                        </label>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                          <span class="wf-pill success">✔ 英-E-A1 身心素質與自我精進</span>
+                          <span class="wf-pill success">✔ 英-E-B1 符號運用與科技溝通</span>
+                          <span class="wf-pill">＋ 新增素養標籤</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label style="font-size:0.78rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                          微單元切片長度限制 (ADHD 注意力天花板)：
+                        </label>
+                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+                          <div class="wf-box dark-accent" style="padding:8px; text-align:center; font-size:0.78rem; cursor:pointer;">
+                            <strong>60 秒微快切</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">重度 ADHD 適用</span>
+                          </div>
+                          <div class="wf-box" style="padding:8px; text-align:center; font-size:0.78rem; border-color:var(--text-main); font-weight:700;">
+                            <strong>90 秒黃金單元</strong><br><span style="font-size:0.7rem; color:var(--wf-green);">系統推薦最佳值</span>
+                          </div>
+                          <div class="wf-box" style="padding:8px; text-align:center; font-size:0.78rem; opacity:0.7;">
+                            <strong>120 秒進階單元</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">綜合複習用</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Alignment Accuracy Report -->
+                      <div style="background:#f1f5f9; padding:10px 12px; border-radius:4px; border:1px solid var(--wf-border-light); font-size:0.78rem;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                          <strong>課綱契合度預測：<span style="color:var(--wf-green);">99.2%</span></strong>
+                          <span style="color:var(--text-muted);">無超綱詞彙 • 無複雜長難句</span>
+                        </div>
+                        <div class="wf-progress-wire"><div class="wf-progress-fill" style="width:99%;"></div></div>
+                      </div>
+
+                      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+                        <button class="wf-btn-wire">重新分析</button>
+                        <button class="wf-btn-wire filled"><i class="fa-solid fa-arrow-right"></i> 確認切片並生成題型</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>多格式拖曳解析區 (R2.1)</strong>：整合 PDF、PPT、MP3、SRT 字幕等多種教師慣用教材檔案。</li>
+                <li><strong>108 課綱代碼智能錨定 (R2.2)</strong>：自動過濾超綱生字，確保生成的句子符合教育部課綱標準。</li>
+                <li><strong>微單元切片時長限制器</strong>：可自由在 60s / 90s / 120s 之間調整，防止大單元引發專注枯竭。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>課綱切片的核心價值：</strong>
+                傳統教材往往一課包含 20 個單字與長篇課文，ADHD 學生翻開課本便會產生<strong>視覺資訊過載 (Visual Overload)</strong>。透過 AI 課綱切片，將長課文精煉為每次只有 <strong>3 個核心單字 + 1 個情境動詞</strong> 的極致微單元。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>Teacher Web ➔ AI NLP 引擎</strong>
+                PDF/音檔上傳後，後端透過 LangChain 切割文本塊，結合教育部 1200 基礎單字庫比對字頻，產生標準化題型 JSON 資料包送入二次審核台。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- TW-03: AI 題型生成與教師二次審核工作台 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">TW-03</span>
+            <span>AI 題型生成與教師二次審核工作台 (Human-in-the-Loop Studio)</span>
+          </div>
+          <span class="wf-role-tag">二次修題與鷹架配置</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-web-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-dots"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span></div>
+              <div class="wf-url-bar"><i class="fa-solid fa-lock"></i> https://edu.focuslingua.com/teacher/review-questions</div>
+              <div class="wf-pill success"><i class="fa-solid fa-shield-halved"></i> 108課綱對齊認證</div>
+            </div>
+
+            <div class="wf-web-body">
+              <aside class="wf-sidebar">
+                <div style="font-weight:800; font-size:0.9rem; padding: 6px 12px; margin-bottom:8px; border-bottom:1.5px solid var(--wf-border-light);">
+                  <i class="fa-solid fa-shapes"></i> FocusLingua Edu
+                </div>
+                <div class="wf-side-item"><i class="fa-solid fa-chart-line"></i> 班級專注儀表板</div>
+                <div class="wf-side-item"><i class="fa-solid fa-cloud-arrow-up"></i> 教材上傳與切片</div>
+                <div class="wf-side-item active"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 題型審核台</div>
+                <div class="wf-side-item"><i class="fa-solid fa-user-graduate"></i> 學生 IEP 分析報告</div>
+                <div class="wf-side-item"><i class="fa-solid fa-sliders"></i> 特教感官參數庫</div>
+              </aside>
+
+              <div class="wf-content-area">
+                <!-- Action Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <h3 style="font-size:1.05rem; font-weight:800;">
+                      單元 3：Food Festival (AI 生成題型審核與修訂)
+                    </h3>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">共生成 3 道微題型（90 秒單元總配時：每題 25s + 慶祝 15s）</span>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button class="wf-btn-wire"><i class="fa-solid fa-rotate-right"></i> 重新生成單題</button>
+                    <button class="wf-btn-wire filled"><i class="fa-solid fa-paper-plane"></i> 審核通過並派發學生 App</button>
+                  </div>
+                </div>
+
+                <!-- Secondary Modification Workspace -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                  <!-- Question Card 1: 視覺連線題 (Editable) -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R3.1</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                      <span class="wf-pill">題型 1 • 觸覺拖曳配對 (TPR)</span>
+                      <span style="font-size:0.75rem; color:var(--wf-green); font-weight:700;"><i class="fa-solid fa-check"></i> 課綱吻合</span>
+                    </div>
+
+                    <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">
+                      題幹文字 (老師可點擊直接修改)：
+                    </label>
+                    <input type="text" class="wf-input-wire" value="Drag the correct word to make pizza: [dough] [cheese]">
+
+                    <!-- Scaffolding Hint Configuration -->
+                    <div style="margin-top:10px; background:#f8fafc; border:1px solid var(--wf-border-light); padding:8px 10px; border-radius:4px;">
+                      <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; margin-bottom:4px;">
+                        <span><i class="fa-solid fa-hand-holding-medical"></i> ADHD 專屬鷹架提示開關：</span>
+                        <span class="wf-pill success">已啟用 (3秒未動作自動跳出)</span>
+                      </div>
+                      <input type="text" class="wf-input-wire" style="font-size:0.75rem;" value="提示文字：想想看黃色會融化的是什麼？(首字母 c-h-e...)">
+                    </div>
+
+                    <!-- Options Editor -->
+                    <div style="margin-top:10px;">
+                      <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">混淆選項設置 (干擾項不得超過2個以防焦慮)：</span>
+                      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
+                        <input type="text" class="wf-input-wire" value="A. Cheese (正解)">
+                        <input type="text" class="wf-input-wire" value="B. Chair (干擾項)">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Question Card 2: 聽覺回音模仿題 (Audio-Echo Challenge) -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R3.2</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                      <span class="wf-pill">題型 2 • 聽覺回音模仿題 (Audio Echo)</span>
+                      <span class="wf-pill" style="border-color:var(--wf-accent); color:var(--wf-accent);">語音 AI 辨識</span>
+                    </div>
+
+                    <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">
+                      目標語音句型 (可替換發音音檔)：
+                    </label>
+                    <input type="text" class="wf-input-wire" value="&quot;I would like some fresh lemonade!&quot;">
+
+                    <div style="margin-top:10px; display:flex; align-items:center; justify-content:space-between; font-size:0.75rem;">
+                      <span>播放語速調節：</span>
+                      <div style="display:flex; gap:4px;">
+                        <span class="wf-pill" style="border-color:var(--wf-border-dark);">0.75x 慢速特教模式</span>
+                        <span class="wf-pill">1.0x 標準</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-top:10px; background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 10px; border-radius:4px; font-size:0.75rem;">
+                      <div style="font-weight:700; color:#166534;">特教寬容度容錯設定 (Tolerance Buffer)：</div>
+                      <div style="color:#15803d; margin-top:2px;">容許發音輕微吞音或連音模糊（符合 ADHD 口部肌肉放鬆考量）</div>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:14px;">
+                      <button class="wf-btn-wire" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-volume-high"></i> 試聽發音</button>
+                      <button class="wf-btn-wire filled" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-check"></i> 確認本題無誤</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>題目二次微調編輯器 (R3.1)</strong>：老師可以直接修改 AI 生成之題幹、單字與混淆選項。</li>
+                <li><strong>特教鷹架提示控制器</strong>：自由設定學生停頓幾秒後，系統要自動浮現何種圖文提示。</li>
+                <li><strong>語速與容錯度微調模組 (R3.2)</strong>：專為口語障礙與發音焦慮學生提供 0.75x 慢速與寬容辨識。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>為什麼必須有「教師二次審核」？</strong>
+                純 AI 生成的題目往往語意過於刁鑽，或選項之間區別太細微，這會引發 ADHD 學生的<strong>「決策癱瘓 (Decision Paralysis)」</strong>。透過老師二次審核，將選項強制限制在 2 個以內（二選一），大幅降低認知負擔。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>Teacher Web ➔ Student App 派發</strong>
+                老師點擊「審核通過並派發」後，題目將同步轉換為學生 App 適用的無障礙格式（含抗分心音節切片、音訊檔與鷹架計時器代碼）。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- TW-04: 學生專注力與學習成效多維分析 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">TW-04</span>
+            <span>學生專注力成效分析與 IEP 特教報告導出</span>
+          </div>
+          <span class="wf-role-tag">深度數據評估</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-web-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-dots"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span></div>
+              <div class="wf-url-bar"><i class="fa-solid fa-lock"></i> https://edu.focuslingua.com/teacher/iep-analytics</div>
+              <div class="wf-pill success"><i class="fa-solid fa-file-pdf"></i> IEP 報告導出可用</div>
+            </div>
+
+            <div class="wf-web-body">
+              <aside class="wf-sidebar">
+                <div style="font-weight:800; font-size:0.9rem; padding: 6px 12px; margin-bottom:8px; border-bottom:1.5px solid var(--wf-border-light);">
+                  <i class="fa-solid fa-shapes"></i> FocusLingua Edu
+                </div>
+                <div class="wf-side-item"><i class="fa-solid fa-chart-line"></i> 班級專注儀表板</div>
+                <div class="wf-side-item"><i class="fa-solid fa-cloud-arrow-up"></i> 教材上傳與切片</div>
+                <div class="wf-side-item"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 題型審核台</div>
+                <div class="wf-side-item active"><i class="fa-solid fa-user-graduate"></i> 學生 IEP 分析報告</div>
+                <div class="wf-side-item"><i class="fa-solid fa-sliders"></i> 特教感官參數庫</div>
+              </aside>
+
+              <div class="wf-content-area">
+                <!-- Filter Bar -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--wf-border-light);">
+                  <div style="display:flex; gap:12px; align-items:center;">
+                    <span style="font-size:0.82rem; font-weight:700;">個別受測學生：</span>
+                    <select class="wf-input-wire" style="width:160px; padding:4px 8px;">
+                      <option>王小明 (四年一班 / ADHD 專注缺失)</option>
+                      <option>李小華 (四年二班 / ADHD 分心型)</option>
+                    </select>
+                    <span style="font-size:0.82rem; font-weight:700; margin-left:8px;">觀察週期：</span>
+                    <span class="wf-pill" style="border-color:var(--text-main);">最近 4 週微單元數據</span>
+                  </div>
+                  <button class="wf-btn-wire filled"><i class="fa-solid fa-file-export"></i> 一鍵導出特教 IEP 評估書 (PDF)</button>
+                </div>
+
+                <!-- 3 Key Metric Blocks -->
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:14px;">
+                  <div class="wf-box">
+                    <span class="redline-badge">R4.1</span>
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">單元平均專注維持時長</div>
+                    <div style="font-size:1.4rem; font-weight:900; margin:4px 0;">76 秒 <span style="font-size:0.75rem; color:var(--wf-green);">▲ 較基準期 +24s</span></div>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">90秒單元專注完整度達到 84.4%</div>
+                  </div>
+                  <div class="wf-box">
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">平均觸控猶豫延遲 (Latency)</div>
+                    <div style="font-size:1.4rem; font-weight:900; margin:4px 0;">1.42 秒 <span style="font-size:0.75rem; color:var(--wf-green);">▼ 縮短 0.8s</span></div>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">顯示選擇焦慮顯著下降</div>
+                  </div>
+                  <div class="wf-box" style="border-color:var(--wf-amber);">
+                    <span class="redline-badge">R4.2</span>
+                    <div style="font-size:0.75rem; color:var(--wf-amber); font-weight:700;">注意力臨界崩潰點 (Drop-off Point)</div>
+                    <div style="font-size:1.4rem; font-weight:900; color:var(--wf-amber); margin:4px 0;">第 68 秒</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">建議設定 65 秒時自動播放雙耳節拍提示</div>
+                  </div>
+                </div>
+
+                <!-- Sensory Preference Radar & IEP Advice -->
+                <div style="display:grid; grid-template-columns: 1.2fr 1.8fr; gap:16px;">
+                  <div class="wf-box">
+                    <strong style="font-size:0.86rem; display:block; margin-bottom:10px;">
+                      <i class="fa-solid fa-compass"></i> 特教感官輸入偏好分析
+                    </strong>
+                    <div style="height:130px; border:1px dashed var(--wf-border); display:flex; align-items:center; justify-content:center; background:#fafafa; border-radius:4px;">
+                      <div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">
+                        <i class="fa-solid fa-chart-pie" style="font-size:2rem; color:var(--wf-border-dark); margin-bottom:4px;"></i><br>
+                        <strong>觸覺互動偏好：68%</strong> | 聽覺輸入：22% | 純文字：10%
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="wf-box" style="background:#f0fdf4; border-color:#86efac;">
+                    <strong style="font-size:0.86rem; color:#166534; display:block; margin-bottom:6px;">
+                      <i class="fa-solid fa-clipboard-check"></i> AI 整合特教專家之 IEP 輔導具體建議
+                    </strong>
+                    <p style="font-size:0.78rem; color:#14532d; line-height:1.5;">
+                      1. <strong>縮短連續文本刺激</strong>：王同學在視覺連線題表現優異（正確率 92%），但在超過 4 個單字的題型停留過久，建議將字句長度控制在 3 詞以內。<br>
+                      2. <strong>建議維持 40Hz 專注背景音</strong>：數據顯示開啟粉紅噪音時，王同學的專注維持秒數提升了 31%。<br>
+                      3. <strong>親師合作備註</strong>：本報告可直接下載為 PDF 列印，作為期末特教個別化教育計畫評估會議之實證附件。
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>注意力臨界崩潰點計算 (R4.2)</strong>：透過千筆點擊流精準抓出學生在第幾秒注意力開始渙散。</li>
+                <li><strong>特教感官輸入偏好 (R4.1)</strong>：診斷學生是「視覺型」、「聽覺型」還是「觸覺操作型」學習者。</li>
+                <li><strong>IEP 報告一鍵導出按鈕</strong>：將學習數據轉為符合教育局特教格式之 PDF 正式評估書。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>為什麼這能說服學校與特教機構買單？</strong>
+                學校特教老師每學期需耗費數十小時撰寫學生的 IEP（個別化教育計畫）報告。FocusLingua 提供了<strong>客觀且無法偽造的數位行為日誌</strong>，直接幫老師產出專業數據圖表，成為機構最具說服力的採購理由。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>後端 ClickHouse 聚合引擎</strong>
+                學生在 App 端產生的百毫秒級行為序列被聚合為專注指標，結合內建特教專家規則庫，即時生成可印製之 PDF 報表。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- TW-05: IEP 個別化教育設定與無障礙參數庫 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">TW-05</span>
+            <span>IEP 個別化教育設定與無障礙參數庫</span>
+          </div>
+          <span class="wf-role-tag">特教無障礙參數調度</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-web-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-dots"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span></div>
+              <div class="wf-url-bar"><i class="fa-solid fa-lock"></i> https://edu.focuslingua.com/teacher/accessibility-studio</div>
+              <div class="wf-pill success"><i class="fa-solid fa-universal-access"></i> 全局無障礙套用</div>
+            </div>
+
+            <div class="wf-web-body">
+              <aside class="wf-sidebar">
+                <div style="font-weight:800; font-size:0.9rem; padding: 6px 12px; margin-bottom:8px; border-bottom:1.5px solid var(--wf-border-light);">
+                  <i class="fa-solid fa-shapes"></i> FocusLingua Edu
+                </div>
+                <div class="wf-side-item"><i class="fa-solid fa-chart-line"></i> 班級專注儀表板</div>
+                <div class="wf-side-item"><i class="fa-solid fa-cloud-arrow-up"></i> 教材上傳與切片</div>
+                <div class="wf-side-item"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 題型審核台</div>
+                <div class="wf-side-item"><i class="fa-solid fa-user-graduate"></i> 學生 IEP 分析報告</div>
+                <div class="wf-side-item active"><i class="fa-solid fa-sliders"></i> 特教感官參數庫</div>
+              </aside>
+
+              <div class="wf-content-area">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <h3 style="font-size:1.05rem; font-weight:800;">個別化無障礙參數配置庫 (針對個別學生特徵)</h3>
+                    <p style="font-size:0.78rem; color:var(--text-muted);">配置將即時雲端同步至該學生的 App 端，覆蓋系統預設值</p>
+                  </div>
+                  <button class="wf-btn-wire filled"><i class="fa-solid fa-floppy-disk"></i> 儲存並同步至學生 App</button>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
+                  <!-- Setting Box 1: 視覺抗分心配置 -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R5.1</span>
+                    <strong style="font-size:0.86rem; display:block; margin-bottom:10px;"><i class="fa-solid fa-eye"></i> 視覺抗分心優化</strong>
+                    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.8rem;">
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>抗分心高清晰字型 (超大字級)</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>單字彩色音節切片（降視覺負擔）</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>行距字距加大 1.5 倍</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>停用倒數數字跳動（改用微沙漏）</span>
+                        <input type="checkbox" checked>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Setting Box 2: 聽覺降噪頻率 -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R5.2</span>
+                    <strong style="font-size:0.86rem; display:block; margin-bottom:10px;"><i class="fa-solid fa-headphones"></i> 聽覺專注波預設</strong>
+                    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.8rem;">
+                      <div>預設開啟專注背景音：</div>
+                      <select class="wf-input-wire" style="padding:4px 8px; font-size:0.78rem;">
+                        <option>40Hz 專注雙耳節拍 (Binaural Beat)</option>
+                        <option>粉紅噪音 (Pink Noise) 溫和減壓</option>
+                        <option>微風細雨自然環境白噪音</option>
+                        <option>關閉背景音 (完全靜音)</option>
+                      </select>
+                      <div style="margin-top:6px;">
+                        <span>背景音預設音量平衡：</span>
+                        <div class="wf-progress-wire" style="margin-top:4px;"><div class="wf-progress-fill" style="width:40%;"></div></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Setting Box 3: 觸覺反饋與防挫折保護 -->
+                  <div class="wf-box">
+                    <span class="redline-badge">R5.3</span>
+                    <strong style="font-size:0.86rem; display:block; margin-bottom:10px;"><i class="fa-solid fa-heart-pulse"></i> 防挫折與多巴胺回饋</strong>
+                    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.8rem;">
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>連錯 2 題自動切換降難度題型</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>答對時物理震動（行動端）</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>禁止顯示任何錯誤扣分動畫</span>
+                        <input type="checkbox" checked>
+                      </label>
+                      <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>自適應動態提示 (超過 4s 觸發)</span>
+                        <input type="checkbox" checked>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>無障礙參數雲端控制台</strong>：集中管理每位特教學生的視覺、聽覺與觸覺設定。</li>
+                <li><strong>防挫折熔斷機制 (R5.3)</strong>：當學生連續受挫時，系統自動將題目降階為直覺式圖像題。</li>
+                <li><strong>跳動計時器禁用開關 (R5.1)</strong>：消除紅色倒數時鐘，避免誘發 ADHD 焦慮爆發。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>防挫折人因原則 (Frustration-Free UX)：</strong>
+                一般學生做錯題目可能只是扣分，但 ADHD 學生遇到挫折很容易產生<strong>「情緒失調 (Emotional Dysregulation)」</strong>而直接棄學。透過禁用懲罰性紅字、提供即時溫柔提示，維持學習者的大腦多巴胺動力。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>Teacher Web ➔ 學生設備本地 Profile</strong>
+                老師儲存參數後，學生 App 在開機或更新時自動下拉該設定檔（JSON 格式），本地端立即套用字型、字距與音效規則。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ========================================================================
+         PART 2: STUDENT APP WIREFRAMES (學生端 App 介面 - 5 大介面)
+         ======================================================================== -->
+    <div class="wf-category-group" data-category="student">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-mobile-screen"></i> 第二部：學生端 App 介面線稿規格 (Student App Sandbox)</h2>
+        <div class="section-meta">適用環境：iOS / Android 平板與手機 ｜ 特色：零雜訊、超大觸控熱區、90秒微感官沙盒</div>
+      </div>
+
+      <!-- SA-01: 學生極簡主頁 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SA-01</span>
+            <span>學生極簡主頁 (Single-Task Focus Hub)</span>
+          </div>
+          <span class="wf-role-tag">學生端 App 核心入口</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-phone-wrapper">
+            <div class="wf-notch"></div>
+            <div class="wf-phone-screen">
+              <!-- Top Status Bar in App -->
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:32px; height:32px; border-radius:50%; border:2px solid var(--wf-border-dark); background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.75rem;">
+                    小明
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:800;">冒險家 小明</div>
+                    <div style="font-size:0.68rem; color:var(--text-muted);"><i class="fa-solid fa-fire" style="color:#f97316;"></i> 連續專注 5 天</div>
+                  </div>
+                </div>
+                <span class="wf-pill" style="border-color:#0284c7; color:#0284c7;"><i class="fa-solid fa-headphones"></i> 40Hz 降噪中</span>
+              </div>
+
+              <!-- Single Big Task Focus Card -->
+              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:16px;">
+                <span class="redline-badge">S1.1</span>
+                <div class="wf-box" style="border:2.5px solid var(--wf-border-dark); padding:20px 16px; text-align:center; background:#ffffff; box-shadow:4px 4px 0px rgba(0,0,0,0.1);">
+                  <span class="wf-pill success" style="margin-bottom:8px;"><i class="fa-solid fa-clock"></i> 僅需 90 秒微挑戰</span>
+                  <h3 style="font-size:1.25rem; font-weight:900; margin:6px 0;">單元 3：魔法烘焙坊</h3>
+                  <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">
+                    今天只要認識 3 個香噴噴的單字！<br>
+                    <span style="font-family:var(--font-mono); font-weight:700;">[Pizza] [Cheese] [Bake]</span>
+                  </p>
+
+                  <div style="background:#f8fafc; border:1.5px dashed var(--wf-border); padding:10px; border-radius:8px; margin-bottom:16px;">
+                    <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:4px;">今日過關獎勵多巴胺徽章：</div>
+                    <div style="display:flex; justify-content:center; gap:8px;">
+                      <span class="wf-pill"><i class="fa-solid fa-pizza-slice"></i> 烘焙小達人</span>
+                      <span class="wf-pill"><i class="fa-solid fa-star" style="color:#eab308;"></i> +50 專注星</span>
+                    </div>
+                  </div>
+
+                  <!-- Big Hit Area CTA Button -->
+                  <button class="wf-btn-wire filled" style="width:100%; padding:14px; font-size:1.05rem; letter-spacing:0.02em;">
+                    <i class="fa-solid fa-play"></i> 開始 90 秒專注冒險
+                  </button>
+                </div>
+              </div>
+
+              <!-- Bottom Minimalist Navigation -->
+              <div style="display:flex; justify-content:space-around; background:#ffffff; border:2px solid var(--wf-border-light); border-radius:999px; padding:8px 12px; margin-top:auto;">
+                <div style="font-size:0.72rem; font-weight:800; color:var(--text-main); display:flex; flex-direction:column; align-items:center;">
+                  <i class="fa-solid fa-house" style="font-size:1rem;"></i> 今日首頁
+                </div>
+                <div style="font-size:0.72rem; font-weight:600; color:var(--text-muted); display:flex; flex-direction:column; align-items:center;">
+                  <i class="fa-solid fa-medal" style="font-size:1rem;"></i> 專注勳章
+                </div>
+                <div style="font-size:0.72rem; font-weight:600; color:var(--text-muted); display:flex; flex-direction:column; align-items:center;">
+                  <i class="fa-solid fa-gear" style="font-size:1rem;"></i> 感官調節
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>單一任務聚焦卡 (Single Focus Card) (S1.1)</strong>：主頁僅呈現一張卡片，杜絕龐雜選單。</li>
+                <li><strong>90 秒明確微承諾</strong>：明確標示「僅需 90 秒」，讓學生知道挑戰即將結束，大幅降低排斥感。</li>
+                <li><strong>極簡觸控底欄</strong>：只有首頁、勳章與設定三個功能，避免在無效頁面間反覆游移。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>克制選項，消滅「啟動困難症」：</strong>
+                ADHD 學生面臨眾多作業清單時，常產生<strong>「執行功能障礙 (Executive Dysfunction)」</strong>而無法開始。FocusLingua 主頁採用「一次一件事」原則，學生一打開就只有一顆大按鈕，直接進入狀態。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>雲端教材同步與本地緩存</strong>
+                卡片資料來自教師端審核發布的單元切片，App 在有網路時自動預先緩存（Prefetch）音檔與圖片，確保點擊「開始」時零等待、零卡頓。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SA-02: 90秒沉浸式沙盒答題艙 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SA-02</span>
+            <span>90秒沉浸式沙盒答題艙 (Micro-Sensory Sandbox)</span>
+          </div>
+          <span class="wf-role-tag">核心互動學習艙</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-phone-wrapper">
+            <div class="wf-notch"></div>
+            <div class="wf-phone-screen">
+              <!-- Top Calm Progress Bar (No Anxious Red Numbers) -->
+              <div style="margin-bottom:12px;">
+                <span class="redline-badge">S2.1</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; margin-bottom:4px; font-weight:700;">
+                  <span><i class="fa-solid fa-hourglass-half"></i> 專注沙漏 (溫和進度中)</span>
+                  <span style="color:var(--wf-green);">第 1 / 3 題</span>
+                </div>
+                <div class="wf-progress-wire"><div class="wf-progress-fill" style="width:33%;"></div></div>
+              </div>
+
+              <!-- Quick Audio Switch Capsule -->
+              <div style="background:#f1f5f9; border:1px solid var(--wf-border-light); border-radius:999px; padding:4px 10px; display:flex; justify-content:space-between; align-items:center; font-size:0.68rem; margin-bottom:16px;">
+                <span><i class="fa-solid fa-headphones" style="color:var(--wf-accent);"></i> 雙耳 40Hz 專注音波播放中</span>
+                <span style="font-weight:700; color:var(--text-muted); cursor:pointer;">[ 切換雨聲 ]</span>
+              </div>
+
+              <!-- Focal Word Card with Clear Anti-Distraction Typography -->
+              <div class="wf-box" style="text-align:center; padding:24px 16px; margin-bottom:20px; background:#ffffff;">
+                <span class="redline-badge">S2.2</span>
+                <!-- Word Image Placeholder -->
+                <div style="width:90px; height:90px; border:2px dashed var(--wf-border); border-radius:8px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; background:#fafafa;">
+                  <i class="fa-solid fa-pizza-slice" style="font-size:2.5rem; color:var(--wf-border-dark);"></i>
+                </div>
+
+                <!-- Word Display with Clear Syllable Focus Style -->
+                <div style="font-size:1.8rem; font-weight:900; letter-spacing:0.08em; font-family:'Fira Code', sans-serif;">
+                  p - <span style="text-decoration:underline; text-underline-offset:6px;">i - z - z</span> - a
+                </div>
+                <div style="font-size:0.78rem; color:var(--text-muted); margin-top:6px;">
+                  /ˈpiːtsə/ • 點擊發音 <i class="fa-solid fa-volume-high"></i>
+                </div>
+              </div>
+
+              <!-- Dynamic Scaffold Hint Box (Expanded after delay) -->
+              <div style="background:#fffbeb; border:1.5px dashed #f59e0b; border-radius:8px; padding:8px 12px; margin-bottom:16px; font-size:0.75rem; color:#b45309; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div>
+                  <strong>老師的溫柔提示：</strong>注意中間兩個字母是一樣的喔！
+                </div>
+              </div>
+
+              <!-- Large Touch Target Options -->
+              <div style="display:flex; flex-direction:column; gap:10px; margin-top:auto;">
+                <span class="redline-badge">S2.3</span>
+                <button class="wf-btn-wire" style="padding:14px; font-size:1rem; border-width:2.5px;">
+                  A. Pizza (正解)
+                </button>
+                <button class="wf-btn-wire" style="padding:14px; font-size:1rem; opacity:0.8;">
+                  B. Chair (干擾項)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>非焦慮式沙漏進度條 (S2.1)</strong>：以純粹進度填充替代倒數數字跳動，保護注意力神經。</li>
+                <li><strong>抗分心音節切片大字體 (S2.2)</strong>：字母間距放大並提供音節底線，消除視覺雜訊並引導注意力聚焦。</li>
+                <li><strong>超大觸控按鈕熱區 (Large Hit Targets) (S2.3)</strong>：高達 56px 的高度，大幅減少誤觸機率。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>二選一減壓法 (Eliminating Choice Stress)：</strong>
+                一般選擇題通常有 4 個選項，但特教研究顯示選項超過 3 個時，ADHD 學習者的<strong>認知負荷呈指數上升</strong>。FocusLingua 強制限制為「1 正解 + 1 干擾項」，將注意力 100% 留給語言本身。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>本地端實時行為計時器</strong>
+                學生手指觸摸按鈕的瞬間，設備觸發原生振動（Haptic Engine 50ms Pulse），同時將點擊耗時（如 1.82s）寫入本地數據緩存。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SA-03: 肢體反應連線與物理拖曳題型 (TPR Drag & Match) -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SA-03</span>
+            <span>肢體反應連線與物理拖曳題型 (TPR Drag &amp; Match Sandbox)</span>
+          </div>
+          <span class="wf-role-tag">多感官觸覺題型</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-phone-wrapper">
+            <div class="wf-notch"></div>
+            <div class="wf-phone-screen">
+              <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; margin-bottom:4px; font-weight:700;">
+                  <span><i class="fa-solid fa-hand-pointer"></i> 題型 2 • 動手拖拖看 (TPR)</span>
+                  <span style="color:var(--wf-green);">第 2 / 3 題</span>
+                </div>
+                <div class="wf-progress-wire"><div class="wf-progress-fill" style="width:66%;"></div></div>
+              </div>
+
+              <!-- Question Prompt -->
+              <div style="text-align:center; margin-bottom:14px;">
+                <span class="redline-badge">S3.1</span>
+                <h4 style="font-size:0.95rem; font-weight:800;">將烘焙動作拖移至正確的步驟方框中</h4>
+                <p style="font-size:0.72rem; color:var(--text-muted);">動動手指，就像在廚房做菜一樣！</p>
+              </div>
+
+              <!-- Target Dropzone (Dotted Magnet Wireframe) -->
+              <div class="wf-box dashed" style="min-height:100px; border-width:2px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fafafa; margin-bottom:16px;">
+                <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">
+                  <i class="fa-solid fa-arrows-to-dot"></i> 拖曳單字卡放入此處：
+                </span>
+                <div style="width:80%; height:44px; border:2px dashed var(--wf-border); border-radius:6px; margin-top:8px; display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">
+                  [ 放置動作單字卡 ]
+                </div>
+              </div>
+
+              <!-- Floating Tactile Word Chips (Simulating Physics Drag) -->
+              <div style="display:flex; flex-direction:column; gap:12px; margin-top:auto;">
+                <span class="redline-badge">S3.2</span>
+                <!-- Word Card 1 (Active Dragging State) -->
+                <div class="wf-box" style="border:2px solid var(--wf-border-dark); background:#ffffff; box-shadow:3px 3px 0px rgba(0,0,0,0.12); display:flex; justify-content:space-between; align-items:center; cursor:grab;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-grip-vertical" style="color:var(--wf-border-dark);"></i>
+                    <span style="font-weight:900; font-size:1.1rem;">Bake the Pizza</span>
+                  </div>
+                  <span class="wf-pill">動詞：烘烤</span>
+                </div>
+
+                <!-- Word Card 2 -->
+                <div class="wf-box" style="border:1.5px solid var(--wf-border); background:#f8fafc; display:flex; justify-content:space-between; align-items:center;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-grip-vertical" style="color:var(--text-dim);"></i>
+                    <span style="font-weight:700; font-size:1.05rem; color:var(--text-muted);">Wash the Dishes</span>
+                  </div>
+                  <span class="wf-pill">干擾項</span>
+                </div>
+              </div>
+
+              <!-- Hint Bottom Bar -->
+              <div style="margin-top:14px; text-align:center;">
+                <button class="wf-btn-wire" style="padding:6px 12px; font-size:0.75rem; border-radius:999px;">
+                  <i class="fa-solid fa-lightbulb"></i> 看看手部動作提示動畫
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>磁吸式拖曳目標框 (Magnetic Dropzone) (S3.1)</strong>：卡片靠近時自動產生微小吸附引力，降低手震挫折。</li>
+                <li><strong>TPR 實體動作映射 (S3.2)</strong>：將傳統死記硬背的英文動詞，轉化為模擬雙手操作的肢體感知記憶。</li>
+                <li><strong>動態抓握回饋</strong>：手指按壓時卡片放大 1.05 倍並產生微幅陰影，提供清晰的物理存在感。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>動態觸覺釋放過剩精力 (Kinesthetic Stimulation)：</strong>
+                ADHD 學生常伴隨過動手癢特質。比起純粹看螢幕，<strong>「指尖拖曳卡片 + 震動咔噠回饋」</strong>能有效刺激運動神經元，將注意力強制固定在動作完成的瞬間。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>物理引擎與觸覺 API 聯動</strong>
+                App 本地執行極簡 Canvas/SVG 剛體碰撞偵測，卡片吸附至正確框格瞬間，呼叫 iOS CoreHaptics / Android Vibrator 發送中頻敲擊震動。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SA-04: 多巴胺即時正向慶祝艙 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SA-04</span>
+            <span>多巴胺即時正向慶祝艙 (Dopamine Victory Modal)</span>
+          </div>
+          <span class="wf-role-tag">大腦獎勵迴路活化</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-phone-wrapper">
+            <div class="wf-notch"></div>
+            <div class="wf-phone-screen" style="background:#ffffff; text-align:center; justify-content:center; align-items:center; padding:24px 20px;">
+              <span class="redline-badge">S4.1</span>
+
+              <!-- Confetti Particle Simulation Icon -->
+              <div style="width:84px; height:84px; border-radius:50%; border:3px solid var(--wf-border-dark); background:#fef9c3; display:flex; align-items:center; justify-content:center; margin-bottom:16px; box-shadow:0 8px 16px rgba(0,0,0,0.08);">
+                <i class="fa-solid fa-trophy" style="font-size:2.4rem; color:#ca8a04;"></i>
+              </div>
+
+              <!-- Affirmation Text (Effort over Score) -->
+              <span class="wf-pill success" style="font-size:0.75rem; margin-bottom:8px;">
+                <i class="fa-solid fa-shield-heart"></i> 90 秒單元順利完成
+              </span>
+              <h2 style="font-size:1.45rem; font-weight:900; margin-bottom:6px;">太棒了！你專注了整整 88 秒！</h2>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
+                大腦的專注肌肉又變得更強壯了。<br>
+                今天收穫了 3 個魔法烘焙單字！
+              </p>
+
+              <!-- Effort Badges Block -->
+              <div class="wf-box" style="width:100%; border:1.5px solid var(--wf-border); background:#f8fafc; padding:12px; margin-bottom:20px;">
+                <span class="redline-badge">S4.2</span>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:0.75rem;">
+                  <div>
+                    <div style="color:var(--text-muted);">反應速度</div>
+                    <strong style="font-size:1rem;">1.2 秒 <span style="color:var(--wf-green);">⚡</span></strong>
+                  </div>
+                  <div style="border-left:1px solid var(--wf-border-light);">
+                    <div style="color:var(--text-muted);">累計專注星</div>
+                    <strong style="font-size:1rem;">350 顆 <span style="color:#eab308;">★</span></strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cooldown Mechanism Buttons -->
+              <div style="width:100%; display:flex; flex-direction:column; gap:10px;">
+                <button class="wf-btn-wire filled" style="width:100%; padding:12px;">
+                  <i class="fa-solid fa-arrow-right"></i> 休息 5 分鐘，喝口水 💧
+                </button>
+                <button class="wf-btn-wire" style="width:100%; padding:10px; font-size:0.82rem;">
+                  <i class="fa-solid fa-house"></i> 回到首頁領取勳章
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>努力讚許文案 (Effort-Oriented Praise) (S4.1)</strong>：強調「你堅持了88秒」，絕不拿分數做同儕比較。</li>
+                <li><strong>微多巴胺數據卡 (S4.2)</strong>：只跟過去的自己比，強化自我效能感與自信心。</li>
+                <li><strong>主動冷卻防過亢按鈕 (Cooldown Buffer)</strong>：預設「喝口水休息」為主要推薦行動，保護學生視力與精神。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>修復受損的「獎勵迴路」(Dopamine Circuit Repair)：</strong>
+                ADHD 大腦因多巴胺受體較不敏感，往往需要<strong>高頻率、小步調、立即性的正向反饋</strong>。90秒即刻完成的慶賀彈窗，能讓學生在短時間內獲得勝利感，重塑對英語學習的心理安全感。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>慶祝事件與學習記錄入庫</strong>
+                慶祝彈窗觸發的同時，App 本地數據同步上傳後端 PostgreSQL 與 ClickHouse，更新連續專注天數 (Streak) 並通知教師儀表板。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SA-05: 學生感官無障礙調節中心 -->
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SA-05</span>
+            <span>學生感官無障礙調節中心 (Sensory Comfort Center)</span>
+          </div>
+          <span class="wf-role-tag">個人化舒適微調</span>
+        </div>
+
+        <div class="wf-viewport-canvas">
+          <div class="wf-phone-wrapper">
+            <div class="wf-notch"></div>
+            <div class="wf-phone-screen">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; border-bottom:1.5px solid var(--wf-border-light); padding-bottom:10px;">
+                <button class="wf-btn-wire" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-chevron-left"></i></button>
+                <strong style="font-size:0.95rem;">我的專屬感官小幫手</strong>
+              </div>
+
+              <!-- Setting 1: Theme Palette -->
+              <div class="wf-box" style="margin-bottom:12px; padding:12px;">
+                <span class="redline-badge">S5.1</span>
+                <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">
+                  <i class="fa-solid fa-palette"></i> 背景色彩防刺眼保護：
+                </span>
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
+                  <div class="wf-box" style="padding:6px; text-align:center; font-size:0.7rem; border-color:var(--text-main); font-weight:700;">
+                    溫暖米黃 (減壓)
+                  </div>
+                  <div class="wf-box" style="padding:6px; text-align:center; font-size:0.7rem; background:#f0fdf4;">
+                    柔和墨綠
+                  </div>
+                  <div class="wf-box" style="padding:6px; text-align:center; font-size:0.7rem; background:#1e293b; color:#fff;">
+                    護眼深黑
+                  </div>
+                </div>
+              </div>
+
+              <!-- Setting 2: Font & Spacing Slider -->
+              <div class="wf-box" style="margin-bottom:12px; padding:12px;">
+                <span class="redline-badge">S5.2</span>
+                <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">
+                  <i class="fa-solid fa-text-height"></i> 字體大小與防跳行間距：
+                </span>
+                <div style="display:flex; justify-content:space-between; font-size:0.72rem; margin-bottom:4px;">
+                  <span>小字</span>
+                  <span style="font-weight:700; color:var(--wf-accent);">超大粗底字 (目前)</span>
+                  <span>特大</span>
+                </div>
+                <div class="wf-progress-wire"><div class="wf-progress-fill" style="width:75%;"></div></div>
+              </div>
+
+              <!-- Setting 3: Haptic & Binaural Beats Live Test -->
+              <div class="wf-box" style="margin-bottom:16px; padding:12px;">
+                <span class="redline-badge">S5.3</span>
+                <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">
+                  <i class="fa-solid fa-sliders"></i> 觸覺震動感與耳機音效：
+                </span>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-bottom:8px;">
+                  <span>答對時手機輕輕震動</span>
+                  <input type="checkbox" checked>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
+                  <span>40Hz 專注波雙耳微律動</span>
+                  <input type="checkbox" checked>
+                </div>
+              </div>
+
+              <!-- Save CTA -->
+              <button class="wf-btn-wire filled" style="width:100%; padding:12px; margin-top:auto;">
+                <i class="fa-solid fa-check"></i> 這樣看起來最舒服，存起來！
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 頁面功能與組件架構</h4>
+              <ul class="exp-feature-list">
+                <li><strong>防眩光大地色切換 (S5.1)</strong>：提供低飽和度暖色系，減少純白背景產生的眼底光暈。</li>
+                <li><strong>動態字距調整條 (S5.2)</strong>：讓注意力易分散學生依自身舒適度放大字元間距，降低視覺擁擠感。</li>
+                <li><strong>即時觸覺與聽覺測試開關 (S5.3)</strong>：可單獨關閉震動或背景音，尊重高敏感個體差異。</li>
+              </ul>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> ADHD / 特教人因工學設計細節</h4>
+              <div class="adhd-rationale-box">
+                <strong>賦予學生「自我調控感 (Autonomy)」：</strong>
+                特教學生常被迫接受大人設定好的標準界面。讓學生親自滑動字體大小、挑選喜愛的背景雨聲，能大幅增強他們的<strong>「主人翁意識 (Sense of Agency)」</strong>，化被動受測為主動探索。
+              </div>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-network-wired"></i> 跨端數據流動邏輯</h4>
+              <div class="data-flow-box">
+                <strong>本地偏好與教師端同步</strong>
+                學生在 App 端調整的感官偏好將被記錄在雲端個人檔案中，老師在 Web 端查看 IEP 報表時能即時知曉該學生最偏好的感官型態。
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ========================================================================
+         PART 3: DUAL-END INTERACTION ARCHITECTURE (雙端跨端互動對照)
+         ======================================================================== -->
+    <div class="wf-category-group" data-category="dual">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-arrows-split-up-and-left"></i> 第三部：教師 Web 智能切片 ➔ 學生 App 90s 沙盒 跨端閉環架構</h2>
+        <div class="section-meta">系統整合維度：教材切片 ➔ 題目二次審核 ➔ 學生端秒級反饋 ➔ IEP 報告生成</div>
+      </div>
+
+      <article class="wf-card-wrapper">
+        <div class="wf-card-header">
+          <div class="wf-card-title">
+            <span class="wf-id-badge">SYS-01</span>
+            <span>教師端 Web 智能審核 vs 學生端 App 沉浸沙盒 實時聯動對照</span>
+          </div>
+          <span class="wf-role-tag">全景系統架構</span>
+        </div>
+
+        <div class="wf-viewport-canvas" style="padding:40px 24px;">
+          <div class="dual-screen-grid">
+            <!-- Left: Teacher Web Slice -->
+            <div class="wf-box" style="border:2px solid var(--wf-border-dark);">
+              <div style="background:#f1f5f9; padding:8px 12px; border-bottom:1.5px solid var(--wf-border-light); font-weight:800; font-size:0.85rem; display:flex; justify-content:space-between;">
+                <span><i class="fa-solid fa-desktop"></i> 教師端 Web (備課、切片、審核、IEP)</span>
+                <span class="wf-pill success">B2B 採購與管理中心</span>
+              </div>
+              <div style="padding:16px; font-size:0.82rem; display:flex; flex-direction:column; gap:10px;">
+                <div class="wf-box" style="padding:10px;">
+                  <strong>1. 上傳 108 課綱長篇課本 (PDF/PPT)</strong>
+                  <div style="color:var(--text-muted); font-size:0.75rem;">AI 自動抽離超綱單字，鎖定 3 個核心高頻詞。</div>
+                </div>
+                <div class="wf-box" style="padding:10px; border-color:var(--wf-accent);">
+                  <strong>2. 教師二次審核與鷹架配置</strong>
+                  <div style="color:var(--text-muted); font-size:0.75rem;">審查題目正確性，設定 3 秒未答自動提供首字母提示。</div>
+                </div>
+                <div class="wf-box" style="padding:10px; background:#f0fdf4; border-color:#86efac;">
+                  <strong>3. 接收秒級專注曲線並列印 IEP</strong>
+                  <div style="color:#166534; font-size:0.75rem;">獲取第 55 秒注意力拐點，作為期末特教評估實證。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Student Mobile Simulator -->
+            <div class="wf-box" style="border:2px solid var(--wf-border-dark);">
+              <div style="background:#f1f5f9; padding:8px 12px; border-bottom:1.5px solid var(--wf-border-light); font-weight:800; font-size:0.85rem; display:flex; justify-content:space-between;">
+                <span><i class="fa-solid fa-mobile-screen"></i> 學生端 App (90s 微沙盒)</span>
+                <span class="wf-pill" style="border-color:var(--wf-accent); color:var(--wf-accent);">低認知負載終端</span>
+              </div>
+              <div style="padding:16px; font-size:0.82rem; display:flex; flex-direction:column; gap:10px;">
+                <div class="wf-box" style="padding:10px;">
+                  <strong>1. 零干擾單一任務入口</strong>
+                  <div style="color:var(--text-muted); font-size:0.75rem;">僅見 90 秒開始按鈕，無雜亂通知。</div>
+                </div>
+                <div class="wf-box" style="padding:10px; border-color:#f59e0b;">
+                  <strong>2. 微感官單字切片 + 雙耳節拍</strong>
+                  <div style="color:var(--text-muted); font-size:0.75rem;">物理拖曳吸附 + 40Hz 白噪音阻絕干擾。</div>
+                </div>
+                <div class="wf-box" style="padding:10px; background:#fef9c3; border-color:#facc15;">
+                  <strong>3. 努力型多巴胺彩帶慶祝</strong>
+                  <div style="color:#854d0e; font-size:0.75rem;">「你專注了 88 秒！」即時震動反饋。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-explanation-panel">
+          <div class="explanation-grid">
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-bullseye"></i> 雙端分工本質</h4>
+              <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">
+                <strong>教師端主控「複雜度與教學合規」</strong>，承擔上傳、切片、審核、排查等重度操作；<br>
+                <strong>學生端收斂「認知負荷與注意力流」</strong>，僅保留最純粹的刺激與立即性回饋。
+              </p>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-brain"></i> 商業模式與買單動機</h4>
+              <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">
+                學校與教育機構為<strong>「教師省下 70% 特教備課與 IEP 撰寫時間」</strong>買單；學生與家長則因<strong>「孩子不再排斥學英文、90秒有成就感」</strong>而持續支持。
+              </p>
+            </div>
+            <div class="exp-column">
+              <h4><i class="fa-solid fa-layer-group"></i> 產學研落地可行性</h4>
+              <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.6;">
+                結合加拿大 Athabasca VIP Research 的 MEGA World 遊戲化教育理論與 LiveABC 出版研發標準，本套規格已具備直接進入 Figma 高保真原型與前端開發之成熟度。
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Filter Functionality
+    function filterWireframes(category) {
+      // Update Buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      // Update Group Displays
+      const groups = document.querySelectorAll('.wf-category-group');
+      groups.forEach(group => {
+        if (category === 'all') {
+          group.style.display = 'block';
+        } else if (group.getAttribute('data-category') === category) {
+          group.style.display = 'block';
+        } else {
+          group.style.display = 'none';
+        }
+      });
+    }
+
+    // Toggle Redline Annotations
+    function toggleRedlines() {
+      const body = document.body;
+      const btn = document.getElementById('redline-toggle');
+      body.classList.toggle('show-redlines');
+      btn.classList.toggle('active');
+
+      if (body.classList.contains('show-redlines')) {
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i> 隱藏特教人因標註';
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-pen-ruler"></i> 特教人因標註 (Redlines)';
+      }
+    }
+  </script>
+</body>
+</html>

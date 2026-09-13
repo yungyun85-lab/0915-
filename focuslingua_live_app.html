@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua 智慧教師工作台 (Edu Web Portal) ＆ 學生端即時動態模擬艙</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       Global Color Variables & Layout Architecture
+       ========================================================================== */
+    :root {
+      /* Brand Color Palette (Bright Modern Professional with Sage & Indigo Accent) */
+      --primary: #0284c7;           /* Focus Sky Blue */
+      --primary-hover: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #0f766e;         /* Sage Teal */
+      --secondary-light: #ccfbf1;
+      --accent-coral: #f97316;      /* Dopamine Orange */
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+
+      /* Neutral Palette */
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-sidebar: #0f172a;
+      --bg-subtle: #f1f5f9;
+      --border-color: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #64748b;
+      --text-light: #94a3b8;
+
+      /* Ergonomics */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+      --shadow-drawer: -10px 0 35px rgba(15, 23, 42, 0.18);
+      
+      --drawer-width: 440px;
+      --transition-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      overflow-x: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ==========================================================================
+       Top SaaS Navigation Header
+       ========================================================================== */
+    .saas-header {
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text span.badge-pro {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .header-context-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .school-selector {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--success-light);
+      color: #065f46;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Live Student Simulator Toggle Button in Header */
+    .btn-toggle-student {
+      background: linear-gradient(135deg, #0284c7, #0f766e);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle-student:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.4);
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-color);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      border: 2px solid #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================================================
+       Main Application Shell (Sidebar + Workspace Area)
+       ========================================================================== */
+    .app-shell {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Left Sidebar Navigation */
+    .sidebar {
+      width: 240px;
+      background: var(--bg-sidebar);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .sidebar-menu {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .sidebar-group-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      padding: 10px 12px 6px;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .nav-item .badge-count {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      background: #090d16;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    /* Workspace Content Pane */
+    .workspace-pane {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-body);
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: padding-right 0.35s var(--transition-spring);
+    }
+
+    /* Workspace Body when Drawer is Open */
+    body.drawer-open .workspace-pane {
+      padding-right: calc(var(--drawer-width) + 32px);
+    }
+
+    /* Workspace Page Header */
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .view-title-group h2 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .view-title-group p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* Cards & Grids */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Metric Card Styling */
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card.alert-border {
+      border-left: 4px solid var(--danger);
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin: 8px 0 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .metric-delta {
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .metric-delta.up { color: var(--success); }
+    .metric-delta.warn { color: var(--danger); }
+
+    /* Dropzone Upload Component */
+    .dropzone-container {
+      border: 2px dashed #94a3b8;
+      background: #fafbfd;
+      border-radius: var(--radius-md);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dropzone-container:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .file-format-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1px solid var(--border-dark);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Interactive Buttons */
+    .btn {
+      padding: 9px 18px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Form Inputs */
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-main);
+      font-family: inherit;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* Editable Question Card in Studio */
+    .question-card-row {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+
+    .question-card-row:hover {
+      border-color: var(--primary);
+    }
+
+    /* ==========================================================================
+       COLLAPSIBLE RIGHT DRAWER (THE LIVE STUDENT COMPANION SIMULATOR)
+       ========================================================================== */
+    .student-drawer {
+      position: fixed;
+      top: 64px;
+      right: 0;
+      bottom: 0;
+      width: var(--drawer-width);
+      background: #ffffff;
+      border-left: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-drawer);
+      z-index: 900;
+      transform: translateX(100%);
+      transition: transform 0.35s var(--transition-spring);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    body.drawer-open .student-drawer {
+      transform: translateX(0);
+    }
+
+    /* Floating Tab / Arrow on the right edge */
+    .drawer-pull-tab {
+      position: fixed;
+      top: 130px;
+      right: 0;
+      z-index: 950;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 14px 12px 10px;
+      border-radius: 12px 0 0 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      box-shadow: -4px 4px 14px rgba(0,0,0,0.25);
+      transition: right 0.35s var(--transition-spring), background 0.2s;
+    }
+
+    .drawer-pull-tab:hover {
+      background: var(--primary);
+    }
+
+    body.drawer-open .drawer-pull-tab {
+      right: var(--drawer-width);
+      border-radius: 12px 0 0 12px;
+      background: var(--primary);
+    }
+
+    .drawer-header {
+      padding: 14px 20px;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .drawer-header h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-close-drawer {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .btn-close-drawer:hover { color: #ffffff; }
+
+    /* Mobile Frame Viewport inside Drawer */
+    .drawer-body {
+      flex: 1;
+      padding: 20px;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    /* iPhone Realistic Device Mockup Frame */
+    .iphone-frame {
+      width: 350px;
+      height: 670px;
+      background: #0f172a;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iphone-notch {
+      width: 100px;
+      height: 22px;
+      background: #000000;
+      border-radius: 20px;
+      margin: 0 auto 6px;
+      position: relative;
+      z-index: 50;
+    }
+
+    .iphone-screen {
+      flex: 1;
+      background: #FAF8F5; /* Warm sensory-soothing background */
+      border-radius: 34px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 16px;
+    }
+
+    /* Student Mobile Screens inside Simulator */
+    .student-view-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Screen 1: Single Task Focus Portal */
+    .student-screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .student-screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Gentle Sandbox Progress Bar */
+    .sandbox-timer-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .sandbox-timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #0284c7);
+      width: 45%;
+      transition: width 0.3s;
+    }
+
+    /* Anti-distraction Focal Card */
+    .focal-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+    }
+
+    .word-syllable-display {
+      font-size: 1.85rem;
+      font-weight: 900;
+      font-family: 'Fira Code', monospace;
+      color: var(--text-main);
+      margin: 8px 0;
+      letter-spacing: 0.05em;
+    }
+
+    .word-syllable-display .syllable-highlight {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+
+    /* Scaffolding Hint Drawer in Student View */
+    .scaffold-hint-bubble {
+      background: #fef3c7;
+      border: 1.5px dashed #f59e0b;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      color: #92400e;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: bounceHint 0.5s ease-out;
+    }
+
+    @keyframes bounceHint {
+      0% { transform: translateY(-5px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* 2-Option Reduced Anxiety Choice Buttons */
+    .option-btn-huge {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .option-btn-huge:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .option-btn-huge:active {
+      transform: scale(0.98);
+    }
+
+    /* Confetti Canvas for Dopamine Celebration */
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    /* Modal Styling for IEP Print Preview */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal-window {
+      background: #ffffff;
+      width: 90%;
+      max-width: 680px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+    }
+
+    .modal-header {
+      padding: 16px 24px;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 3000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Audio Toggle Capsule */
+    .audio-pill {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .audio-pill.active {
+      background: #dbeafe;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+  </style>
+</head>
+<body class="drawer-open">
+
+  <!-- ==========================================================================
+       TOP SaaS HEADER
+       ========================================================================== -->
+  <header class="saas-header">
+    <div class="brand-cluster">
+      <div class="brand-mark">FL</div>
+      <div class="brand-text">
+        <h1>FocusLingua Edu <span class="badge-pro">Teacher SaaS</span></h1>
+      </div>
+      <div class="school-selector">
+        <i class="fa-solid fa-school"></i>
+        <span>中原特教示範班（四年級雙語資源班）</span>
+        <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 4px;"></i>
+      </div>
+    </div>
+
+    <div class="header-context-bar">
+      <div class="status-badge">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>108 課綱吻合度 99.2%</span>
+      </div>
+      <div class="status-badge" style="background:#fef3c7; color:#b45309;">
+        <span class="pulse-dot" style="background:#f59e0b; box-shadow:0 0 0 3px rgba(245,158,11,0.3);"></span>
+        <span>今日 2 位學生專注延遲警報</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <a href="pitch_presentation.html" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.78rem; font-weight:700; color:var(--text-main);">
+        <i class="fa-solid fa-chalkboard-user" style="color:#D97D54;"></i> 簡報成果匯報
+      </a>
+      <a href="focuslingua_wireframes.html" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.78rem; font-weight:700; color:var(--text-main);">
+        <i class="fa-solid fa-pen-ruler" style="color:#059669;"></i> 雙端線稿
+      </a>
+      <a href="index.html" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.78rem; font-weight:700; color:var(--text-main);">
+        <i class="fa-solid fa-house" style="color:#64748b;"></i> 作品集
+      </a>
+
+      <!-- Button to toggle the slide-out student drawer -->
+      <button class="btn-toggle-student" onclick="toggleStudentDrawer()">
+        <span class="pulse-dot"></span>
+        <i class="fa-solid fa-mobile-screen"></i>
+        <span id="header-btn-text">收合學生端畫面</span>
+      </button>
+
+      <div class="user-profile">
+        <div class="user-avatar">陳</div>
+        <div style="font-size: 0.8rem; line-height: 1.2;">
+          <strong style="display:block;">陳老師</strong>
+          <span style="color: var(--text-sub); font-size: 0.72rem;">特教課輔主導教師</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       APP SHELL: SIDEBAR + MAIN WORKSPACE PANE
+       ========================================================================== -->
+  <div class="app-shell">
+
+    <!-- Left Sidebar Menu -->
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <div class="sidebar-group-label">主要功能</div>
+        <a class="nav-item active" onclick="switchView('dashboard')">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>班級專注儀表板</span>
+          <span class="badge-count" style="background:#ef4444;">2 警報</span>
+        </a>
+        <a class="nav-item" onclick="switchView('curriculum')">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>教材上傳與課綱切片</span>
+        </a>
+        <a class="nav-item" onclick="switchView('studio')">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>AI 題型與二次審核台</span>
+          <span class="badge-count" style="background:var(--primary);">3 待派</span>
+        </a>
+
+        <div class="sidebar-group-label" style="margin-top:12px;">特教評估與管理</div>
+        <a class="nav-item" onclick="switchView('analytics')">
+          <i class="fa-solid fa-file-waveform"></i>
+          <span>學生 IEP 成效評估</span>
+        </a>
+        <a class="nav-item" onclick="switchView('accessibility')">
+          <i class="fa-solid fa-sliders"></i>
+          <span>特教感官無障礙參數</span>
+        </a>
+        <a class="nav-item" onclick="window.open('focuslingua_wireframes.html', '_blank')">
+          <i class="fa-solid fa-pen-ruler"></i>
+          <span>10 大規格線稿藍圖 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i></span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div><strong>FocusLingua Enterprise v2.4</strong></div>
+        <div>專為注意力不集中 (ADHD) 量身打造</div>
+      </div>
+    </aside>
+
+    <!-- Center Workspace Pane (Dynamic Switch Views) -->
+    <main class="workspace-pane">
+
+      <!-- ====================================================================
+           VIEW 1: 班級專注力即時監控儀表板 (Dashboard)
+           ==================================================================== -->
+      <div id="view-dashboard" class="view-panel">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h2>班級專注力即時監控儀表板</h2>
+            <p>即時監看四年級特教資源班 12 位學生的 90 秒注意力維持狀態與警報分析</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary" onclick="switchView('curriculum')">
+              <i class="fa-solid fa-plus"></i> 上傳新課本切片
+            </button>
+            <button class="btn btn-primary" onclick="dispatchDirectToStudent()">
+              <i class="fa-solid fa-paper-plane"></i> 一鍵派發今日 90s 微任務
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Top Metric Cards -->
+        <div class="grid-4" style="margin-top:20px;">
+          <div class="metric-card">
+            <div class="metric-label">
+              <span>全班平均專注指數</span>
+              <i class="fa-solid fa-brain" style="color:var(--primary);"></i>
+            </div>
+            <div class="metric-value">
+              84.2%
+              <span class="metric-delta up">▲ +6.4%</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">微感官切片實施後顯著提升</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">
+              <span>今日 90s 單元完成總數</span>
+              <i class="fa-solid fa-circle-check" style="color:var(--success);"></i>
+            </div>
+            <div class="metric-value">
+              42 次
+              <span class="metric-delta up">已達標</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">人均完成 3.5 個極簡單元</div>
+          </div>
+
+          <div class="metric-card alert-border">
+            <div class="metric-label">
+              <span style="color:var(--danger);">注意力停滯警報</span>
+              <i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i>
+            </div>
+            <div class="metric-value" style="color:var(--danger);">
+              2 位學生
+              <span class="metric-delta warn" style="font-size:0.75rem;">第 55s 猶豫</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">建議啟動首字母鷹架提示</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">
+              <span>108 課綱對齊率</span>
+              <i class="fa-solid fa-book-bookmark" style="color:var(--secondary);"></i>
+            </div>
+            <div class="metric-value" style="color:var(--secondary);">
+              99.2%
+              <span class="metric-delta up">無超綱</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">完全吻合國小第二學習階段</div>
+          </div>
+        </div>
+
+        <!-- Middle Section: Real SVG Attention Wave & Individual Alerts -->
+        <div class="grid-2" style="margin-top:20px;">
+          <!-- Left: Attention Curve -->
+          <div class="card">
+            <div class="card-header-bar">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-line" style="color:var(--primary);"></i>
+                <span>90 秒注意力波動曲線（全班常模 vs. 鷹架輔助組）</span>
+              </div>
+              <span class="status-badge" style="background:var(--primary-light); color:var(--primary);">
+                每 200ms 高頻採樣
+              </span>
+            </div>
+            
+            <div style="height: 180px; width:100%; position:relative;">
+              <svg width="100%" height="100%" viewBox="0 0 500 160" preserveAspectRatio="none" style="overflow:visible;">
+                <defs>
+                  <linearGradient id="gradWave" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0284c7" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Grid Lines -->
+                <line x1="0" y1="30" x2="500" y2="30" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="0" y1="80" x2="500" y2="80" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="0" y1="130" x2="500" y2="130" stroke="#f1f5f9" stroke-width="1.5"/>
+
+                <!-- Traditional App Curve (Drops steeply after 40s) -->
+                <path d="M 0,40 Q 120,50 220,110 T 360,140 T 500,150" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4"/>
+                <text x="380" y="135" fill="#94a3b8" font-size="11" font-weight="600">傳統 App 斷崖式失焦</text>
+
+                <!-- FocusLingua Scaffolding Curve (Maintained high with 40Hz) -->
+                <path d="M 0,50 Q 140,25 260,35 T 380,40 T 500,60 L 500,160 L 0,160 Z" fill="url(#gradWave)"/>
+                <path d="M 0,50 Q 140,25 260,35 T 380,40 T 500,60" fill="none" stroke="#0284c7" stroke-width="3"/>
+
+                <!-- Critical inflection alert point at 55s -->
+                <circle cx="310" cy="38" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+                <text x="318" y="32" fill="#ef4444" font-size="11" font-weight="800">55s 鷹架及時注入</text>
+              </svg>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-sub); border-top:1px solid var(--border-color); padding-top:8px; margin-top:8px;">
+              <span>0s (任務啟動)</span>
+              <span>30s (首波單字刺激)</span>
+              <span style="color:var(--danger); font-weight:700;">55s (ADHD 注意力極限)</span>
+              <span>90s (多巴胺勝利結算)</span>
+            </div>
+          </div>
+
+          <!-- Right: Actionable Student Alert List -->
+          <div class="card">
+            <div class="card-header-bar">
+              <div class="card-title">
+                <i class="fa-solid fa-bell" style="color:var(--danger);"></i>
+                <span>即時個別化關懷清單</span>
+              </div>
+              <span style="font-size:0.78rem; color:var(--text-muted);">自動分析中</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <!-- Student 1 -->
+              <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:var(--radius-sm); padding:10px 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong style="font-size:0.86rem; color:#9f1239;">王小明 (ADHD 輕度)</strong>
+                  <span style="font-size:0.72rem; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:4px; font-weight:700;">停滯 3.8 秒</span>
+                </div>
+                <p style="font-size:0.78rem; color:#881337; margin-top:4px;">
+                  單元 3 烘焙動詞卡住，系統已在右側學生端自動彈出首字母提示。
+                </p>
+                <div style="display:flex; justify-content:flex-end; margin-top:6px;">
+                  <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="triggerStudentHint()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> 強制發送語音提示
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 2 -->
+              <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:10px 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong style="font-size:0.86rem;">李小華 (ADHD 分心型)</strong>
+                  <span style="font-size:0.72rem; background:var(--success-light); color:#065f46; padding:2px 8px; border-radius:4px; font-weight:700;">微感官發威中</span>
+                </div>
+                <p style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">
+                  啟用 40Hz 專注波後，答題猶豫時間縮短 42%，已完成今日 2 個微單元。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           VIEW 2: 多元教材上傳與課綱切片 (Curriculum Slice)
+           ==================================================================== -->
+      <div id="view-curriculum" class="view-panel" style="display:none;">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h2>多元教材上傳與 108 課綱智能切片</h2>
+            <p>支援課本 PDF、PPT 簡報、MP3 英語聽力與影片字幕，一鍵萃取 3 個核心單字之 90 秒微單元</p>
+          </div>
+          <button class="btn btn-primary" onclick="runAiSlice()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 開始 AI 課綱切片
+          </button>
+        </div>
+
+        <div class="grid-2" style="margin-top:20px;">
+          <!-- Left: Dropzone -->
+          <div class="card">
+            <div class="card-header-bar">
+              <div class="card-title">
+                <i class="fa-solid fa-file-arrow-up" style="color:var(--primary);"></i>
+                <span>上傳英語教材檔案 (支援混合格式)</span>
+              </div>
+            </div>
+
+            <div class="dropzone-container" onclick="simulateUpload()">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size:2.8rem; color:var(--primary); margin-bottom:12px;"></i>
+              <h4 style="font-size:1.05rem; font-weight:800;">點擊或將現有教材檔案拖曳至此</h4>
+              <p style="font-size:0.8rem; color:var(--text-sub); margin-top:4px;">
+                系統將自動提取文法結構並比對教育部 1200 基礎單字庫
+              </p>
+              <div style="display:flex; justify-content:center; gap:8px; margin-top:16px; flex-wrap:wrap;">
+                <span class="file-format-pill"><i class="fa-regular fa-file-pdf" style="color:#ef4444;"></i> PDF 課本</span>
+                <span class="file-format-pill"><i class="fa-regular fa-file-powerpoint" style="color:#f97316;"></i> PPTX 簡報</span>
+                <span class="file-format-pill"><i class="fa-regular fa-file-audio" style="color:#06b6d4;"></i> MP3 聽力音檔</span>
+                <span class="file-format-pill"><i class="fa-regular fa-closed-captioning" style="color:#8b5cf6;"></i> SRT 字幕檔</span>
+              </div>
+            </div>
+
+            <!-- Uploaded File Badge -->
+            <div id="uploaded-file-card" style="margin-top:16px; background:#f8fafc; border:1px solid var(--border-dark); border-radius:var(--radius-sm); padding:12px; display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-file-pdf" style="color:#ef4444; font-size:1.4rem;"></i>
+                <div>
+                  <strong style="font-size:0.88rem; display:block;">G4_Unit3_Magic_Bakery_English.pdf</strong>
+                  <span style="font-size:0.75rem; color:var(--text-sub);">3.8 MB • 已完成文字萃取與語法標記</span>
+                </div>
+              </div>
+              <span class="status-badge"><i class="fa-solid fa-check"></i> 解析完畢</span>
+            </div>
+          </div>
+
+          <!-- Right: Alignment Settings -->
+          <div class="card">
+            <div class="card-header-bar">
+              <div class="card-title">
+                <i class="fa-solid fa-sliders" style="color:var(--secondary);"></i>
+                <span>108 課綱指標與特教注意力上限</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div>
+                <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                  教育階段與對象：
+                </label>
+                <select class="form-control">
+                  <option>國小第二學習階段 (三~四年級) • 特教資源班階梯</option>
+                  <option>國小第三學習階段 (五~六年級) • ADHD 輕量聚焦組</option>
+                  <option>國中特教融合班 • 零挫折微單元組</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                  課綱核心素養錨定標籤：
+                </label>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <span class="status-badge">✔ 英-E-A1 身心素質與自我精進</span>
+                  <span class="status-badge">✔ 英-E-B1 科技資訊與溝通</span>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                  單元認知負載天花板 (ADHD 專注上限)：
+                </label>
+                <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                  <button class="btn btn-secondary" style="justify-content:center; padding:8px 4px; font-size:0.8rem;">60 秒微快切</button>
+                  <button class="btn btn-primary" style="justify-content:center; padding:8px 4px; font-size:0.8rem;">90 秒黃金值</button>
+                  <button class="btn btn-secondary" style="justify-content:center; padding:8px 4px; font-size:0.8rem;">120 秒複習</button>
+                </div>
+              </div>
+
+              <div id="ai-slice-result" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:var(--radius-sm); padding:14px;">
+                <div style="font-weight:800; color:#166534; font-size:0.86rem; margin-bottom:6px;">
+                  <i class="fa-solid fa-sparkles"></i> AI 切片成果：已鎖定 3 大核心生字
+                </div>
+                <div style="font-size:0.8rem; color:#14532d;">
+                  • 核心詞彙：<strong>pizza</strong>（名詞）、<strong>cheese</strong>（名詞）、<strong>bake</strong>（動作動詞）<br>
+                  • 句型結構：<em>"I want to bake a fresh pizza."</em><br>
+                  • 無超綱單字，完全符合特教四年級學習階梯！
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           VIEW 3: AI 題型審核與二次編輯工作台 (Studio)
+           ==================================================================== -->
+      <div id="view-studio" class="view-panel" style="display:none;">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h2>AI 題型審核與二次精修工作台 (Human-in-the-Loop)</h2>
+            <p>老師可直接二次修改題幹、微調混淆選項為「二選一減壓模式」，並設定停頓鷹架提示</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary" onclick="resetStudioQuestions()">
+              <i class="fa-solid fa-rotate-left"></i> 重置預設
+            </button>
+            <button class="btn btn-success" onclick="dispatchStudioToStudent()">
+              <i class="fa-solid fa-paper-plane"></i> 審核通過並即時派發學生 App
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <!-- Question 1: Visual Matching with Scaffolding -->
+          <div class="question-card-row">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="status-badge" style="background:var(--primary-light); color:var(--primary);">題型 1 • 視覺單字匹配 (90s 微挑戰)</span>
+                <span class="status-badge"><i class="fa-solid fa-check"></i> 課綱吻合</span>
+              </div>
+              <span style="font-size:0.75rem; color:var(--text-sub);">配時建議：25 秒</span>
+            </div>
+
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+              題幹文字 (老師可在此直接修改)：
+            </label>
+            <input type="text" id="input-q1-prompt" class="form-control" value="Look at the picture. What is the delicious food?">
+
+            <!-- Scaffolding Settings for Question 1 -->
+            <div style="margin-top:12px; background:#f8fafc; border:1px solid var(--border-dark); border-radius:var(--radius-sm); padding:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-size:0.82rem; color:var(--text-main);"><i class="fa-solid fa-hand-holding-heart" style="color:var(--primary);"></i> ADHD 專屬鷹架提示開關：</strong>
+                <span class="status-badge">學生停頓 3 秒自動浮現</span>
+              </div>
+              <input type="text" id="input-q1-hint" class="form-control" style="margin-top:8px; font-size:0.8rem;" value="老師的溫柔提示：注意看中間兩個字母是一樣的喔 (p-i-z-z-a)！">
+            </div>
+
+            <!-- Options Reduced to 2 (Choice Paralysis Reduction) -->
+            <div style="margin-top:12px;">
+              <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+                減壓選項設置 (限制 2 選項以杜絕選擇障礙)：
+              </label>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <input type="text" id="input-opt-a" class="form-control" value="A. Pizza (正確解答)">
+                <input type="text" id="input-opt-b" class="form-control" value="B. Chair (干擾項)">
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 2: TPR Physical Drag Match -->
+          <div class="question-card-row">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="status-badge" style="background:#fef3c7; color:#b45309;">題型 2 • TPR 肢體操作拖曳 (動態感知)</span>
+              </div>
+              <span style="font-size:0.75rem; color:var(--text-sub);">配時建議：30 秒</span>
+            </div>
+
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:4px;">
+              TPR 動作指令題幹：
+            </label>
+            <input type="text" class="form-control" value="Drag the action card to bake the pizza: [Bake the Pizza]">
+            <p style="font-size:0.75rem; color:var(--text-sub); margin-top:6px;">
+              學生在手機端將以指尖拖曳卡片至磁吸框，觸發震動反饋馬達。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           VIEW 4: 學生專注成效分析與 IEP 報告 (IEP Analytics)
+           ==================================================================== -->
+      <div id="view-analytics" class="view-panel" style="display:none;">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h2>學生個別專注成效評估與特教 IEP 報告</h2>
+            <p>客觀記錄百毫秒級行為延遲，一鍵產出符合教育局格式的特教個別化教育計畫評估書</p>
+          </div>
+          <button class="btn btn-primary" onclick="openIepModal()">
+            <i class="fa-solid fa-file-pdf"></i> 預覽並導出 IEP 評估報告 (PDF)
+          </button>
+        </div>
+
+        <div class="grid-4" style="margin-top:20px;">
+          <div class="metric-card">
+            <div class="metric-label">受測學生姓名</div>
+            <div class="metric-value" style="font-size:1.4rem;">王小明</div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">四年一班 • ADHD 專注缺失型</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">平均專注維持時長</div>
+            <div class="metric-value">76 秒 <span class="metric-delta up">▲ +24s</span></div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">90 秒單元完成率 84.4%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">平均點擊猶豫延遲</div>
+            <div class="metric-value">1.42 秒 <span class="metric-delta up">▼ 縮短</span></div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">較基準期縮短 0.8 秒</div>
+          </div>
+          <div class="metric-card alert-border">
+            <div class="metric-label" style="color:var(--danger);">專注力臨界崩潰拐點</div>
+            <div class="metric-value" style="color:var(--danger);">第 68 秒</div>
+            <div style="font-size:0.75rem; color:var(--text-sub);">建議單元總時長控制在 75s</div>
+          </div>
+        </div>
+
+        <!-- Sensory Radar & IEP Advice Card -->
+        <div class="grid-2" style="margin-top:20px;">
+          <div class="card">
+            <div class="card-header-bar">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-pie" style="color:var(--primary);"></i>
+                <span>特教感官輸入偏好分析</span>
+              </div>
+            </div>
+            <div style="text-align:center; padding:16px;">
+              <div style="display:flex; justify-content:space-around; margin-bottom:16px;">
+                <div>
+                  <div style="font-size:1.6rem; font-weight:900; color:var(--primary);">68%</div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">觸覺拖曳偏好 (最高)</div>
+                </div>
+                <div>
+                  <div style="font-size:1.6rem; font-weight:900; color:var(--secondary);">22%</div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">40Hz 聽覺降噪</div>
+                </div>
+                <div>
+                  <div style="font-size:1.6rem; font-weight:900; color:var(--accent-coral);">10%</div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">純文字識別</div>
+                </div>
+              </div>
+              <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.5;">
+                數據證明：王同學為典型的<strong>「動態觸覺型學習者」</strong>，透過手指實體拖曳卡片時之專注持久度，為純文字閱讀的 3.8 倍。
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="background:#f0fdf4; border-color:#86efac;">
+            <div class="card-header-bar">
+              <div class="card-title" style="color:#166534;">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>IEP 專家輔導建議（自動生成草稿）</span>
+              </div>
+            </div>
+            <div style="font-size:0.84rem; color:#14532d; line-height:1.6;">
+              <p><strong>1. 教學長度調整：</strong>王同學注意力在第 68 秒有疲勞跡象，建議課堂微任務控制在 60~75 秒以內。</p>
+              <p style="margin-top:6px;"><strong>2. 維持雙耳節拍：</strong>開啟 40Hz 背景音波時，其猶豫秒數下降 40%，建議常態維持。</p>
+              <p style="margin-top:6px;"><strong>3. 肯定努力而非分數：</strong>避免同儕排名，以連續天數勳章激勵其多巴胺迴路。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           VIEW 5: 特教無障礙參數庫 (Accessibility Settings)
+           ==================================================================== -->
+      <div id="view-accessibility" class="view-panel" style="display:none;">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h2>特教感官無障礙參數庫 (個人化配置)</h2>
+            <p>設定將即時雲端同步至該學生的 App 端，自動調整視覺、聽覺與觸覺反饋</p>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('已同步特教參數至王小明的 App 設備！')">
+            <i class="fa-solid fa-floppy-disk"></i> 儲存並同步至學生設備
+          </button>
+        </div>
+
+        <div class="grid-4" style="margin-top:20px; grid-template-columns: repeat(3, 1fr);">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px;"><i class="fa-solid fa-eye"></i> 視覺抗分心配置</div>
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:0.85rem;">
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>抗分心高清晰字體</span>
+                <input type="checkbox" checked>
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>單字彩色音節切片底線</span>
+                <input type="checkbox" checked>
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>行距字距加大 1.5 倍</span>
+                <input type="checkbox" checked>
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>停用跳動倒數（改用微沙漏）</span>
+                <input type="checkbox" checked>
+              </label>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px;"><i class="fa-solid fa-headphones"></i> 聽覺降噪與專注波</div>
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:0.85rem;">
+              <div>預設背景降噪波形：</div>
+              <select class="form-control">
+                <option>40Hz 專注雙耳節拍 (Binaural Beat)</option>
+                <option>粉紅噪音 (Pink Noise) 溫和減壓</option>
+                <option>大自然雨聲白噪音</option>
+                <option>靜音模式</option>
+              </select>
+              <div style="margin-top:6px;">
+                <span>背景音量平衡：</span>
+                <input type="range" class="form-control" value="40" style="padding:0;">
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px;"><i class="fa-solid fa-heart-pulse"></i> 防挫折與多巴胺獎勵</div>
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:0.85rem;">
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>連錯 2 題自動切換降階題型</span>
+                <input type="checkbox" checked>
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>答對時手機物理震動</span>
+                <input type="checkbox" checked>
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>禁用任何懲罰性扣分音效</span>
+                <input type="checkbox" checked>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ====================================================================
+         COLLAPSIBLE RIGHT DRAWER: THE LIVE STUDENT COMPANION SIMULATOR
+         ==================================================================== -->
+    <aside class="student-drawer" id="studentDrawer">
+      <!-- Drawer Header Bar -->
+      <div class="drawer-header">
+        <h3>
+          <i class="fa-solid fa-mobile-screen"></i>
+          <span>學生端即時動態模擬艙</span>
+        </h3>
+        <button class="btn-close-drawer" onclick="toggleStudentDrawer()" title="收合抽屜">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Body: Contains the iPhone Mobile Frame -->
+      <div class="drawer-body">
+        <div class="iphone-frame">
+          <div class="iphone-notch"></div>
+          
+          <div class="iphone-screen">
+            <!-- Canvas for particle confetti explosion -->
+            <canvas id="confetti-canvas"></canvas>
+
+            <div class="student-view-container">
+
+              <!-- ==============================================================
+                   SCREEN 1: STUDENT HOME (Single Task Focus)
+                   ============================================================== -->
+              <div id="student-screen-home" class="student-screen active">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:32px; height:32px; border-radius:50%; background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem;">
+                      明
+                    </div>
+                    <div>
+                      <div style="font-size:0.82rem; font-weight:800;">冒險家 小明</div>
+                      <div style="font-size:0.7rem; color:var(--text-sub);"><i class="fa-solid fa-fire" style="color:#f97316;"></i> 連續專注 5 天</div>
+                    </div>
+                  </div>
+                  <span class="audio-pill active" id="audioToggleBtn" onclick="toggleAudioPill()">
+                    <i class="fa-solid fa-headphones"></i> 40Hz 降噪中
+                  </span>
+                </div>
+
+                <!-- Single Task Card -->
+                <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+                  <div class="focal-card" style="box-shadow: 0 10px 25px -5px rgba(2,132,199,0.12); border-color:#cbd5e1;">
+                    <span class="status-badge" style="background:#fef3c7; color:#b45309; margin-bottom:6px;">
+                      <i class="fa-solid fa-clock"></i> 僅需 90 秒微挑戰
+                    </span>
+                    <h3 id="student-unit-title" style="font-size:1.25rem; font-weight:900; margin:6px 0;">單元 3：魔法烘焙坊</h3>
+                    <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:14px;">
+                      認識 3 個香噴噴的單字與烘焙動作！
+                    </p>
+
+                    <div style="background:#f8fafc; border:1px dashed var(--border-dark); border-radius:var(--radius-sm); padding:10px; margin-bottom:16px;">
+                      <div style="font-size:0.72rem; color:var(--text-sub); margin-bottom:4px;">今日獎勵勳章：</div>
+                      <div style="display:flex; justify-content:center; gap:8px;">
+                        <span style="font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-pizza-slice" style="color:#f97316;"></i> 烘焙達人</span>
+                        <span style="font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-star" style="color:#eab308;"></i> +50 專注星</span>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width:100%; justify-content:center; padding:14px; font-size:1rem;" onclick="startStudentMission()">
+                      <i class="fa-solid fa-play"></i> 開始 90 秒專注冒險
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bottom Navigation Mock -->
+                <div style="display:flex; justify-content:space-around; background:#ffffff; border-radius:999px; padding:6px 12px; border:1px solid #e2e8f0; margin-top:auto;">
+                  <span style="font-size:0.75rem; font-weight:800; color:var(--primary);"><i class="fa-solid fa-house"></i> 首頁</span>
+                  <span style="font-size:0.75rem; color:var(--text-light);"><i class="fa-solid fa-medal"></i> 勳章</span>
+                  <span style="font-size:0.75rem; color:var(--text-light);"><i class="fa-solid fa-gear"></i> 感官</span>
+                </div>
+              </div>
+
+              <!-- ==============================================================
+                   SCREEN 2: 90s SANDBOX QUESTION 1 (Visual Matching)
+                   ============================================================== -->
+              <div id="student-screen-question" class="student-screen">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; font-weight:700; color:var(--text-sub); margin-bottom:4px;">
+                  <span><i class="fa-solid fa-hourglass-half"></i> 90s 溫和沙漏</span>
+                  <span style="color:var(--primary);">第 1 / 2 題</span>
+                </div>
+                <div class="sandbox-timer-bar">
+                  <div class="sandbox-timer-fill" id="sandboxTimerFill"></div>
+                </div>
+
+                <!-- Prompt Card -->
+                <div class="focal-card" style="padding:16px 12px; margin-bottom:12px;">
+                  <div style="width:80px; height:80px; border-radius:12px; background:#fff7ed; margin:0 auto 8px; display:flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid fa-pizza-slice" style="font-size:2.4rem; color:#ea580c;"></i>
+                  </div>
+                  <div class="word-syllable-display">
+                    p - <span class="syllable-highlight">i - z - z</span> - a
+                  </div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">
+                    /ˈpiːtsə/ • 點擊發音 <i class="fa-solid fa-volume-high" style="color:var(--primary); cursor:pointer;"></i>
+                  </div>
+                </div>
+
+                <!-- Teacher Dynamic Scaffold Hint Box (Expands when delayed) -->
+                <div id="student-scaffold-hint" class="scaffold-hint-bubble">
+                  <i class="fa-solid fa-lightbulb" style="font-size:1.1rem;"></i>
+                  <span id="hint-text-display">老師的溫柔提示：注意中間兩個字母是一樣的喔！</span>
+                </div>
+
+                <!-- 2-Option Reduced Anxiety Choice Buttons -->
+                <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                  <button class="option-btn-huge" onclick="handleStudentAnswer(true)">
+                    <span id="opt-a-text">A. Pizza (披薩)</span>
+                    <i class="fa-solid fa-circle-check" style="color:var(--success);"></i>
+                  </button>
+                  <button class="option-btn-huge" onclick="handleStudentAnswer(false)">
+                    <span id="opt-b-text">B. Chair (椅子)</span>
+                    <i class="fa-solid fa-circle" style="color:#cbd5e1;"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ==============================================================
+                   SCREEN 3: DOPAMINE CELEBRATION MODAL
+                   ============================================================== -->
+              <div id="student-screen-victory" class="student-screen" style="text-align:center; justify-content:center; align-items:center;">
+                <div style="width:76px; height:76px; border-radius:50%; background:#fef9c3; display:flex; align-items:center; justify-content:center; margin-bottom:14px; box-shadow:0 8px 20px rgba(234,179,8,0.25);">
+                  <i class="fa-solid fa-trophy" style="font-size:2.2rem; color:#ca8a04;"></i>
+                </div>
+                <span class="status-badge" style="background:var(--success-light); color:#065f46; margin-bottom:6px;">
+                  <i class="fa-solid fa-shield-heart"></i> 90 秒微任務成功！
+                </span>
+                <h3 style="font-size:1.35rem; font-weight:900; margin-bottom:4px;">太棒了！你專注了整整 88 秒！</h3>
+                <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:18px;">
+                  今天解鎖了 3 個魔法烘焙英語生字！
+                </p>
+
+                <div style="background:#ffffff; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:12px; width:100%; margin-bottom:18px;">
+                  <div style="display:flex; justify-content:space-around; font-size:0.75rem;">
+                    <div>
+                      <div style="color:var(--text-sub);">作答延遲</div>
+                      <strong style="font-size:1rem; color:var(--success);">1.2 秒 ⚡</strong>
+                    </div>
+                    <div style="border-left:1px solid #e2e8f0;"></div>
+                    <div>
+                      <div style="color:var(--text-sub);">累計專注星</div>
+                      <strong style="font-size:1rem; color:#eab308;">350 顆 ★</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="width:100%; display:flex; flex-direction:column; gap:8px;">
+                  <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="returnToStudentHome()">
+                    <i class="fa-solid fa-water"></i> 喝口水，休息一下 💧
+                  </button>
+                  <button class="btn btn-secondary" style="width:100%; justify-content:center; font-size:0.8rem;" onclick="returnToStudentHome()">
+                    回首頁領取徽章
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Floating Pull Tab / Arrow on right edge -->
+    <div class="drawer-pull-tab" id="drawerPullTab" onclick="toggleStudentDrawer()">
+      <i class="fa-solid fa-chevron-left" id="pullTabIcon"></i>
+      <span id="pullTabText">學生端即時畫面</span>
+      <span class="pulse-dot" style="background:#4ade80;"></span>
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: IEP REPORT PRINT PREVIEW (特教個別化教育計畫)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="iepModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 style="font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i>
+          特教個別化教育計畫 (IEP) 英語專注成效評估報告
+        </h3>
+        <button class="btn-close-drawer" onclick="closeIepModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div style="border-bottom:2px solid var(--text-main); padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between;">
+          <div>
+            <h4 style="font-size:1.15rem; font-weight:800;">中原附小 特教資源班 個別化教育計畫 (IEP)</h4>
+            <div style="font-size:0.8rem; color:var(--text-sub);">評估學期：114 學年度第 2 學期 ｜ 評估系統：FocusLingua Edu</div>
+          </div>
+          <div style="text-align:right; font-size:0.8rem;">
+            <strong>受測學生：王小明</strong><br>
+            <span>診斷類別：ADHD (專注力缺失型)</span>
+          </div>
+        </div>
+
+        <h5 style="font-size:0.9rem; font-weight:800; margin-bottom:8px; color:var(--primary);">一、 90 秒微感官專注時長與反應延遲指標</h5>
+        <table style="width:100%; border-collapse:collapse; font-size:0.82rem; margin-bottom:16px;">
+          <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; font-weight:700;">
+            <th style="padding:8px; text-align:left;">評估維度</th>
+            <th style="padding:8px; text-align:left;">實施微單元前基準期</th>
+            <th style="padding:8px; text-align:left;">FocusLingua 實施後</th>
+            <th style="padding:8px; text-align:left;">改善幅度</th>
+          </tr>
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:8px;">平均專注維持時長</td>
+            <td style="padding:8px;">52 秒 (常於長句挫折)</td>
+            <td style="padding:8px; font-weight:700; color:#059669;">76 秒 (接近完整完成)</td>
+            <td style="padding:8px; font-weight:700; color:#059669;">▲ +46.1%</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:8px;">答題猶豫停頓延遲</td>
+            <td style="padding:8px;">3.85 秒 (選擇障礙)</td>
+            <td style="padding:8px; font-weight:700; color:#059669;">1.42 秒 (二選一減壓)</td>
+            <td style="padding:8px; font-weight:700; color:#059669;">▼ 縮短 63.1%</td>
+          </tr>
+          <tr>
+            <td style="padding:8px;">專注力臨界崩潰點</td>
+            <td style="padding:8px;">約第 40 秒開始分心</td>
+            <td style="padding:8px; font-weight:700;">第 68 秒 (顯著延後)</td>
+            <td style="padding:8px; font-weight:700; color:#059669;">▲ 延長 28 秒</td>
+          </tr>
+        </table>
+
+        <h5 style="font-size:0.9rem; font-weight:800; margin-bottom:8px; color:var(--primary);">二、 特教教師與臨床人因綜合建議</h5>
+        <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.6; margin-bottom:14px;">
+          王同學在導入 90 秒微感官學習模式後，對英語單字之排斥感大幅降低。透過 40Hz 專注波阻絕教室環境噪音，搭配實體卡片觸覺拖曳反饋，成功建立正向多巴胺獎勵迴路。建議下階段仍維持「每課切片為 3 單字」之低認知負載原則。
+        </p>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #e2e8f0; padding-top:14px;">
+          <button class="btn btn-secondary" onclick="closeIepModal()">關閉</button>
+          <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> 列印正式 IEP 報告書</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast-pill">
+    <i class="fa-solid fa-circle-check" style="color:#4ade80;"></i>
+    <span id="toast-message">操作成功！</span>
+  </div>
+
+  <!-- ==========================================================================
+       INTERACTIVE JAVASCRIPT ENGINE (CROSS-PLATFORM REACTIVE LOGIC)
+       ========================================================================== -->
+  <script>
+    // 1. Navigation Switching in Teacher Workspace
+    function switchView(viewName) {
+      // Update Sidebar Active state
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      // Hide all panels and display targeted one
+      const panels = ['dashboard', 'curriculum', 'studio', 'analytics', 'accessibility'];
+      panels.forEach(p => {
+        const el = document.getElementById('view-' + p);
+        if (el) el.style.display = (p === viewName) ? 'block' : 'none';
+      });
+    }
+
+    // 2. Collapsible Right Drawer Logic
+    function toggleStudentDrawer() {
+      const body = document.body;
+      const btnText = document.getElementById('header-btn-text');
+      const pullIcon = document.getElementById('pullTabIcon');
+      const pullText = document.getElementById('pullTabText');
+
+      body.classList.toggle('drawer-open');
+
+      if (body.classList.contains('drawer-open')) {
+        btnText.innerText = "收合學生端畫面";
+        pullIcon.className = "fa-solid fa-chevron-right";
+        pullText.innerText = "收合畫面";
+      } else {
+        btnText.innerText = "展開學生端畫面";
+        pullIcon.className = "fa-solid fa-chevron-left";
+        pullText.innerText = "學生端即時畫面";
+      }
+    }
+
+    // 3. Teacher Actions Reacting in Student Simulator
+    function dispatchDirectToStudent() {
+      // Open drawer if closed
+      if (!document.body.classList.contains('drawer-open')) {
+        toggleStudentDrawer();
+      }
+      showToast("已派發今日 90 秒微任務至學生 App！");
+      // Reset student simulator to home
+      returnToStudentHome();
+    }
+
+    function dispatchStudioToStudent() {
+      // Get updated text from teacher inputs
+      const promptText = document.getElementById('input-q1-prompt').value;
+      const hintText = document.getElementById('input-q1-hint').value;
+      const optA = document.getElementById('input-opt-a').value;
+      const optB = document.getElementById('input-opt-b').value;
+
+      // Update student simulator elements
+      document.getElementById('hint-text-display').innerText = hintText;
+      document.getElementById('opt-a-text').innerText = optA;
+      document.getElementById('opt-b-text').innerText = optB;
+
+      // Open drawer
+      if (!document.body.classList.contains('drawer-open')) {
+        toggleStudentDrawer();
+      }
+
+      showToast("已將二次審核題目與鷹架提示同步至學生 App！");
+      startStudentMission();
+    }
+
+    function resetStudioQuestions() {
+      document.getElementById('input-q1-prompt').value = "Look at the picture. What is the delicious food?";
+      document.getElementById('input-q1-hint').value = "老師的溫柔提示：注意看中間兩個字母是一樣的喔 (p-i-z-z-a)！";
+      document.getElementById('input-opt-a').value = "A. Pizza (正確解答)";
+      document.getElementById('input-opt-b').value = "B. Chair (干擾項)";
+      showToast("已重置題目為 108 課綱推薦值");
+    }
+
+    function triggerStudentHint() {
+      if (!document.body.classList.contains('drawer-open')) {
+        toggleStudentDrawer();
+      }
+      startStudentMission();
+      const hintBox = document.getElementById('student-scaffold-hint');
+      hintBox.style.display = "flex";
+      showToast("已為王小明遠端注入鷹架提示！");
+    }
+
+    function simulateUpload() {
+      showToast("教材檔案已成功上傳！AI 正在進行 108 課綱切片...");
+      setTimeout(() => {
+        document.getElementById('ai-slice-result').style.display = "block";
+        showToast("切片完成！已自動鎖定 3 個核心高頻生字");
+      }, 1000);
+    }
+
+    function runAiSlice() {
+      showToast("AI 正在分析教材句型長度與認知負載...");
+      setTimeout(() => {
+        switchView('studio');
+        document.querySelectorAll('.nav-item').forEach((item, idx) => {
+          item.classList.toggle('active', idx === 2);
+        });
+        showToast("已進入【AI 題型審核台】，請老師確認題目！");
+      }, 800);
+    }
+
+    // 4. Student Mobile Simulator Interactive Logic
+    function startStudentMission() {
+      document.getElementById('student-screen-home').classList.remove('active');
+      document.getElementById('student-screen-victory').classList.remove('active');
+      document.getElementById('student-screen-question').classList.add('active');
+      
+      // Animate gentle timer fill
+      const timer = document.getElementById('sandboxTimerFill');
+      timer.style.width = "10%";
+      setTimeout(() => { timer.style.width = "65%"; }, 600);
+    }
+
+    function handleStudentAnswer(isCorrect) {
+      if (isCorrect) {
+        // Trigger celebration
+        document.getElementById('student-screen-question').classList.remove('active');
+        document.getElementById('student-screen-victory').classList.add('active');
+        launchConfetti();
+        showToast("學生端作答正確！耗時 1.2 秒，已同步更新教師儀表板！");
+      } else {
+        showToast("答錯不扣分，系統已自動為學生提供提示！");
+        document.getElementById('student-scaffold-hint').style.display = "flex";
+      }
+    }
+
+    function returnToStudentHome() {
+      document.getElementById('student-screen-question').classList.remove('active');
+      document.getElementById('student-screen-victory').classList.remove('active');
+      document.getElementById('student-screen-home').classList.add('active');
+    }
+
+    function toggleAudioPill() {
+      const btn = document.getElementById('audioToggleBtn');
+      btn.classList.toggle('active');
+      if (btn.classList.contains('active')) {
+        btn.innerHTML = '<i class="fa-solid fa-headphones"></i> 40Hz 降噪中';
+        showToast("40Hz 專注波已啟用，阻絕環境雜訊");
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> 靜音模式';
+        showToast("專注波已關閉");
+      }
+    }
+
+    // 5. Dopamine Confetti Particle Explosion
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      const particles = [];
+      const colors = ['#f59e0b', '#10b981', '#0284c7', '#ec4899', '#8b5cf6'];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 8,
+          vy: (Math.random() - 0.7) * 9,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: Math.random() * 5 + 3,
+          alpha: 1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.25; // gravity
+          p.alpha -= 0.015;
+          if (p.alpha > 0) {
+            alive = true;
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.alpha);
+            ctx.fillRect(p.x, p.y, p.size, p.size);
+          }
+        });
+        if (alive) requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // 6. IEP Modal Controls
+    function openIepModal() {
+      document.getElementById('iepModal').classList.add('active');
+    }
+    function closeIepModal() {
+      document.getElementById('iepModal').classList.remove('active');
+    }
+
+    // 7. Toast Message Helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+  </script>
+</body>
+</html>

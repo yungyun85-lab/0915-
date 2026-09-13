@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="dark">
+<html lang="zh-TW" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>陳詠芸 Chen, Yung-Yun | 個人作品集 & 履歷簡介 Portfolio</title>
-  <meta name="description" content="中原大學雙主修應用外語與財務金融，陳詠芸 Yung-Yun 的個人求職靜態作品集網站。展現專業技能、精選專案經驗與工作歷程。">
+  <title>Yung-yun Chen | 個人作品集 & 專業簡介 Portfolio</title>
+  <meta name="description" content="中原大學雙主修應用外語與財務金融，Yung-yun Chen 的個人求職作品集網站。具備雅思 6.5、量化財務分析與 AI 數位應用之跨域優勢。">
   
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Stylesheet -->
@@ -21,7 +21,7 @@
   <nav class="navbar" id="navbar">
     <a href="#hero" class="navbar-brand">
       <span class="brand-dot"></span>
-      <span>陳詠芸 Yung-Yun</span>
+      <span>Yung-yun Chen</span>
     </a>
     
     <ul class="nav-links">
@@ -33,6 +33,9 @@
     </ul>
 
     <div class="nav-actions">
+      <button class="btn-primary" id="btn-live-edit" onclick="togglePortfolioEdit()" style="background:#fef3c7; color:#b45309; border:1px solid #f59e0b; padding:8px 14px; font-weight:700; border-radius:8px; cursor:pointer;">
+        <i class="fa-solid fa-pen-to-square"></i> 線上編輯
+      </button>
       <button class="btn-icon" id="theme-toggle" title="切換深色/淺色模式">
         <i class="fa-solid fa-moon"></i>
       </button>
@@ -45,21 +48,45 @@
     </div>
   </nav>
 
+  <!-- Edit Mode Floating Banner for Portfolio -->
+  <div id="portfolioEditToolbar" style="display:none; background:#FFFBEB; border-bottom:2px solid #F59E0B; padding:10px 24px; position:sticky; top:70px; z-index:999; box-shadow:0 4px 12px rgba(245,158,11,0.15);">
+    <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div style="font-size:0.88rem; color:#92400E; display:flex; align-items:center; gap:8px;">
+        <span style="width:10px; height:10px; border-radius:50%; background:#F59E0B; display:inline-block;"></span>
+        <strong>✍️ 作品集即時編輯模式：</strong> 點擊畫面上任何文字、自我介紹、經歷或專案描述即可直接打字修改！
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button onclick="savePortfolioEdits()" style="background:#10B981; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-floppy-disk"></i> 儲存到瀏覽器</button>
+        <button onclick="downloadPortfolioHtml()" style="background:#0284C7; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-download"></i> 匯出下載 HTML</button>
+        <button onclick="resetPortfolioDefault()" style="background:#E2E8F0; color:#475569; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-rotate-left"></i> 恢復預設</button>
+        <button onclick="togglePortfolioEdit()" style="background:#F1F5F9; color:#64748B; border:1px solid #CBD5E1; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-xmark"></i> 結束編輯</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="container hero-grid">
       <div class="hero-content">
         <div class="hero-badge">
           <span class="badge-pulse"></span>
-          <span>尋求新挑戰 · 開放工作機會招募中</span>
+          <span>尋求新挑戰 · 英語教育科技 / 跨域商業 / AI 數位專案</span>
         </div>
         <h1 class="hero-title">
-          嗨，我是 <span class="gradient-text">陳詠芸 Yung-Yun</span><br>
-          具備外語優勢與財金思維的跨域人才
+          嗨，我是 <span class="gradient-text">Yung-yun Chen</span><br>
+          外語溝通 × 財金量化 × AI 數位應用的跨域人才
         </h1>
         <p class="hero-subtitle">
-          就讀中原大學應用外語系與財務金融學系雙主修。具備優秀的跨國溝通與財務分析背景，並積極投入前瞻科技競賽、人資實務與數位影像創作，探索科技與商業的多元應用。
+          中原大學應用外語系與財務金融學系雙主修。具備優秀的英語商務溝通能力（<strong>雅思 6.5 分</strong>）、嚴謹的財金量化分析邏輯，並榮獲首屆前瞻科技競賽優等。擅長融合語言、AI 數位工具與商業思維，打造高效解決方案。
         </p>
+
+        <!-- 一目了然的核心優勢標籤 (Key Advantages Bar) -->
+        <div class="hero-advantages">
+          <span class="adv-chip"><i class="fa-solid fa-graduation-cap"></i> 應外 × 財金雙主修 (GPA 3.7)</span>
+          <span class="adv-chip"><i class="fa-solid fa-earth-americas"></i> 國際語言能力：雅思 6.5 分 / 西語 A1</span>
+          <span class="adv-chip"><i class="fa-solid fa-chart-pie"></i> 財金量化數據：Excel 樞紐分析 / EViews / TEJ</span>
+          <span class="adv-chip"><i class="fa-solid fa-microchip"></i> 科技競賽優等 (Top 2) / 英語數位教材 PRD</span>
+        </div>
         
         <div class="hero-ctas">
           <a href="#projects" class="btn-primary">
@@ -72,16 +99,20 @@
 
         <div class="hero-stats">
           <div class="stat-item">
+            <div class="stat-number gradient-text">IELTS 6.5</div>
+            <div class="stat-label">雅思考試成績 (專業外語)</div>
+          </div>
+          <div class="stat-item">
             <div class="stat-number gradient-text">3.7</div>
-            <div class="stat-label">在校 GPA 分數</div>
+            <div class="stat-label">在校 GPA 分數 (雙主修)</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number gradient-text">770 分</div>
-            <div class="stat-label">多益聽讀成績 (TOEIC)</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number gradient-text">前二名</div>
+            <div class="stat-number gradient-text">Top 2</div>
             <div class="stat-label">首屆前瞻科技競賽優等</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number gradient-text">雙主修</div>
+            <div class="stat-label">中原應外系 × 財金系</div>
           </div>
         </div>
       </div>
@@ -89,14 +120,14 @@
       <!-- Avatar & Graphic -->
       <div class="hero-avatar">
         <div class="avatar-wrapper">
-          <div class="avatar-card">
-            <img src="assets/IMG_3547.jpeg" alt="陳詠芸 Yung-Yun Profile Avatar" class="avatar-img">
+          <div class="avatar-card" style="box-shadow: 0 20px 40px -15px rgba(2, 132, 199, 0.15);">
+            <img src="assets/76D027CB-D86B-45E6-9014-1B50BDC2E92C.jpg" alt="Yung-yun Chen Profile Avatar" class="avatar-img">
           </div>
           <div class="floating-badge badge-1">
             <span class="badge-icon">💬</span>
             <div>
-              <strong style="display:block; font-size:0.9rem;">Applied Languages</strong>
-              <small style="color:var(--text-muted); font-size:0.75rem;">English / Spanish / AFL</small>
+              <strong style="display:block; font-size:0.9rem;">IELTS 6.5 / AFL</strong>
+              <small style="color:var(--text-muted); font-size:0.75rem;">English & Spanish</small>
             </div>
           </div>
           <div class="floating-badge badge-2">
@@ -117,41 +148,47 @@
       <div class="self-intro-box">
         <h3 style="font-size: 1.35rem; margin-bottom: 16px; color: var(--accent-primary);"><i class="fa-regular fa-face-smile" style="margin-right: 8px;"></i> 關於我 / Self-Introduction</h3>
         <p>
-          嗨，我是 <strong>陳詠芸 Yung-Yun</strong>。目前就讀於中原大學應用外語學系與財務金融學系雙主修。
+          嗨，我是 <strong>Yung-yun Chen</strong>。目前就讀於中原大學應用外語學系與財務金融學系雙主修。
         </p>
         <p style="margin-top: 12px;">
-          在個人特質上，我是一位<strong>認真負責且具備創意力</strong>的人，面對學習與專案挑戰時，展現出<strong>堅韌不拔</strong>的求知態度與毅力。我非常熱愛學習，總是主動<strong>跨出舒適圈去挑戰未知領域</strong>。具備<strong>「斜槓」</strong>多元能力的特質，讓我能融合語文溝通優勢、財金量化分析與影音多媒體創作，為團隊與專案帶來創新的跨域價值。
+          在個人特質上，我是一位<strong>認真負責且具備高度創意與執行力</strong>的跨域整合者，面對學習與專案挑戰時，展現出<strong>堅韌不拔</strong>的求知態度。具備<strong>「語言 × 財金 × 數位 AI」</strong>的斜槓多元特質，讓我能將流暢的跨國溝通能力、嚴謹的量化分析邏輯與數位多媒體技術無縫結合，為團隊與專案創造獨特而實質的成果。
         </p>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
+  <!-- About Section (4 大核心優勢一目了然) -->
   <section id="about">
     <div class="container">
       <div class="section-header">
-        <div class="section-subtitle">ABOUT ME</div>
+        <div class="section-subtitle">CORE COMPETENCIES</div>
         <h2 class="section-title">核心價值與個人優勢</h2>
-        <p style="color: var(--text-muted);">我專注於跨國語言溝通與財務分析的多元整合，致力在各項專案中帶入創意思維與高執行力。</p>
+        <p style="color: var(--text-muted);">跨國語言溝通 × 財金量化邏輯 × 前瞻科技 AI × 團隊統籌領導之全方位展現</p>
       </div>
 
       <div class="about-grid">
         <div class="about-card">
           <div class="card-icon"><i class="fa-solid fa-language"></i></div>
-          <h3>語文與跨國溝通</h3>
-          <p>精通英語（多益 770 分，雅思準備中，目標 7 分）與西班牙文（FLPT 92分 / A1，DELE A2 準備中），能進行流暢的跨文化交流。</p>
+          <h3>國際外語與商務溝通</h3>
+          <p>精通英語（<strong>雅思 6.5 分</strong>、多益 770 分）與基礎西班牙文（FLPT 92分 / A1）。曾任大學遠距英語課程教學助理 (TA) 與個別化英文課輔老師，具備出色的跨文化溝通與教學傳遞力。</p>
         </div>
 
         <div class="about-card">
           <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <h3>財金與分析邏輯</h3>
-          <p>精通財務報表分析與資料庫操作，熟練運用 Excel 進行大數據整理與報表製作，並操作 EViews、TEJ 台灣經濟新報資料庫。</p>
+          <h3>財金量化與商業邏輯</h3>
+          <p>具備扎實財務分析邏輯，熟練運用 Excel 樞紐分析與進階函數處理大數據，並操作 EViews 建立計量經濟迴歸模型、TEJ 台灣經濟新報資料庫進行產業與公司財務研析。</p>
         </div>
 
         <div class="about-card">
-          <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
-          <h3>前瞻科技與多媒體</h3>
-          <p>熱衷前瞻科技應用，曾獲首屆科技競賽優等。擅長使用 AI 工具（ChatGPT/Claude）進行計畫排程，並熟練操作影音剪輯（CapCut、Buzz）。</p>
+          <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+          <h3>前瞻科技與 AI 數位落地</h3>
+          <p>榮獲首屆前瞻科技競賽個人優等第二名。主導 FocusLingua 英語數位教材系統規劃，撰寫完整 PRD 規格書與雙端架構，擅長運用生成式 AI (Gemini / Claude) 驅動數位創新。</p>
+        </div>
+
+        <div class="about-card">
+          <div class="card-icon"><i class="fa-solid fa-people-group"></i></div>
+          <h3>團隊領導與組織協調</h3>
+          <p>擔任嘻哈文化研究社迎新總召，統籌 30 餘人跨組團隊進度與活動執行；於希伯倫（大家說英語/空中英語教室）人資部實習，展現高度跨部門溝通與職場敏捷適應力。</p>
         </div>
       </div>
     </div>
@@ -177,11 +214,11 @@
           <!-- Dynamically populated / Default render -->
           <div class="skill-item" data-category="frontend">
             <div class="skill-info">
-              <span>英語溝通 (TOEIC 770 / IELTS 準備中)</span>
-              <span class="gradient-text">85%</span>
+              <span>英語商務溝通 (IELTS 6.5 / TOEIC 770)</span>
+              <span class="gradient-text">88%</span>
             </div>
             <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="85%"></div>
+              <div class="skill-bar-fill" data-progress="88%"></div>
             </div>
           </div>
 
@@ -259,7 +296,70 @@
       </div>
 
       <div class="projects-grid">
-        <!-- Project 1 -->
+        <!-- Project 1: Canada Athabasca VIP Research Internship -->
+        <div class="project-card">
+          <div class="project-img-container" style="background: #0d1424; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <img src="assets/截圖 2026-09-09 晚上10.01.52.png" 
+                 alt="加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發" 
+                 class="project-img" 
+                 style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 23%; transform: scale(1.35); transform-origin: 50% 23%;">
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag" style="background:rgba(2,132,199,0.12); color:var(--accent-primary);">海外研究實習</span>
+              <span class="tag">VIP Research Group</span>
+              <span class="tag">MEGA World</span>
+              <span class="tag">TPR & CLT 教學法</span>
+            </div>
+            <h3 class="project-title">加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發</h3>
+            <p class="project-desc">
+              赴加拿大阿薩巴斯卡大學 VIP (Virtual &amp; Intelligent Platforms) 研究團隊進行海外實習。運用自主研發之 MEGA World (Multiplayer Educational Game for All) 線上教育平台開發英語學習遊戲，將 TPR（全身肢體反應法）與 CLT（溝通式教學法）等語言教學理論轉化為 2D 沉浸式遊戲機制，賦能師資培育生（師培生）靈活實踐數位遊戲化教學。
+            </p>
+            <div class="project-footer">
+              <span style="font-size:0.85rem; color:var(--text-sub);">Game-Based ESL / VIP Lab</span>
+              <a href="#" class="project-link" onclick="openProjectModal('加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發', 'Virtual &amp; Intelligent Platforms Lab × MEGA World 教育遊戲化', '<p style=\'margin-bottom:12px;\'><strong>【研究團隊背景】</strong><br>於加拿大阿薩巴斯卡大學（Athabasca University）之 <strong>VIP (Virtual &amp; Intelligent Platforms) Research Group</strong> 進行海外研發實習，深入接觸頂尖教育科技與多人在線遊戲化學習架構。</p><p style=\'margin-bottom:12px;\'><strong>【專案核心：MEGA World】</strong><br>運用 <strong>MEGA World (Multiplayer Educational Game for All)</strong> 平台進行網頁端互動關卡與英語數位教材建置，探索以學生為中心的學習動態。</p><p style=\'margin-bottom:12px;\'><strong>【語言教學理論深度融合】</strong><br>外語教學核心理論深度植入遊戲玩法：<br>• <strong>TPR (Total Physical Response 全身肢體反應法)</strong>：轉化為即時鍵盤動作反饋與動作指令互動關卡。<br>• <strong>CLT (Communicative Language Teaching 溝通式教學法)</strong>：建構任務導向之情境對話與同儕多人協作破關。</p><p><strong>【效益與成果】</strong><br>賦能<strong>師資培育生（師培生）</strong>克服傳統數位教材單向刻板的痛點，使其能在實習與未來教學現場中，靈活調度 2D 遊戲化工具落地語言教學理論，大幅增強學習者之參與感與口語反應動機。</p>'); return false;">
+                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: FocusLingua EdTech System -->
+        <div class="project-card">
+          <div class="project-img-container" style="background: linear-gradient(135deg, #0f766e 0%, #0284c7 100%); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:3.5rem; min-height: 220px;">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag" style="background:rgba(15,118,110,0.15); color:var(--accent-primary);">產品規劃 (PRD)</span>
+              <span class="tag">特教輔助科技</span>
+              <span class="tag">雙端原型</span>
+            </div>
+            <h3 class="project-title">FocusLingua - 專注英語數位教材系統 (PRD & 雙端原型)</h3>
+            <p class="project-desc">
+              專為注意力不集中特定族群 (ADHD / 注意力缺失) 量身設計的 90 秒微感官英語學習方案。包含「教師 Web 智能備課與課綱切片」與「學生 App 沉浸沙盒」之雙端架構，並可一鍵生成特教 IEP 評估報告。
+            </p>
+            <div class="project-footer">
+              <span style="font-size:0.85rem; color:var(--text-sub);">EdTech / PRD / Prototype</span>
+              <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                <a href="focuslingua_live_app.html" class="project-link" style="color:var(--accent-primary); font-weight:800; font-size:0.9rem;">
+                  教師 Web 實體系統 (含學生側拉艙) <i class="fa-solid fa-laptop-code"></i>
+                </a>
+                <a href="pitch_presentation.html" class="project-link" style="color:var(--text-main); font-weight:700; font-size:0.85rem;">
+                  簡報演示動態艙 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <a href="focuslingua_wireframes.html" class="project-link" style="color:#059669; font-weight:700; font-size:0.85rem;">
+                  雙端完整線稿 <i class="fa-solid fa-pen-ruler"></i>
+                </a>
+                <a href="prd_dashboard.html" class="project-link" style="color:var(--text-muted); font-size:0.85rem;">
+                  PRD 規模書
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Tech Competition -->
         <div class="project-card">
           <div class="project-img-container">
             <img src="assets/截圖 2026-08-04 下午3.00.37.png" alt="前瞻場域科技競賽專案" class="project-img">
@@ -283,7 +383,7 @@
           </div>
         </div>
 
-        <!-- Project 2 -->
+        <!-- Project 4: Leadership & Event Planning -->
         <div class="project-card">
           <div class="project-img-container">
             <img src="assets/中原嘻研J49.jpeg" alt="活動統籌與專案管理" class="project-img">
@@ -303,29 +403,6 @@
               <a href="#" class="project-link" onclick="openProjectModal('迎新活動總召與舞蹈社課教學', '大型活動統籌與領導力', '統籌 30 多人團隊，規劃詳細工作進度與跨部門分工細節，並擔任主課老師在短時間內完成教學，成功促成活動順利執行並展現出色的團隊執行力與組織調度才能。'); return false;">
                 詳細資訊 <i class="fa-solid fa-arrow-right"></i>
               </a>
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="project-card">
-          <div class="project-img-container" style="background: linear-gradient(135deg, #0f766e 0%, #0284c7 100%); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:3.5rem; min-height: 220px;">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="tag" style="background:rgba(15,118,110,0.15); color:var(--accent-primary);">產品規劃 (PRD)</span>
-              <span class="tag">輔助科技</span>
-              <span class="tag">互動模型</span>
-            </div>
-            <h3 class="project-title">FocusLingua - 專注英語學習產品設計書</h3>
-            <p class="project-desc">
-              為注意力不足 (ADHD) 及學習障礙者量身設計的 90 秒微感官英語學習方案。包含系統架構、互動狀態機與專利模擬 App 測試模型。
-            </p>
-            <div class="project-footer">
-              <span style="font-size:0.85rem; color:var(--text-sub);">Product Design / PRD</span>
-              <a href="prd_dashboard.html" class="project-link" style="color:var(--accent-primary); font-weight:700;">
-                瀏覽規模書與測試模型 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
             </div>
           </div>
         </div>
@@ -340,90 +417,150 @@
       <div class="section-header">
         <div class="section-subtitle">WORK & MILESTONES</div>
         <h2 class="section-title">經歷與成果</h2>
+        <p style="color: var(--text-muted);">跨越教育科技研發、企業實務、海外研究與校園教學的多元歷練（最新至最舊橫向時序）。</p>
       </div>
 
-      <div class="timeline">
-        <!-- Education -->
-        <div class="timeline-item">
-          <div class="timeline-dot" style="border-color: var(--accent-cyan);"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2022.09 - 2027 (預計)</div>
-            <h3 class="timeline-role">應用外國語文學系 主修 / 財務金融學系 雙主修</h3>
-            <div class="timeline-company">中原大學 (Chung Yuan Christian University) · GPA: 3.7</div>
-            <ul class="timeline-bullets">
-              <li>學業表現優越，財金核心學門（經濟學、會計學、統計學、財務管理、財務報表分析）。</li>
-              <li>實務應用：熟練操作財務分析軟體 EViews 進行迴歸模型建立與 TEJ 台灣經濟新報資料庫。</li>
-            </ul>
+      <div class="timeline-horizontal-container">
+        <div class="timeline-h-header-bar">
+          <div class="timeline-scroll-hint">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i> 左右滑動或點擊按鈕探索時序
+          </div>
+          <div class="timeline-nav-controls">
+            <button class="timeline-nav-btn" onclick="scrollTimeline(-1)" title="向左捲動" aria-label="向左捲動">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="timeline-nav-btn" onclick="scrollTimeline(1)" title="向右捲動" aria-label="向右捲動">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
           </div>
         </div>
 
-        <!-- Job 1 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2025.09 - 現今</div>
-            <h3 class="timeline-role">教學助理 (Teaching Assistant)</h3>
-            <div class="timeline-company">中原大學 應用外語學系 (英文遠距課程)</div>
-            <ul class="timeline-bullets">
-              <li>管理課程影片上傳與校內教學系統維護，協助影片字幕編輯與影音校對。</li>
-              <li>支援遠距監考、學生平時成績登記與總分計算，熟練運用 Excel 進行大量數據整理與自動化分析。</li>
-            </ul>
+        <div class="timeline-horizontal-track" id="timeline-track">
+          <!-- 1. 2026.03 - 現今 -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
+              <span class="timeline-h-date-badge">2026.03 - 現今</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">沈浸展覽空間工讀生</h3>
+              <div class="timeline-h-company">中原大學 · 藝術中心 / 前瞻場域</div>
+              <ul class="timeline-h-bullets">
+                <li>負責沈浸式互動展覽空間之日常營運、投影系統巡檢維護與參觀者接待。</li>
+                <li>協助展區多媒體內容導覽與即時設備障礙排除，具備優良現場應變與跨團隊溝通力。</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <!-- Job 2 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026.03 - 現今</div>
-            <h3 class="timeline-role">沈浸展覽空間工讀生</h3>
-            <div class="timeline-company">中原大學 藝術中心/前瞻場域</div>
-            <ul class="timeline-bullets">
-              <li>負責沈浸式互動展覽空間之日常營運、投影系統巡檢維護與參觀者接待。</li>
-              <li>協助展區多媒體內容操作與導覽，具備優良的現場危機處理與溝通技巧。</li>
-            </ul>
+          <!-- 2. 2026.01 - 2026.02 (LiveABC R&D) -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
+              <span class="timeline-h-date-badge">2026.01 - 2026.02</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">數位研發實習生 (R&D Intern)</h3>
+              <div class="timeline-h-company">希伯倫股份有限公司 (LiveABC) · 研發三處</div>
+              <ul class="timeline-h-bullets">
+                <li>負責英語數位教材之教學音檔剪輯、教材內容校對與勘誤核實。</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <!-- Job 3 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2023.09 - 現今</div>
-            <h3 class="timeline-role">英文課輔老師</h3>
-            <div class="timeline-company">中原大學 應用外語學系</div>
-            <ul class="timeline-bullets">
-              <li>針對個別學生學習困難，規劃專屬的課後英文輔導進度與教學解說。</li>
-              <li>有效幫助多位學生突破學習瓶頸，提升學習動機與測驗表現。</li>
-            </ul>
+          <!-- 3. 2026.01 - 2026.02 (LiveABC HR) -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot" style="border-color: #0d9488;"></div>
+              <span class="timeline-h-date-badge" style="color: #0d9488; border-color: rgba(13,148,136,0.3);">2026.01 - 2026.02</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">人力資源部工讀生 (HR Assistant)</h3>
+              <div class="timeline-h-company">希伯倫股份有限公司 (LiveABC) · 人力資源部</div>
+              <ul class="timeline-h-bullets">
+                <li>協助人事行政流程、內部教育訓練資料歸檔、出勤核算與內部人事系統維護。</li>
+                <li>展現跨部門行政支援與細心嚴謹的組織協調能力，深入了解企業組織運作與人才管理流程。</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <!-- Job 4 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026.01 - 2026.02</div>
-            <h3 class="timeline-role">人力資源部實習生 (HR Intern)</h3>
-            <div class="timeline-company">希伯倫股份有限公司 (大家說英語/空中英語教室)</div>
-            <ul class="timeline-bullets">
-              <li>協助招募流程、維護應徵者資料與內部人資行政庶務。</li>
-              <li>透過每日反思與主動溝通，有效提升跨部門溝通與職場環境之適應能力。</li>
-            </ul>
+          <!-- 4. 2025.09 - 現今 -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot"></div>
+              <span class="timeline-h-date-badge">2025.09 - 現今</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">教學助理 (Teaching Assistant)</h3>
+              <div class="timeline-h-company">中原大學 · 應用外語學系 (英文遠距課程)</div>
+              <ul class="timeline-h-bullets">
+                <li>管理課程影片上傳與校內教學系統維護，協助影片字幕編輯與影音教材校對。</li>
+                <li>支援遠距線上監考與學生成績管理，熟練運用 Excel 進行大量數據整理與自動化分析。</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <!-- Job 5 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2025.09 - 2026.06</div>
-            <h3 class="timeline-role">通識中心工讀生</h3>
-            <div class="timeline-company">中原大學 通識教育中心</div>
-            <ul class="timeline-bullets">
-              <li>處理通識教育課程行政作業、公文收發與相關資料歸檔整理。</li>
-              <li>支援通識講座活動場地布置與引導接待事宜。</li>
-            </ul>
+          <!-- 5. 2025.09 - 2026.06 -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot"></div>
+              <span class="timeline-h-date-badge">2025.09 - 2026.06</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">通識中心工讀生</h3>
+              <div class="timeline-h-company">中原大學 · 通識教育中心</div>
+              <ul class="timeline-h-bullets">
+                <li>處理全校通識教育課程行政作業、公文收發與相關教學研討資料歸檔整理。</li>
+                <li>支援通識講座與校級學術活動場地布置、來賓接待與現場流程引導事宜。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 6. 2025.07 - 2025.08 -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
+              <span class="timeline-h-date-badge" style="color: var(--accent-primary);">2025.07 - 2025.08</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">海外教育遊戲研發實習生</h3>
+              <div class="timeline-h-company">加拿大阿薩巴斯卡大學 · VIP Research Group</div>
+              <ul class="timeline-h-bullets">
+                <li>赴加拿大 Athabasca University VIP (Virtual &amp; Intelligent Platforms) 實驗室進行海外研究實習。</li>
+                <li>運用 MEGA World 研發英語教育遊戲，將 TPR 與 CLT 等教學理論融入 2D 關卡，賦能師培生落實遊戲化教學。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 7. 2023.09 - 現今 -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot"></div>
+              <span class="timeline-h-date-badge">2023.09 - 現今</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">英文課輔老師</h3>
+              <div class="timeline-h-company">中原大學 · 應用外語學系</div>
+              <ul class="timeline-h-bullets">
+                <li>針對個別學生學習困難，規劃客製化課後英文輔導進度與教學解說。</li>
+                <li>有效幫助多位學生突破學習瓶頸，顯著提升學習動機、自信心與測驗表現。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 8. 2022.09 - 2027 (預計) -->
+          <div class="timeline-h-item">
+            <div class="timeline-h-node">
+              <div class="timeline-h-dot" style="border-color: var(--accent-cyan);"></div>
+              <span class="timeline-h-date-badge" style="color: var(--accent-cyan); border-color: rgba(6,182,212,0.3);">2022.09 - 2027 (預計)</span>
+            </div>
+            <div class="timeline-h-card">
+              <h3 class="timeline-h-role">應用外國語文學系 主修 / 財務金融學系 雙主修</h3>
+              <div class="timeline-h-company">中原大學 (CYCU) · GPA: 3.7</div>
+              <ul class="timeline-h-bullets">
+                <li>跨領域雙學位養成：兼具英語教學、語言學與商管財金核心學門（經濟學、會計學、統計學、財務管理）。</li>
+                <li>實務與量化工具：熟練操作財務分析軟體 EViews 進行迴歸模型建立與 TEJ 台灣經濟新報資料庫。</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -495,7 +632,7 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>© 2026 陳詠芸 Chen, Yong-Yun. All Rights Reserved.</p>
+      <p>© 2026 Yung-yun Chen. All Rights Reserved.</p>
     </div>
   </footer>
 
@@ -503,17 +640,17 @@
   <div class="modal-overlay" id="resume-modal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('resume-modal')">&times;</button>
-      <h2 style="margin-bottom: 8px;">陳詠芸 Yong-Yun - 個人履歷摘要</h2>
+      <h2 style="margin-bottom: 8px;">Yung-yun Chen - 個人履歷摘要</h2>
       <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">中原大學 應用外語系 × 財務金融系（雙主修）</p>
 
       <div style="background:var(--bg-primary); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:24px; font-size:0.95rem; line-height:1.7;">
-        <p><strong>【核心優勢】</strong> 具備優秀的跨國語文溝通（多益 770分 / 西班牙文 FLPT 92分）與嚴謹的財金數據分析（EViews / Excel 樞紐分析）邏輯。擅長團隊溝通協調與專案策劃。</p>
-        <p style="margin-top:10px;"><strong>【重要專案】</strong> 榮獲首屆前瞻科技競賽個人參賽優等（第二名），並於知名英語教育機構（大家說英語/空中英語教室）人資部實習。</p>
+        <p><strong>【核心優勢】</strong> 具備優秀的跨國語文溝通（<strong>雅思 6.5 分</strong> / 多益 770分 / 西班牙文 FLPT 92分）與嚴謹的財金數據分析（EViews / Excel 樞紐分析）邏輯。擅長團隊溝通協調與專案策劃。</p>
+        <p style="margin-top:10px;"><strong>【重要經歷】</strong> 具備加拿大 Athabasca 大學海外教育遊戲開發實習、知名英語教育出版集團（LiveABC 希伯倫）研發三處實習，並榮獲首屆前瞻科技競賽個人優等（第二名）。</p>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:12px;">
         <button class="btn-secondary" onclick="closeModal('resume-modal')">關閉視窗</button>
-        <a href="陳詠芸_CV.pdf" download="陳詠芸_CV.pdf" class="btn-primary">
+        <a href="陳詠芸_CV.pdf" download="Yung-yun_Chen_CV.pdf" class="btn-primary">
           <i class="fa-solid fa-download"></i> 下載完整履歷檔案
         </a>
       </div>

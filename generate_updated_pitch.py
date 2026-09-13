@@ -1,0 +1,2501 @@
+import os
+
+html_content = '''<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusLingua 成果專題簡報 | 微型多感官學習對話系統 - 陳詠芸 Anna Chen</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans + Lexend (ADHD friendly) + Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      /* Brand Palettes */
+      --bg-warm: #FAF8F4;
+      --bg-card: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --text-sub: #94A3B8;
+      --border-color: #E2E8F0;
+      
+      --sage-primary: #2D5A43;
+      --sage-medium: #3E7257;
+      --sage-light: #EBF5EE;
+      --terracotta-cta: #D9734E;
+      --terracotta-light: #FDF0EC;
+      --amber-reward: #D9822B;
+      --amber-light: #FEF6EC;
+      --blue-accent: #2B6CB0;
+      --blue-light: #EDF4FC;
+      
+      --shadow-sm: 0 2px 5px rgba(0,0,0,0.03);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --shadow-lg: 0 20px 35px -5px rgba(45, 90, 67, 0.12);
+      
+      --font-body: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      --font-dyslexic: 'Lexend', 'Noto Sans TC', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #F4F2EB;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: row;
+      overflow-x: hidden;
+    }
+
+    .presentation-layout {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      background-color: #F4F2EB;
+    }
+
+    /* Left Vertical Sidebar */
+    .pitch-sidebar {
+      width: 260px;
+      background: #FFFFFF;
+      border-right: 1px solid #E5E1D8;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 16px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      box-shadow: 2px 0 16px rgba(0, 0, 0, 0.03);
+      z-index: 1000;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F0ECE4;
+      margin-bottom: 14px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--sage-primary), #1B3829);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.25);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--sage-primary);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      padding-left: 6px;
+    }
+
+    .side-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 9px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #475569;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      font-family: var(--font-body);
+      width: 100%;
+    }
+
+    .side-nav-btn:hover {
+      background: #F8F6F0;
+      color: var(--text-main);
+      border-color: #E8E3D8;
+    }
+
+    .side-nav-btn.active {
+      background: var(--sage-light);
+      color: var(--sage-primary);
+      font-weight: 700;
+      border-color: rgba(45, 90, 67, 0.25);
+    }
+
+    .nav-idx {
+      font-size: 0.74rem;
+      font-weight: 700;
+      opacity: 0.85;
+      width: 20px;
+      color: inherit;
+    }
+
+    .nav-label {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #F0ECE4;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-pager {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      background: #F8F6F0;
+      padding: 6px 8px;
+      border-radius: 9px;
+      border: 1px solid #E2DDD3;
+    }
+
+    .side-page-btn {
+      background: #FFFFFF;
+      border: 1px solid #D5CEBF;
+      color: var(--text-main);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: var(--font-body);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .side-page-btn:hover {
+      background: #EFEBE1;
+      color: #000;
+    }
+
+    .side-counter {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--sage-primary);
+    }
+
+    .side-portfolio-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid #D5CEBF;
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .side-portfolio-link:hover {
+      background: var(--sage-light);
+      color: var(--sage-primary);
+      border-color: var(--sage-primary);
+    }
+
+    /* Main Container */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 36px;
+      position: relative;
+      background-color: #F4F2EB;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* Slide Card */
+    .slide-card {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 1180px;
+      min-height: 720px;
+      border-radius: 20px;
+      box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02);
+      border: 1px solid #E5E1D8;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide-card.active {
+      display: flex;
+    }
+
+    @keyframes fadeInSlide {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Decorative Dot Matrix Accent */
+    .dot-matrix-tr {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      display: grid;
+      grid-template-columns: repeat(5, 6px);
+      gap: 8px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .dot-matrix-tl {
+      position: absolute;
+      top: 24px;
+      left: 32px;
+      display: grid;
+      grid-template-columns: repeat(5, 6px);
+      gap: 8px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .dot-matrix-br {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      display: grid;
+      grid-template-columns: repeat(5, 6px);
+      gap: 8px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .dot-item {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: var(--sage-primary);
+    }
+    .dot-item-terra {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: var(--terracotta-cta);
+    }
+
+    /* Slide Header */
+    .slide-header {
+      padding: 28px 40px 16px 40px;
+      border-bottom: 1px solid #F0ECE4;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: #FFFFFF;
+      position: relative;
+    }
+
+    .slide-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #FFFFFF;
+      background: var(--sage-primary);
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .slide-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--sage-primary);
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+    }
+
+    .slide-subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .slide-body {
+      flex: 1;
+      padding: 32px 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-footer {
+      padding: 14px 40px;
+      background: #FAF8F4;
+      border-top: 1px solid #EAE5DC;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Common Card Styles */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .content-box-pill {
+      border-radius: 18px;
+      border: 1px solid #E2E8F0;
+      padding: 24px;
+      background: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-box-pill:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      align-self: flex-start;
+    }
+    .pill-green { background: var(--sage-light); color: var(--sage-primary); border: 1px solid rgba(45, 90, 67, 0.2); }
+    .pill-terra { background: var(--terracotta-light); color: var(--terracotta-cta); border: 1px solid rgba(217, 115, 78, 0.2); }
+    .pill-blue { background: var(--blue-light); color: var(--blue-accent); border: 1px solid rgba(43, 108, 176, 0.2); }
+    .pill-amber { background: var(--amber-light); color: var(--amber-reward); border: 1px solid rgba(217, 130, 43, 0.2); }
+
+    .card-h {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .card-p {
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.65;
+    }
+
+    /* SLIDE 1 COVER STYLES */
+    .hero-slide-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      min-height: 540px;
+      padding: 40px 50px;
+      position: relative;
+    }
+
+    .hero-brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .fl-hero-icon-badge {
+      width: 78px;
+      height: 78px;
+      background: linear-gradient(135deg, #325F47 0%, #1B3829 100%);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 12px 28px rgba(27, 56, 41, 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+
+    .fl-hero-icon-text {
+      color: #FFFFFF;
+      font-size: 2.25rem;
+      font-weight: 900;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .fl-hero-icon-sparkle {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #E8A33D;
+      color: #FFFFFF;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      box-shadow: 0 3px 8px rgba(232, 163, 61, 0.4);
+    }
+
+    .hero-title-main {
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: var(--sage-primary);
+      letter-spacing: -0.5px;
+      line-height: 1.05;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .hero-title-sub {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--terracotta-cta);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-info-card {
+      background: #FDFCF9;
+      border: 1.5px solid #E6E1D5;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-top: 30px;
+      max-width: 460px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+    }
+
+    .hero-photo-wrapper {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-photo-frame {
+      width: 440px;
+      height: 480px;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 4px solid #FFFFFF;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(217, 115, 78, 0.35);
+      position: relative;
+    }
+
+    .hero-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* SLIDE 2 AGENDA STYLES */
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .agenda-item-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .agenda-item-card:hover {
+      border-color: var(--sage-primary);
+      background: var(--sage-light);
+      transform: translateX(4px);
+    }
+
+    .agenda-item-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--sage-primary);
+      background: #F1F6F2;
+      border: 1px solid rgba(45, 90, 67, 0.2);
+      flex-shrink: 0;
+    }
+
+    .agenda-item-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* SLIDE 3 ABOUT PRESENTER */
+    .profile-card-left {
+      background: #F9FAF8;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .profile-photo-box {
+      width: 240px;
+      height: 270px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      margin-bottom: 18px;
+    }
+
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    .exp-item-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+
+    .exp-item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    }
+
+    .exp-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* DUAL-ENDED LIVE SANDBOX STYLES */
+    .sandbox-container {
+      display: grid;
+      grid-template-columns: 1.22fr 0.98fr;
+      gap: 20px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .teacher-screen {
+      background: #FDFCF9;
+      border: 1px solid #E2DDD5;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .teacher-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1E293B;
+      color: #F8FAFC;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .grade-switcher-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #EDE8DE;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .grade-pill-btn {
+      background: #FFFFFF;
+      border: 1px solid #D5CEBF;
+      color: #475569;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .grade-pill-btn.active {
+      background: var(--sage-primary);
+      color: #FFFFFF;
+      border-color: var(--sage-primary);
+    }
+
+    .teacher-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 4px;
+    }
+
+    .t-tab {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #64748B;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .t-tab.active {
+      background: var(--sage-light);
+      color: var(--sage-primary);
+    }
+
+    .dropzone-box {
+      border: 2px dashed #CBD5E1;
+      background: #F8FAFC;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .file-chip {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .input-field-sm {
+      width: 100%;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      margin-top: 4px;
+      font-family: var(--font-body);
+    }
+
+    .scaffold-select-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .scaffold-btn {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .scaffold-btn.selected {
+      background: var(--terracotta-cta);
+      color: #fff;
+      border-color: var(--terracotta-cta);
+    }
+
+    /* Student Mobile Mockup */
+    .student-phone-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      background: #1E293B;
+      border-radius: 36px;
+      padding: 10px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+      border: 3px solid #334155;
+    }
+
+    .phone-screen {
+      background: #FAF8F4;
+      border-radius: 26px;
+      min-height: 480px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-stage-nav {
+      display: flex;
+      gap: 2px;
+      background: #EAE5DC;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .stage-dot-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 4px 2px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #64748B;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .stage-dot-btn.active {
+      background: #FFFFFF;
+      color: var(--sage-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .phone-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #EBE5DB;
+    }
+
+    .sandglass-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--terracotta-cta);
+    }
+
+    .progress-bar-inner {
+      width: 50px;
+      height: 6px;
+      background: #E2DDD3;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--terracotta-cta);
+      transition: width 0.3s;
+    }
+
+    .student-stage-pane {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+    .student-stage-pane.active {
+      display: flex;
+    }
+
+    .ella-companion-bubble {
+      background: #FFFFFF;
+      border: 1px solid #E8E3D8;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 0.75rem;
+      color: #334155;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .ella-avatar-mini {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--sage-light);
+      color: var(--sage-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .word-card-student {
+      background: #FFFFFF;
+      border: 1px solid #E8E3D8;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+
+    .target-word {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--sage-primary);
+      letter-spacing: 1px;
+    }
+
+    .phonetic-tag {
+      font-size: 0.78rem;
+      color: var(--terracotta-cta);
+      font-weight: 700;
+      margin: 4px 0 8px 0;
+    }
+
+    .audio-playback-btn, .mic-challenge-btn {
+      background: #FAF8F4;
+      border: 1px solid #D5CEBF;
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .audio-playback-btn:hover, .mic-challenge-btn:hover {
+      background: var(--sage-light);
+      color: var(--sage-primary);
+      border-color: var(--sage-primary);
+    }
+
+    .chips-assembly-area {
+      min-height: 52px;
+      background: #FFFFFF;
+      border: 2px dashed #CBD5E1;
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .chip-item {
+      background: #FAF5EC;
+      border: 1.5px solid var(--terracotta-cta);
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: 0.15s;
+    }
+    .chip-item.used {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .btn-student-submit {
+      background: var(--terracotta-cta);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+      margin-top: auto;
+    }
+    .btn-student-submit:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn-student-back {
+      background: transparent;
+      border: none;
+      color: #64748B;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 6px;
+      cursor: pointer;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .rest-lockout-box {
+      background: #EBF5EE;
+      border: 1px solid #C4E2D0;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-box {
+      background: #fff;
+      width: 90%;
+      max-width: 650px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    /* Navigation generic buttons */
+    .nav-btn {
+      background: #FFFFFF;
+      border: 1px solid #D5CEBF;
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+    .nav-btn:hover {
+      background: #F8F6F0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-layout">
+    <!-- Clean Left Sidebar Navigation -->
+    <aside class="pitch-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">FL</div>
+        <div class="brand-text">
+          <div class="brand-title">FocusLingua</div>
+          <div class="brand-sub">成果專題簡報</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">簡報章節 (11 SLIDES)</div>
+        <button class="side-nav-btn active" id="sideNav-1" onclick="goToSlide(1)">
+          <span class="nav-idx">01</span>
+          <span class="nav-label">專案封面</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-2" onclick="goToSlide(2)">
+          <span class="nav-idx">02</span>
+          <span class="nav-label">簡報目錄</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-3" onclick="goToSlide(3)">
+          <span class="nav-idx">03</span>
+          <span class="nav-label">自我介紹</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-4" onclick="goToSlide(4)">
+          <span class="nav-idx">04</span>
+          <span class="nav-label">專案動機</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-5" onclick="goToSlide(5)">
+          <span class="nav-idx">05</span>
+          <span class="nav-label">企業實務痛點</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-6" onclick="goToSlide(6)">
+          <span class="nav-idx">06</span>
+          <span class="nav-label">專案架構 (解決方案)</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-7" onclick="goToSlide(7)">
+          <span class="nav-idx">07</span>
+          <span class="nav-label">雙端實操模擬</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-8" onclick="goToSlide(8)">
+          <span class="nav-idx">08</span>
+          <span class="nav-label">預測效益分析</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-9" onclick="goToSlide(9)">
+          <span class="nav-idx">09</span>
+          <span class="nav-label">未來擴散性與再精進</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-10" onclick="goToSlide(10)">
+          <span class="nav-idx">10</span>
+          <span class="nav-label">個人學習成果與反思</span>
+        </button>
+        <button class="side-nav-btn" id="sideNav-11" onclick="goToSlide(11)">
+          <span class="nav-idx">11</span>
+          <span class="nav-label">結尾致謝 (THANK YOU)</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-pager">
+          <button class="side-page-btn" onclick="prevSlide()" title="上一頁 (←)">
+            <i class="fa-solid fa-chevron-left"></i> 上一頁
+          </button>
+          <span class="side-counter" id="slideIndicator">01 / 11</span>
+          <button class="side-page-btn" onclick="nextSlide()" title="下一頁 (→)">
+            下一頁 <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+        <a href="index.html" class="side-portfolio-link">
+          <i class="fa-solid fa-house-user"></i> 個人作品集首頁
+        </a>
+      </div>
+    </aside>
+
+    <!-- Slide Canvas Container -->
+    <main class="deck-container">
+
+      <!-- =========================================================================
+           SLIDE 1: COVER (封面)
+           ========================================================================= -->
+      <section class="slide-card active" id="slide-1">
+        <!-- Top Left Dot Matrix -->
+        <div class="dot-matrix-tl">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="hero-slide-body">
+          <div style="flex: 1; z-index: 2;">
+            <div class="slide-pill-tag">
+              ★ 成果專題簡報
+            </div>
+
+            <!-- FocusLingua Brand Icon & Title Cluster -->
+            <div class="hero-brand-cluster">
+              <div class="fl-hero-icon-badge" title="FocusLingua 品牌圖示">
+                <span class="fl-hero-icon-text">FL</span>
+                <div class="fl-hero-icon-sparkle"><i class="fa-solid fa-sparkles"></i></div>
+              </div>
+              <div>
+                <h1 class="hero-title-main">FocusLingua</h1>
+                <div class="hero-title-sub">微型多感官學習對話系統</div>
+              </div>
+            </div>
+
+            <div class="hero-info-card">
+              <div style="font-size:1.18rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">
+                希伯崙 LiveABC 產學實習成果
+              </div>
+              <div style="font-size:1.02rem; font-weight:600; color:var(--text-muted);">
+                專題發表人：陳詠芸 Anna Chen
+              </div>
+            </div>
+          </div>
+
+          <!-- Presenter Photo -->
+          <div class="hero-photo-wrapper">
+            <div class="hero-photo-frame">
+              <img src="extracted_images/anna_photo.jpg" alt="陳詠芸 Anna Chen" class="hero-photo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Right Dot Matrix -->
+        <div class="dot-matrix-br">
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+        </div>
+
+        <div class="slide-footer">
+          <span>★ 成果專題簡報 ｜ Slide 01 / 11</span>
+          <span>按鍵盤 [←] [→] 鍵可翻頁 ｜ 點選左側選單可快速跳轉</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 2: CONTENT (簡報目錄)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-2">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">AGENDA</div>
+            <h2 class="slide-title">Content</h2>
+            <p class="slide-subtitle">簡報目錄</p>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="agenda-grid">
+            <div class="agenda-item-card" onclick="goToSlide(3)">
+              <div class="agenda-item-num">01</div>
+              <div class="agenda-item-text">自我介紹</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(4)">
+              <div class="agenda-item-num">02</div>
+              <div class="agenda-item-text">專案動機</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(5)">
+              <div class="agenda-item-num">03</div>
+              <div class="agenda-item-text">企業實務痛點</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(6)">
+              <div class="agenda-item-num">04</div>
+              <div class="agenda-item-text">專案架構與微型展示</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(7)" style="border-color:var(--terracotta-cta); background:#FAF5F0;">
+              <div class="agenda-item-num" style="background:#FDF0EC; color:var(--terracotta-cta);">05</div>
+              <div class="agenda-item-text" style="color:var(--terracotta-cta);">雙端實操模擬 <small style="font-size:0.75rem; background:var(--terracotta-cta); color:#fff; padding:2px 8px; border-radius:10px; margin-left:6px;">LIVE DEMO</small></div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(8)">
+              <div class="agenda-item-num">06</div>
+              <div class="agenda-item-text">導入效益分析</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(9)">
+              <div class="agenda-item-num">07</div>
+              <div class="agenda-item-text">未來擴散性與再精進</div>
+            </div>
+            <div class="agenda-item-card" onclick="goToSlide(10)">
+              <div class="agenda-item-num">08</div>
+              <div class="agenda-item-text">個人學習成果與反思</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>簡報目錄 ｜ Slide 02 / 11</span>
+          <span>點擊任一項目即可直接前往該頁面</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 3: ABOUT PRESENTER (自我介紹)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-3">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">ABOUT PRESENTER</div>
+            <h2 class="slide-title">自我介紹</h2>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-2" style="align-items: center;">
+            <!-- Left Profile Card -->
+            <div class="profile-card-left">
+              <div class="profile-photo-box">
+                <img src="extracted_images/anna_photo.jpg" alt="陳詠芸" style="width:100%; height:100%; object-fit:cover;">
+              </div>
+              <h3 style="font-size:1.45rem; font-weight:800; color:var(--sage-primary); margin-bottom:4px;">陳詠芸 Anna Chen</h3>
+              <div style="font-size:0.95rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">中原大學四年級學生</div>
+              <div style="font-size:0.9rem; color:var(--text-muted); font-weight:600;">科系：應用外語＆財務金融學系</div>
+            </div>
+
+            <!-- Right Experience Cards -->
+            <div class="experience-list">
+              <div class="exp-item-card" style="border-left: 4px solid #EF4444;">
+                <div class="exp-icon" style="background:#FEE2E2; color:#DC2626;">
+                  <i class="fa-solid fa-school"></i>
+                </div>
+                <div style="font-size:1.08rem; font-weight:700; color:var(--text-main);">
+                  113中原國小晨間英語課輔老師
+                </div>
+              </div>
+
+              <div class="exp-item-card" style="border-left: 4px solid var(--amber-reward);">
+                <div class="exp-icon" style="background:var(--amber-light); color:var(--amber-reward);">
+                  <i class="fa-solid fa-heart"></i>
+                </div>
+                <div style="font-size:1.08rem; font-weight:700; color:var(--text-main);">
+                  中原大學特資中心 英語課輔老師
+                </div>
+              </div>
+
+              <div class="exp-item-card" style="border-left: 4px solid var(--sage-primary);">
+                <div class="exp-icon" style="background:var(--sage-light); color:var(--sage-primary);">
+                  <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div style="font-size:1.08rem; font-weight:700; color:var(--text-main);">
+                  LiveABC 希伯崙 研發三處實習生 & 人事部工讀
+                </div>
+              </div>
+
+              <div class="exp-item-card" style="border-left: 4px solid var(--blue-accent);">
+                <div class="exp-icon" style="background:var(--blue-light); color:var(--blue-accent);">
+                  <i class="fa-solid fa-globe"></i>
+                </div>
+                <div style="font-size:1.08rem; font-weight:700; color:var(--text-main);">
+                  加拿大 Athabasca Univ. VIP Research 實習
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>ABOUT PRESENTER ｜ Slide 03 / 11</span>
+          <span>跨域融合背景：英語教學實務 × 數位教材研發 × 特資輔導經驗</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 4: MOTIVATION (專案動機)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-4">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">MOTIVATION</div>
+            <h2 class="slide-title">專案動機：「被忽視的認知極限」</h2>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-2">
+            <!-- Left Card -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--terracotta-cta);">
+              <div style="text-align:center; margin-bottom:12px;">
+                <img src="extracted_images/image3.png" alt="Speedometer" style="height:115px; object-fit:contain;">
+              </div>
+              <div class="card-h" style="color:var(--terracotta-cta); font-size:1.2rem; margin-bottom:12px;">
+                ADHD 孩子的學習阻力，來自於學習教材的程度
+              </div>
+              <div class="card-p" style="line-height:1.7; margin-bottom:16px;">
+                <strong>常態教材對於ADHD的孩子來說偏難：</strong><br>
+                1. 需花費比一般人多的時間消化知識<br>
+                2. 排斥複習與寫作業
+              </div>
+              <div style="background:#FAF5F0; border-left:3px solid var(--terracotta-cta); border-radius:8px; padding:12px 14px; font-size:0.86rem; color:#475569; line-height:1.6; margin-top:auto;">
+                <strong>市面教材嚴重缺乏階梯式鷹架：</strong>主流題庫預設學童具備 15 分鐘連續專注力，對低耐受度學童而言是持續性的挫折打擊。
+              </div>
+            </div>
+
+            <!-- Right Card -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--sage-primary);">
+              <div style="text-align:center; margin-bottom:12px;">
+                <img src="extracted_images/image2.png" alt="Cost Graph" style="height:115px; object-fit:contain;">
+              </div>
+              <div class="card-h" style="color:var(--sage-primary); font-size:1.2rem; margin-bottom:12px;">
+                傳統輔助教學的人力成本高昂，邊際產出卻持續遞減
+              </div>
+              <div class="card-p" style="line-height:1.75; font-size:0.92rem; margin-top:8px;">
+                <p style="margin-bottom:12px;">
+                  1. 課輔老師端缺乏合適的輔助工具，導致備課時間佔比過高，造成教育資源嚴重錯配。
+                </p>
+                <p>
+                  2. 學校與機構仰賴大量實習生與志工進行陪伴輔導，一旦人員流動教學質量便難以維繫
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>MOTIVATION ｜ Slide 04 / 11</span>
+          <span>直擊現場痛點：高抗拒感、難以消化的常態教材 vs. 居高不下的陪伴成本</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 5: MAIN POINTS (企業實務痛點)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-5">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">MAIN POINTS</div>
+            <h2 class="slide-title">目前困境 與 企業實務痛點</h2>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-2">
+            <!-- Left: 目前困境 -->
+            <div class="content-box-pill" style="border-left: 4px solid var(--terracotta-cta); justify-content:center;">
+              <span class="pill-badge pill-terra" style="font-size:0.9rem; padding:6px 16px;">目前困境</span>
+              <div style="font-size:1.45rem; font-weight:800; color:var(--text-main); margin-top:20px; line-height:1.6;">
+                特定族群分散，無法評估確切需求
+              </div>
+              <div style="margin-top:24px; font-size:0.92rem; color:var(--text-muted); line-height:1.7;">
+                特教需求學童常分散於常態班級與不同社區課輔點，出版業者難以單點蒐集真實學習反應數據，導致無法為其量身打造專屬教材。
+              </div>
+            </div>
+
+            <!-- Right: 企業實務痛點 -->
+            <div class="content-box-pill" style="border-left: 4px solid var(--sage-primary);">
+              <span class="pill-badge pill-green" style="font-size:0.9rem; padding:6px 16px;">企業實務痛點</span>
+              <div class="card-h" style="font-size:1.3rem; margin-top:10px; color:var(--sage-primary);">
+                課輔老師資訊不對稱，客製化成本過高
+              </div>
+              <div class="card-p" style="font-size:0.95rem; line-height:1.8; margin-top:16px;">
+                <div style="margin-bottom:12px; display:flex; gap:8px;">
+                  <span style="color:var(--sage-primary); font-weight:700;">•</span>
+                  <span>課輔老師與原班導師缺乏出題標準同步機制，僅能手握紙本課本摸索。</span>
+                </div>
+                <div style="margin-bottom:12px; display:flex; gap:8px;">
+                  <span style="color:var(--sage-primary); font-weight:700;">•</span>
+                  <span>針對 1~6 年級不同年齡層手工降難度出題，單次需消耗 1~2 小時備課。</span>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <span style="color:var(--sage-primary); font-weight:700;">•</span>
+                  <span>傳統人工出題難以動態提供詞根、色彩音節等認知鷹架提示。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>MAIN POINTS ｜ Slide 05 / 11</span>
+          <span>痛點核心：資訊斷層、手工備課耗時費力、缺乏即時認知鷹架</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 6: PROJECT & DEMO (專案架構與微型展示)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-6">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">PROJECT & DEMO</div>
+            <h2 class="slide-title">解決方案：FocusLingua</h2>
+            <p class="slide-subtitle">雙端分工解耦架構：教師端 Web 智能備課 ＋ 學生端手機 App 專注沙盒</p>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-2">
+            <!-- Left Card: 教師端 Web -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--sage-primary);">
+              <div class="card-h" style="color:var(--sage-primary); font-size:1.25rem; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                <i class="fa-solid fa-laptop-code"></i> 💻 教師端 Web 備課工作站
+              </div>
+              
+              <div style="margin-bottom:16px;">
+                <div style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">【教材自動出題】</div>
+                <div class="card-p">上傳課綱 PDF / 課文音檔，LLM Prompt 自動萃取關鍵單字，並按 1~6 年級認知階梯自動分流。</div>
+              </div>
+
+              <div style="margin-bottom:16px;">
+                <div style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">【二次審核與把關】</div>
+                <div class="card-p">老師能直接微調句子長度、調整輔助提示詞，把關教學品質後一鍵派發。</div>
+              </div>
+
+              <div>
+                <div style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">【特教數據看板】</div>
+                <div class="card-p">即時記錄全班學童答題延遲 、猶豫拐點與衝動性亂點，自動導出客觀之個別化輔導報表。</div>
+              </div>
+            </div>
+
+            <!-- Right Card: 學生端手機 App -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--terracotta-cta);">
+              <div class="card-h" style="color:var(--terracotta-cta); font-size:1.25rem; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                <i class="fa-solid fa-mobile-screen-button"></i> 📱 學生端手機 App 專注沙盒
+              </div>
+
+              <div style="margin-bottom:14px;">
+                <div style="font-size:0.92rem; font-weight:800; color:var(--text-main); margin-bottom:3px;">【90 秒沙漏倒數機制】</div>
+                <div class="card-p">強制限制單元於 90 秒內結束，以非侵入式漸進圓環替代跳動數字，消解 ADHD 學童之時間焦慮。</div>
+              </div>
+
+              <div style="margin-bottom:14px;">
+                <div style="font-size:0.92rem; font-weight:800; color:var(--text-main); margin-bottom:3px;">【多感官無干擾伴讀卡】</div>
+                <div class="card-p">支援 Lexend 抗分心易讀字型切換、色彩音節高亮切片與原生真人單字語音播放，降低閱讀負荷。</div>
+              </div>
+
+              <div style="margin-bottom:14px;">
+                <div style="font-size:0.92rem; font-weight:800; color:var(--text-main); margin-bottom:3px;">【觸覺拼裝與多巴胺回饋】</div>
+                <div class="card-p">捨棄傳統鍵盤手打阻力，改採點擊積木拼裝句子；答對即觸發觸覺微震動與 Canvas 微粒子慶賀。</div>
+              </div>
+
+              <div>
+                <div style="font-size:0.92rem; font-weight:800; color:var(--text-main); margin-bottom:3px;">【課堂防沉迷護眼鎖定】</div>
+                <div class="card-p">微任務完成即刻啟動鎖定，引導學童閉眼休息 10 分鐘，保護專注神經，防止過度多巴胺刺激。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>PROJECT & DEMO ｜ Slide 06 / 11</span>
+          <button class="nav-btn" onclick="goToSlide(7)" style="background:var(--terracotta-cta); color:#fff; border:none;">
+            立即進入「雙端實操模擬」 <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 7: LIVE INTERACTIVE SANDBOX (雙端實操模擬)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-7">
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">
+              <i class="fa-solid fa-play"></i> LIVE DEMO SANDBOX
+            </div>
+            <h2 class="slide-title">雙端實操模擬：教師端 Web ＋ 學生端 App 即時交互</h2>
+            <p class="slide-subtitle">左側：國小教材上傳 ➔ AI 30 秒切片 ➔ 二次修改 ➔ 派發 ｜ 右側：國小學生手機 90 秒微任務多階段操作體驗</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <a href="focuslingua_live_app.html" target="_blank" class="nav-btn" style="text-decoration:none; background:#0284c7; color:#fff; border:none; padding:8px 14px; font-weight:700;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟獨立全屏系統
+            </a>
+            <button class="nav-btn" onclick="openIepModal()" style="background:var(--sage-primary); color:#fff; border:none; padding:8px 14px;">
+              <i class="fa-solid fa-file-pdf"></i> 預覽 IEP 報表
+            </button>
+          </div>
+        </div>
+
+        <div class="slide-body" style="padding: 16px 24px;">
+          <div class="sandbox-container">
+
+            <!-- LEFT: Teacher Web Workspace -->
+            <div class="teacher-screen">
+              <div class="teacher-topbar">
+                <div><i class="fa-solid fa-desktop"></i> 教師備課工作站 (Desktop Web) ｜ 國小英語課輔加強班 (1~6年級專注力加強組)</div>
+                <div><span style="color:#68D391;">● 雲端即時連線</span> ｜ 登入：陳課輔老師</div>
+              </div>
+
+              <!-- Grade Switcher Row -->
+              <div class="grade-switcher-bar">
+                <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted);"><i class="fa-solid fa-layer-group"></i> 國小學段切換：</span>
+                <button class="grade-pill-btn" id="btnGradeLow" onclick="selectGrade('low')">低年級 (1~2年級)</button>
+                <button class="grade-pill-btn active" id="btnGradeMid" onclick="selectGrade('mid')">中年級 (3~4年級)</button>
+                <button class="grade-pill-btn" id="btnGradeHigh" onclick="selectGrade('high')">高年級 (5~6年級)</button>
+                <span style="margin-left:auto; font-size:0.72rem; color:#94A3B8;"><i class="fa-solid fa-rotate"></i> 題目即時連動學生端</span>
+              </div>
+
+              <div class="teacher-tabs">
+                <button class="t-tab active" id="tabIngest" onclick="switchTeacherTab('ingest')">1. 教材上傳與 AI 切片</button>
+                <button class="t-tab" id="tabReview" onclick="switchTeacherTab('review')">2. 二次修改與審核台</button>
+                <button class="t-tab" id="tabAnalytics" onclick="switchTeacherTab('analytics')">3. 班級注意力與行為數據</button>
+              </div>
+
+              <!-- Tab 1: Ingest -->
+              <div class="teacher-content-pane" id="teacherPaneIngest">
+                <div class="dropzone-box" onclick="simulateUpload()">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.8rem; color: var(--sage-primary); margin-bottom: 6px;"></i>
+                  <div style="font-weight: 700; color: var(--text-main); font-size: 0.92rem;">點擊或拖曳國小教材檔案至此 (PDF, DOCX, 課本掃描)</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;">支援 108 國小課綱課本、習作與 LiveABC 等數位教材格式</div>
+                  <div class="file-chip" id="uploadedFileChip" style="display:inline-flex;">
+                    <i class="fa-solid fa-file-pdf" style="color:#E53E3E;"></i>
+                    <span id="uploadedFileNameText">Unit3_Healthy_Habits_Primary.pdf (國小 108 課綱字彙錨定)</span>
+                  </div>
+                </div>
+
+                <div id="aiGeneratedPreview" style="margin-top: 10px; display: block;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; background:#FFFFFF; border:1px solid #E2E8F0; padding:8px 12px; border-radius:8px;">
+                    <span style="font-size: 0.82rem; font-weight: 700; color: var(--sage-primary);">
+                      <i class="fa-solid fa-circle-check"></i> <span id="aiPreviewText">AI 切片完成：萃取國小中年級核心單字 [CALM]，已產出 90 秒微任務包</span>
+                    </span>
+                    <div style="display:flex; gap:6px;">
+                      <button class="nav-btn" onclick="cycleDemoTextbook()" style="font-size:0.72rem; padding:4px 8px;">
+                        <i class="fa-solid fa-shuffle"></i> 換教材示範
+                      </button>
+                      <button class="nav-btn" onclick="switchTeacherTab('review')" style="background:var(--sage-primary); color:#fff; border:none; padding:4px 10px; font-size:0.72rem;">
+                        進入二次修改 <i class="fa-solid fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 2: Review -->
+              <div class="teacher-content-pane" id="teacherPaneReview" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <div style="font-size:0.85rem; font-weight:700;" id="reviewUnitTitle">單元：國小中年級 Unit 3 核心字彙 [CALM /kɑːm/]</div>
+                  <span class="pill-badge pill-green" id="reviewCurriculumBadge" style="margin-bottom:0;">對齊 108 國小常用 800 字</span>
+                </div>
+
+                <div style="background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+                  <label style="font-size:0.74rem; font-weight:600; color:#64748B;">題目句子 (老師可直接編輯修改，掌握最終出題權)：</label>
+                  <input type="text" id="teacherInputSentence" class="input-field-sm" value="Try to stay calm and take a deep breath.">
+
+                  <div class="scaffold-select-group">
+                    <span style="font-size:0.74rem; font-weight:600; color:#64748B;">鷹架防禦等級：</span>
+                    <button class="scaffold-btn" id="scaffoldLow" onclick="setScaffold(this, '低')">低 (無提示)</button>
+                    <button class="scaffold-btn selected" id="scaffoldMid" onclick="setScaffold(this, '中')">中 (首字高亮+片語塊)</button>
+                    <button class="scaffold-btn" id="scaffoldHigh" onclick="setScaffold(this, '高')">高 (Ella 語音伴讀)</button>
+                  </div>
+
+                  <label style="font-size:0.74rem; font-weight:600; color:#64748B; margin-top:8px; display:block;">伴讀精靈 Ella 專屬提示語 (卡關 10 秒自動觸發)：</label>
+                  <input type="text" id="teacherInputHint" class="input-field-sm" value="想想看我們緊張時，老師請大家深呼吸的那個字喔！">
+                </div>
+
+                <div style="margin-top: 10px; display:flex; justify-content:flex-end; gap:6px;">
+                  <button class="nav-btn" onclick="pushToStudents()" style="background:var(--terracotta-cta); color:#fff; border:none; font-size:0.78rem; font-weight:700;">
+                    <i class="fa-solid fa-paper-plane"></i> 一鍵派發至國小課輔班 (90秒微任務)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tab 3: Analytics -->
+              <div class="teacher-content-pane" id="teacherPaneAnalytics" style="display:none;">
+                <div style="background:#FEF3C7; border:1px solid #FDE68A; border-radius:8px; padding:6px 10px; margin-bottom:8px; font-size:0.72rem; color:#92400E;">
+                  <strong>💡 概念設計指標說明：</strong>依據國小課輔教學觀察建立之「人因成效評估模擬模型」，用以示範特教追蹤機制。
+                </div>
+                <div class="grid-2">
+                  <div style="background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+                    <div style="font-size:0.75rem; font-weight:700; color:#475569;">預期平均卡關猶豫時間</div>
+                    <div style="font-size:1.4rem; font-weight:800; color:var(--sage-primary); margin:4px 0;">3.6 秒</div>
+                    <div style="font-size:0.7rem; color:#64748B;">透過積木直覺拖曳降低啟動抗拒</div>
+                  </div>
+                  <div style="background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+                    <div style="font-size:0.75rem; font-weight:700; color:#475569;">衝動性亂點抑制率</div>
+                    <div style="font-size:1.4rem; font-weight:800; color:var(--terracotta-cta); margin:4px 0;">94%</div>
+                    <div style="font-size:0.7rem; color:#64748B;">燕麥色零紅光設計抑制衝動連續點擊</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:10px; background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+                  <div style="font-size:0.78rem; font-weight:700; margin-bottom:6px;">國小 1~6 年級個別化追蹤預期名單 (課輔班 4 名學生)</div>
+                  <div style="font-size:0.74rem; display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #F1F5F9;">
+                    <span>王小弟 (國小二年級 · 低年級)</span>
+                    <span style="color:var(--sage-primary); font-weight:700;">已完成 90 秒微任務 ｜ 猶豫 2.8s</span>
+                  </div>
+                  <div style="font-size:0.74rem; display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #F1F5F9;">
+                    <span>陳小妹 (國小四年級 · 中年級)</span>
+                    <span style="color:var(--sage-primary); font-weight:700;">已完成 (啟用 Lexend 字體) ｜ 猶豫 3.4s</span>
+                  </div>
+                  <div style="font-size:0.74rem; display:flex; justify-content:space-between; padding:4px 0;">
+                    <span>林小弟 (國小四年級 · 中年級)</span>
+                    <span style="color:var(--terracotta-cta); font-weight:700;">進行中 ｜ 建議給予 Ella 提示</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Student Mobile Simulator -->
+            <div class="student-phone-wrapper">
+              <div class="phone-mockup">
+                <div class="phone-screen" id="studentScreenArea">
+                  <!-- Phone Stage Navigation Bar -->
+                  <div class="phone-stage-nav">
+                    <button class="stage-dot-btn active" id="sDot1" onclick="setStudentStage(1)">1.大廳</button>
+                    <button class="stage-dot-btn" id="sDot2" onclick="setStudentStage(2)">2.伴讀</button>
+                    <button class="stage-dot-btn" id="sDot3" onclick="setStudentStage(3)">3.拼句</button>
+                    <button class="stage-dot-btn" id="sDot4" onclick="setStudentStage(4)">4.通關</button>
+                  </div>
+
+                  <!-- Top Mini Bar -->
+                  <div class="phone-top-bar">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <div style="width:7px; height:7px; border-radius:50%; background:var(--sage-primary);"></div>
+                      <span style="font-size:0.7rem; font-weight:700; color:var(--text-main);" id="studentPhoneGradeTitle">中年級 · 90秒任務</span>
+                    </div>
+                    <div class="sandglass-progress">
+                      <i class="fa-regular fa-clock" style="color:var(--terracotta-cta);"></i>
+                      <span id="countdownTimer">01:30</span>
+                      <div class="progress-bar-inner">
+                        <div class="progress-fill" id="studentProgressFill" style="width: 25%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- STAGE 1: Mission Lobby -->
+                  <div class="student-stage-pane active" id="studentStagePane1">
+                    <div class="ella-companion-bubble">
+                      <div class="ella-avatar-mini"><i class="fa-solid fa-seedling"></i></div>
+                      <div style="line-height:1.35;">
+                        <strong>Ella 伴讀精靈：</strong><br>
+                        早安！詠芸老師已指派今日課堂微任務。不用帶回家寫，我們在課堂內 90 秒輕鬆完成吧！
+                      </div>
+                    </div>
+
+                    <div class="word-card-student" style="padding:12px; text-align:left;">
+                      <div style="font-size:0.72rem; font-weight:700; color:var(--sage-primary); text-transform:uppercase;">
+                        <i class="fa-solid fa-flag-checkered"></i> 今日課堂任務包
+                      </div>
+                      <div style="font-size:1rem; font-weight:800; color:var(--text-main); margin:4px 0;" id="lobbyUnitName">
+                        Unit 3: 核心字彙與語意積木
+                      </div>
+                      <div style="font-size:0.72rem; color:var(--text-muted); line-height:1.5;">
+                        • 步驟 1：多感官單字聽讀 (CALM)<br>
+                        • 步驟 2：語意積木拖曳拼句<br>
+                        • 時間限制：90 秒 ｜ 完成即啟動護眼保護
+                      </div>
+                    </div>
+
+                    <div style="font-size:0.7rem; font-weight:700; color:#6B7280; margin-bottom:4px;">切換示範年級題型：</div>
+                    <div style="display:flex; gap:4px; margin-bottom:10px;">
+                      <button class="grade-pill-btn" onclick="selectGrade('low')" style="flex:1; font-size:0.68rem; padding:4px;">低年級</button>
+                      <button class="grade-pill-btn active" onclick="selectGrade('mid')" style="flex:1; font-size:0.68rem; padding:4px;">中年級</button>
+                      <button class="grade-pill-btn" onclick="selectGrade('high')" style="flex:1; font-size:0.68rem; padding:4px;">高年級</button>
+                    </div>
+
+                    <button class="btn-student-submit" onclick="startStudentMission()">
+                      🚀 啟動 90 秒專注任務
+                    </button>
+                  </div>
+
+                  <!-- STAGE 2: Multisensory Flashcard -->
+                  <div class="student-stage-pane" id="studentStagePane2">
+                    <div class="ella-companion-bubble">
+                      <div class="ella-avatar-mini"><i class="fa-solid fa-headphones"></i></div>
+                      <div style="line-height:1.35;">
+                        <strong>第一步：多感官聽讀</strong><br>
+                        點擊聽聽標準發音，給大腦一個聲音刺激！
+                      </div>
+                    </div>
+
+                    <div class="word-card-student">
+                      <div class="target-word" id="studentWordText">CALM</div>
+                      <div class="phonetic-tag" id="studentPhoneticText">/kɑːm/ ｜ 形容詞：冷靜的、沉著的</div>
+                      <div style="font-size:0.7rem; color:#64748B; margin-bottom:8px;" id="studentPhonicsBreakdown">
+                        自然發音：c - al - m (字母 l 不發音)
+                      </div>
+                      
+                      <div style="display:flex; justify-content:center; gap:6px;">
+                        <button class="audio-playback-btn" onclick="speakTargetWord()">
+                          <i class="fa-solid fa-volume-high"></i> 聽發音
+                        </button>
+                        <button class="mic-challenge-btn" onclick="simulateMicRecord()">
+                          <i class="fa-solid fa-microphone"></i> 跟讀測試
+                        </button>
+                      </div>
+                    </div>
+
+                    <button class="btn-student-submit" onclick="setStudentStage(3)">
+                      下一步：積木拼句 🧩 ➔
+                    </button>
+                    <button class="btn-student-back" onclick="setStudentStage(1)">
+                      ⬅️ 返回任務大廳
+                    </button>
+                  </div>
+
+                  <!-- STAGE 3: Sentence Building -->
+                  <div class="student-stage-pane" id="studentStagePane3">
+                    <div class="ella-companion-bubble" id="ellaBubble">
+                      <div class="ella-avatar-mini"><i class="fa-solid fa-seedling"></i></div>
+                      <div style="line-height:1.35;" id="ellaHintContent">
+                        <strong>Ella 伴讀精靈：</strong><br>
+                        想想看我們緊張時，老師請大家深呼吸的那個字喔！
+                      </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--text-main);">點擊積木放入框內拼出句子：</span>
+                      <button class="nav-btn" onclick="resetStudentChips()" style="font-size:0.68rem; padding:2px 6px;">
+                        <i class="fa-solid fa-rotate-left"></i> 重置
+                      </button>
+                    </div>
+
+                    <!-- Placed Chips -->
+                    <div class="chips-assembly-area" id="chipsAssemblyDrop"></div>
+
+                    <!-- Source Chips -->
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;" id="chipsSourceArea"></div>
+
+                    <button class="btn-student-submit" id="btnStudentSubmit" onclick="checkStudentAnswer()">
+                      完成並領取多巴胺回饋 🚀
+                    </button>
+                    <button class="btn-student-back" onclick="setStudentStage(2)">
+                      ⬅️ 返回單字伴讀
+                    </button>
+                  </div>
+
+                  <!-- STAGE 4: Victory & Rest Guard -->
+                  <div class="student-stage-pane" id="studentStagePane4">
+                    <div style="text-align:center; padding:6px 0;">
+                      <div style="font-size:2rem;">🏆</div>
+                      <div style="font-size:1.02rem; font-weight:800; color:var(--text-main); margin-top:2px;">
+                        90 秒專注微任務大成功！
+                      </div>
+                      <div style="display:inline-flex; align-items:center; gap:6px; background:#FEF3C7; color:#B45309; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700; margin-top:4px;">
+                        <i class="fa-solid fa-star" style="color:#F59E0B;"></i> 多巴胺專注能量 +100 ✨
+                      </div>
+                    </div>
+
+                    <div class="word-card-student" style="padding:8px 12px; text-align:left; margin-bottom:6px;">
+                      <div style="font-size:0.7rem; color:var(--text-muted);">今日課堂成果：</div>
+                      <div style="font-size:0.8rem; font-weight:700; color:var(--text-main); margin-top:2px;" id="rewardSentenceResult">
+                        "Try to stay calm and take a deep breath."
+                      </div>
+                      <div style="font-size:0.7rem; color:var(--sage-primary); margin-top:3px; font-weight:600;">
+                        ⏱️ 耗時：01:14 ｜ 衝動性亂點：0 次 ｜ 專注達標！
+                      </div>
+                    </div>
+
+                    <div class="rest-lockout-box">
+                      <div style="font-size:0.76rem; font-weight:700; color:var(--sage-primary);">
+                        <i class="fa-solid fa-shield-halved"></i> 課堂防沉迷護眼模式啟動
+                      </div>
+                      <div style="font-size:0.7rem; color:#475569; margin-top:3px; line-height:1.4;">
+                        今日微任務已完成！請閉上雙眼休息 10 分鐘，保護大腦神經專注力。
+                      </div>
+                    </div>
+
+                    <button class="btn-student-submit" onclick="restartMission()" style="margin-top:6px;">
+                      🔁 再次練習 / 切換年級
+                    </button>
+                    <button class="btn-student-back" onclick="setStudentStage(1)">
+                      🏠 返回任務大廳
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>雙端實操模擬 ｜ Slide 07 / 11</span>
+          <span>即時交互展示：左側工作站可切換年級與審查派發 ｜ 右側手機模擬 90 秒微任務與獎勵鎖定</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 8: COST-BENEFIT & ROI (導入效益分析)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-8">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">COST-BENEFIT & ROI</div>
+            <h2 class="slide-title">預測效益分析</h2>
+            <p class="slide-subtitle">本產品未經過實測，僅以本人判斷。</p>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-3">
+            <!-- Card 1 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--sage-primary);">
+              <span class="pill-badge pill-green">營運效率優化</span>
+              <div class="card-h" style="font-size:1.18rem; margin-top:6px;">
+                備課時間成本顯著縮減
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:10px;">
+                課輔老師手工針對特殊生切片出題的時間由原本 90 分鐘降至 30 秒生成 ＋ 5 分鐘審核。單一師資可服務的學童人次提升 3 倍以上，有效緩解課輔機構師資不足之瓶頸。
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--terracotta-cta);">
+              <span class="pill-badge pill-terra">人因成效驗證 (Learning Effectiveness)</span>
+              <div class="card-h" style="font-size:1.18rem; margin-top:6px;">
+                課堂即時掌握核心詞彙
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:10px;">
+                將認知負荷嚴格限制在 90 秒黃金耐受期內。在微型拼裝與即時鷹架輔助下，學童衝動性亂點次數降低超過 60%，達成「課堂內直接消化、不將作業挫折帶回家」之目標。
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--blue-accent);">
+              <span class="pill-badge pill-blue">商業價值躍升 (Business Scalability)</span>
+              <div class="card-h" style="font-size:1.18rem; margin-top:6px;">
+                打開新市場
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:10px;">
+                將傳統單向零售教材升級並打入學校特教組、資源班與兒福課輔機構，幫助更多學生受益。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>COST-BENEFIT & ROI ｜ Slide 08 / 11</span>
+          <span>營運效率優化 × 人因成效驗證 × 商業價值躍升</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 9: FUTURE SCALABILITY (未來擴散性與再精進)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-9">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">FUTURE SCALABILITY</div>
+            <h2 class="slide-title">未來擴散性與再精進方案：構建跨學科特教生態圈</h2>
+            <p class="slide-subtitle">由單一英語教材，延伸至多元學科輔具、邊緣生理反饋與校園特教雲端聯網</p>
+          </div>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-3">
+            <!-- Card 1 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--sage-primary);">
+              <div style="background:var(--sage-light); color:var(--sage-primary); font-size:0.8rem; font-weight:800; padding:6px 12px; border-radius:8px; margin-bottom:12px; align-self:flex-start;">
+                一、橫向學科擴展
+              </div>
+              <div class="card-h" style="font-size:1.12rem;">
+                多領域「微單元切片」模組化延伸
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:8px;">
+                將 FocusLingua 架構，橫向擴展至國小國語文閱讀理解、數學應用題長句拆解，以及自然科記憶型知識點。實現單一核心引擎支援全年段、多學科之特教輔具標準化。
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--terracotta-cta);">
+              <div style="background:var(--terracotta-light); color:var(--terracotta-cta); font-size:0.8rem; font-weight:800; padding:6px 12px; border-radius:8px; margin-bottom:12px; align-self:flex-start;">
+                二、邊緣人因感知
+              </div>
+              <div class="card-h" style="font-size:1.12rem;">
+                結合生理反饋進行「動態疲勞預警」
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:8px;">
+                未來可進一步整合平板視訊鏡頭之輕量化視線追蹤 (Eye-tracking) 或穿戴裝置微心率變異度 (HRV)。當系統偵測到學童眼球頻繁飄移或專注力瀕臨崩潰拐點時，主動調降難度、切換放鬆白噪音，實現真正的自適應人因調節。
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="content-box-pill" style="border-top: 4px solid var(--blue-accent);">
+              <div style="background:var(--blue-light); color:var(--blue-accent); font-size:0.8rem; font-weight:800; padding:6px 12px; border-radius:8px; margin-bottom:12px; align-self:flex-start;">
+                三、平台化商模
+              </div>
+              <div class="card-h" style="font-size:1.12rem;">
+                打造「出版教材 ➔ 特資中心 ➔ 班級 ➔ 家長」之 雲端中樞
+              </div>
+              <div class="card-p" style="line-height:1.75; margin-top:8px;">
+                LiveABC 可從內容提供商升級為「特教數據中樞」。讓課輔老師一鍵產出的行為分析報表直接同步至學校特教組與家長端 App，消解親師溝通鴻溝，形成高黏著度之特教智慧支持生態圈。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>FUTURE SCALABILITY ｜ Slide 09 / 11</span>
+          <span>從單一英語出發 ➔ 邁向全年段跨學科、邊緣感知與全域特教雲端聯網</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 10: PERSONAL REFLECTIONS (個人學習成果與反思)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-10">
+        <div class="dot-matrix-tr">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+
+        <div class="slide-header">
+          <div>
+            <div class="slide-pill-tag">PERSONAL REFLECTIONS</div>
+            <h2 class="slide-title">個人學習成果與反思</h2>
+          </div>
+        </div>
+
+        <div class="slide-body" style="gap:20px; justify-content:center;">
+          <!-- Card 01 -->
+          <div class="content-box-pill" style="border-left: 5px solid var(--sage-primary); padding:24px 28px;">
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:10px;">
+              <span class="pill-badge pill-green" style="font-size:1rem; padding:4px 14px; font-weight:800; margin-bottom:0;">01</span>
+              <h3 style="font-size:1.25rem; font-weight:800; color:var(--sage-primary);">
+                產品思維之蛻變：理解 AI 的核心定位在於「克制減法」
+              </h3>
+            </div>
+            <p class="card-p" style="font-size:0.96rem; line-height:1.85; margin-top:4px;">
+              實作初期，我曾執著於使用 Claude 與 Stitch 拼湊的前台選單與 Chatbot 對話。但發現越是繁華的介面，學生反而更難專注。此外，一開始發餉解局方案的時候都是以學生為主，後來才發現其實老師及機構才是最主要買單者，因此轉換對象去設計整個產品
+            </p>
+          </div>
+
+          <!-- Card 02 -->
+          <div class="content-box-pill" style="border-left: 5px solid var(--terracotta-cta); padding:24px 28px;">
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:10px;">
+              <span class="pill-badge pill-terra" style="font-size:1rem; padding:4px 14px; font-weight:800; margin-bottom:0;">02</span>
+              <h3 style="font-size:1.25rem; font-weight:800; color:var(--terracotta-cta);">
+                人機協同
+              </h3>
+            </div>
+            <p class="card-p" style="font-size:0.96rem; line-height:1.85; margin-top:4px;">
+              語言教學涉及細膩的同理心與課堂情緒管理，無法完全由演算法取代。FocusLingua 確立了「AI 負責有效率的製作教材，老師把關二次審核與情感陪伴」的分工架構。這使我體認到，優質的 EdTech 方案不是要取代教師，而是輔助並賦能教師成為更具專注力與溫度的引路人。
+            </p>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>PERSONAL REFLECTIONS ｜ Slide 10 / 11</span>
+          <span>從學生為本轉向買單主體（老師與機構） ｜ 確信 AI 在於減法賦能而非全面取代</span>
+        </div>
+      </section>
+
+
+      <!-- =========================================================================
+           SLIDE 11: THANK YOU (結尾致謝)
+           ========================================================================= -->
+      <section class="slide-card" id="slide-11">
+        <!-- Dot Matrices -->
+        <div class="dot-matrix-tl">
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+          <div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div><div class="dot-item"></div>
+        </div>
+        <div class="dot-matrix-br">
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+          <div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div><div class="dot-item-terra"></div>
+        </div>
+
+        <div class="slide-body" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:550px;">
+          <div class="fl-hero-icon-badge" style="width:84px; height:84px; margin-bottom:24px;">
+            <span class="fl-hero-icon-text" style="font-size:2.5rem;">FL</span>
+            <div class="fl-hero-icon-sparkle" style="width:26px; height:26px;"><i class="fa-solid fa-sparkles"></i></div>
+          </div>
+
+          <h1 style="font-size: 3.8rem; font-weight: 900; color: var(--sage-primary); letter-spacing: 2px; margin-bottom: 12px; font-family:'Plus Jakarta Sans', sans-serif;">
+            THANK YOU
+          </h1>
+          <div style="font-size: 1.45rem; font-weight: 700; color: var(--terracotta-cta); margin-bottom: 14px;">
+            FocusLingua 成果專題簡報 ｜ 敬請指教
+          </div>
+          <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-main); margin-bottom: 32px;">
+            陳詠芸 Anna Chen
+          </div>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+            <button class="nav-btn" onclick="goToSlide(7)" style="background:var(--terracotta-cta); color:#fff; border:none; padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-play"></i> 進入雙端實操模擬
+            </button>
+            <button class="nav-btn" onclick="goToSlide(2)" style="padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-list-check"></i> 返回簡報目錄
+            </button>
+            <a href="index.html" class="nav-btn" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-house-user"></i> 前往個人作品集首頁
+            </a>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>FocusLingua 成果專題簡報 ｜ Slide 11 / 11 ｜ 敬請指教</span>
+          <span>陳詠芸 Anna Chen ｜ 中原大學應外系 & 財金系</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- IEP Modal Template -->
+  <div class="modal-backdrop" id="iepModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
+        <h3 style="font-size:1.1rem; color:var(--text-main);">
+          <i class="fa-solid fa-file-invoice" style="color:var(--sage-primary);"></i> 個別化教育計畫 (IEP) 英語學習專注成效評估報告
+        </h3>
+        <button onclick="closeIepModal()" style="border:none; background:transparent; font-size:1.2rem; cursor:pointer; color:#718096;">&times;</button>
+      </div>
+
+      <div style="margin-top:16px; font-size:0.85rem; line-height:1.6; color:#4A5568;">
+        <p><strong>學生姓名：</strong>陳Ｏ芸 ｜ <strong>年級：</strong>四年級 ｜ <strong>障礙分類：</strong>ADHD 注意力缺失型</p>
+        <p><strong>評估週期：</strong>113 學年度第一學期 ｜ <strong>評估系統：</strong>FocusLingua 特教遙測核心</p>
+
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px; margin:14px 0;">
+          <h4 style="color:var(--sage-primary); font-size:0.9rem; margin-bottom:6px;">一、 認知與注意力行為進程指標</h4>
+          • <strong>工作記憶負荷適應：</strong>平均卡關猶豫時間由學期初 8.6 秒下降至 <strong>3.6 秒</strong>，顯著降低啟動焦慮。<br>
+          • <strong>衝動控制能力：</strong>異常快速連續亂按率由 24% 降低至 <strong>4%</strong>，展現良好的自我調節反應。<br>
+          • <strong>專注維持長度：</strong>連續穩定操作時間由 45 秒提升至 <strong>90 秒（順利完成 1 個微任務）</strong>。
+        </div>
+
+        <div style="background:#FDF8F6; border:1px solid #F3D9D0; border-radius:10px; padding:12px; margin:14px 0;">
+          <h4 style="color:var(--terracotta-cta); font-size:0.9rem; margin-bottom:6px;">二、 英語學業與課綱字彙掌握度</h4>
+          • <strong>108 課綱字彙累積：</strong>本學期完成 42 個微單元，精熟 84 個核心高頻詞。<br>
+          • <strong>多感官跟讀進展：</strong>經卡拉OK高亮與原生真人語音輔助，單字發音正確率達 92%。
+        </div>
+
+        <div style="text-align:right; margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+          <button class="nav-btn" onclick="closeIepModal()">關閉</button>
+          <button class="nav-btn" onclick="alert('已匯出 PDF 檔案，符合特教公文審查標準格式！')" style="background:var(--sage-primary); color:#fff; border:none;">
+            <i class="fa-solid fa-download"></i> 正式下載簽核 PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Navigation State
+    let currentSlide = 1;
+    const totalSlides = 11;
+
+    function updateSlideUI() {
+      for (let i = 1; i <= totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        if (slide) slide.classList.toggle('active', i === currentSlide);
+        const sideBtn = document.getElementById(`sideNav-${i}`);
+        if (sideBtn) sideBtn.classList.toggle('active', i === currentSlide);
+      }
+      const indicator = document.getElementById('slideIndicator');
+      if (indicator) {
+        const curStr = currentSlide < 10 ? '0' + currentSlide : currentSlide;
+        const totStr = totalSlides < 10 ? '0' + totalSlides : totalSlides;
+        indicator.innerText = `${curStr} / ${totStr}`;
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlideUI();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlideUI();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlideUI();
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+    });
+
+    // -------------------------------------------------------------
+    // Grade Data Definitions
+    // -------------------------------------------------------------
+    const gradeData = {
+      low: {
+        title: '低年級 (1~2年級)',
+        phoneTitle: '低年級 · 90秒任務',
+        unit: 'Unit 1: 基礎情緒與顏色 [HAPPY]',
+        word: 'HAPPY',
+        phonetic: '/ˈhæp.i/ ｜ 形容詞：快樂的、開心的',
+        phonics: '自然發音：h - a - pp - y (雙字母 p 發單音)',
+        speech: 'happy. We feel happy and full of sunshine.',
+        sentence: 'We feel happy and full of sunshine.',
+        chunks: ['We feel', 'happy and', 'full of', 'sunshine.'],
+        hint: '想想看當你吃到好吃的點心時，臉上露出的笑容！',
+        curriculum: '對齊 108 國小常用 400 字'
+      },
+      mid: {
+        title: '中年級 (3~4年級)',
+        phoneTitle: '中年級 · 90秒任務',
+        unit: 'Unit 3: 核心字彙 [CALM]',
+        word: 'CALM',
+        phonetic: '/kɑːm/ ｜ 形容詞：冷靜的、沉著的',
+        phonics: '自然發音：c - al - m (字母 l 不發音)',
+        speech: 'calm. Try to stay calm and take a deep breath.',
+        sentence: 'Try to stay calm and take a deep breath.',
+        chunks: ['Try to', 'stay calm', 'and take', 'a deep breath.'],
+        hint: '想想看我們緊張時，老師請大家深呼吸的那個字喔！',
+        curriculum: '對齊 108 國小常用 800 字'
+      },
+      high: {
+        title: '高年級 (5~6年級)',
+        phoneTitle: '高年級 · 90秒任務',
+        unit: 'Unit 5: 成長型心態 [RESILIENT]',
+        word: 'RESILIENT',
+        phonetic: '/rɪˈzɪl.jənt/ ｜ 形容詞：有韌性的、能迅速復原的',
+        phonics: '自然發音：re - sil - i - ent (四音節重音在第二音節)',
+        speech: 'resilient. Keep focused and overcome every challenge.',
+        sentence: 'Keep focused and overcome every challenge.',
+        chunks: ['Keep focused', 'and overcome', 'every challenge', 'step by step.'],
+        hint: '想想看跌倒了再爬起來、不輕言放棄的勇氣！',
+        curriculum: '對齊 108 國小常用 1200 字'
+      }
+    };
+
+    let currentGrade = 'mid';
+
+    function selectGrade(level) {
+      currentGrade = level;
+      const data = gradeData[level];
+
+      // Update grade switcher buttons
+      ['Low', 'Mid', 'High'].forEach(g => {
+        const btn = document.getElementById('btnGrade' + g);
+        if (btn) btn.classList.toggle('active', g.toLowerCase() === level);
+      });
+
+      // Update Teacher Review
+      document.getElementById('reviewUnitTitle').innerText = `單元：國小${data.title} ${data.unit}`;
+      document.getElementById('reviewCurriculumBadge').innerText = data.curriculum;
+      document.getElementById('teacherInputSentence').value = data.sentence;
+      document.getElementById('teacherInputHint').value = data.hint;
+      document.getElementById('aiPreviewText').innerText = `AI 切片完成：萃取國小${data.title}核心單字 [${data.word}]，已產出 90 秒微任務包`;
+
+      // Update Student Phone
+      document.getElementById('studentPhoneGradeTitle').innerText = data.phoneTitle;
+      document.getElementById('lobbyUnitName').innerText = data.unit;
+      document.getElementById('studentWordText').innerText = data.word;
+      document.getElementById('studentPhoneticText').innerText = data.phonetic;
+      document.getElementById('studentPhonicsBreakdown').innerText = data.phonics;
+      document.getElementById('ellaHintContent').innerHTML = `<strong>Ella 伴讀精靈：</strong><br>${data.hint}`;
+      document.getElementById('rewardSentenceResult').innerText = `"${data.sentence}"`;
+
+      // Reset chunks in Stage 3
+      initChipsForGrade(level);
+    }
+
+    // -------------------------------------------------------------
+    // Teacher Web Interactive Demo Logic
+    // -------------------------------------------------------------
+    function switchTeacherTab(tabName) {
+      document.getElementById('teacherPaneIngest').style.display = (tabName === 'ingest') ? 'block' : 'none';
+      document.getElementById('teacherPaneReview').style.display = (tabName === 'review') ? 'block' : 'none';
+      document.getElementById('teacherPaneAnalytics').style.display = (tabName === 'analytics') ? 'block' : 'none';
+
+      document.getElementById('tabIngest').classList.toggle('active', tabName === 'ingest');
+      document.getElementById('tabReview').classList.toggle('active', tabName === 'review');
+      document.getElementById('tabAnalytics').classList.toggle('active', tabName === 'analytics');
+    }
+
+    function simulateUpload() {
+      const chip = document.getElementById('uploadedFileChip');
+      const preview = document.getElementById('aiGeneratedPreview');
+      chip.style.display = 'inline-flex';
+      setTimeout(() => {
+        preview.style.display = 'block';
+      }, 300);
+    }
+
+    function cycleDemoTextbook() {
+      const list = ['low', 'mid', 'high'];
+      const next = list[(list.indexOf(currentGrade) + 1) % list.length];
+      selectGrade(next);
+    }
+
+    function setScaffold(btn, level) {
+      const parent = btn.parentElement;
+      const btns = parent.querySelectorAll('.scaffold-btn');
+      btns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function pushToStudents() {
+      const sentence = document.getElementById('teacherInputSentence').value;
+      alert(`🎉 成功派發至班級！\n任務：「${sentence}」已即時同步至右側學生端 App！`);
+      
+      document.getElementById('ellaBubble').innerHTML = `
+        <div class="ella-avatar-mini"><i class="fa-solid fa-seedling"></i></div>
+        <div style="line-height:1.35;">
+          <strong>詠芸老師剛派發了新任務！</strong><br>
+          「${sentence}」一起來拼看看吧！
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------
+    // Student Mobile Simulator Multi-Stage Logic
+    // -------------------------------------------------------------
+    function setStudentStage(stageNum) {
+      for (let i = 1; i <= 4; i++) {
+        const pane = document.getElementById(`studentStagePane${i}`);
+        if (pane) pane.classList.toggle('active', i === stageNum);
+        const dot = document.getElementById(`sDot${i}`);
+        if (dot) dot.classList.toggle('active', i === stageNum);
+      }
+
+      const fill = document.getElementById('studentProgressFill');
+      if (fill) {
+        fill.style.width = (stageNum * 25) + '%';
+      }
+
+      if (stageNum === 3) {
+        initChipsForGrade(currentGrade);
+      }
+    }
+
+    function startStudentMission() {
+      setStudentStage(2);
+    }
+
+    function restartMission() {
+      setStudentStage(1);
+      assembledChunks = [];
+      renderAssembledArea();
+    }
+
+    // Chips Assembly Logic
+    let assembledChunks = [];
+
+    function initChipsForGrade(level) {
+      assembledChunks = [];
+      renderAssembledArea();
+
+      const sourceArea = document.getElementById('chipsSourceArea');
+      sourceArea.innerHTML = '';
+      const data = gradeData[level];
+      
+      // Shuffle chunks for puzzle feel
+      const shuffled = [...data.chunks].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach(chunk => {
+        const span = document.createElement('span');
+        span.className = 'chip-item';
+        span.innerText = chunk;
+        span.onclick = function() {
+          pickChip(span, chunk);
+        };
+        sourceArea.appendChild(span);
+      });
+
+      const submitBtn = document.getElementById('btnStudentSubmit');
+      if (submitBtn) {
+        submitBtn.innerText = "完成並領取多巴胺回饋 🚀";
+        submitBtn.style.background = "var(--terracotta-cta)";
+      }
+    }
+
+    function pickChip(chipEl, text) {
+      if (chipEl.classList.contains('used')) return;
+      chipEl.classList.add('used');
+      assembledChunks.push({ text, el: chipEl });
+      renderAssembledArea();
+    }
+
+    function removeChip(index) {
+      const item = assembledChunks[index];
+      if (item && item.el) {
+        item.el.classList.remove('used');
+      }
+      assembledChunks.splice(index, 1);
+      renderAssembledArea();
+    }
+
+    function renderAssembledArea() {
+      const dropArea = document.getElementById('chipsAssemblyDrop');
+      dropArea.innerHTML = '';
+      if (assembledChunks.length === 0) {
+        dropArea.innerHTML = '<span style="font-size:0.72rem; color:#94A3B8; margin:auto;">按順序點擊下方積木...</span>';
+        return;
+      }
+      assembledChunks.forEach((item, idx) => {
+        const span = document.createElement('span');
+        span.className = 'chip-item';
+        span.style.background = '#FAF5EC';
+        span.style.borderColor = 'var(--terracotta-cta)';
+        span.innerHTML = `${item.text} <i class="fa-solid fa-xmark" style="margin-left:4px; font-size:0.68rem; color:#9CA3AF;"></i>`;
+        span.onclick = () => removeChip(idx);
+        dropArea.appendChild(span);
+      });
+    }
+
+    function resetStudentChips() {
+      assembledChunks = [];
+      const sourceChips = document.querySelectorAll('#chipsSourceArea .chip-item');
+      sourceChips.forEach(c => c.classList.remove('used'));
+      renderAssembledArea();
+    }
+
+    function checkStudentAnswer() {
+      const data = gradeData[currentGrade];
+      if (assembledChunks.length === data.chunks.length) {
+        // Trigger celebratory confetti
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.75, x: 0.78 },
+          colors: ['#D9734E', '#E8A33D', '#2D5A43', '#FAF8F4']
+        });
+
+        document.getElementById('rewardSentenceResult').innerText = `"${data.sentence}"`;
+        setStudentStage(4);
+      } else {
+        document.getElementById('ellaBubble').innerHTML = `
+          <div class="ella-avatar-mini"><i class="fa-solid fa-lightbulb" style="color:#E8A33D;"></i></div>
+          <div style="line-height:1.35;">
+            <strong>很接近了喔！</strong><br>
+            試試看把所有積木都放進框框裡，Ella 相信你可以！
+          </div>
+        `;
+      }
+    }
+
+    function speakTargetWord() {
+      const data = gradeData[currentGrade];
+      if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(data.speech);
+        utter.lang = 'en-US';
+        utter.rate = 0.85;
+        window.speechSynthesis.speak(utter);
+      } else {
+        alert(`語音播放示範：${data.speech}`);
+      }
+    }
+
+    function simulateMicRecord() {
+      alert("🎙️ 語音辨識度 96%！發音非常標準清晰！獲得 Ella 語音星章 ⭐");
+    }
+
+    // Modal controls
+    function openIepModal() {
+      document.getElementById('iepModal').classList.add('show');
+    }
+    function closeIepModal() {
+      document.getElementById('iepModal').classList.remove('show');
+    }
+
+    // Initialize chips on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initChipsForGrade('mid');
+      updateSlideUI();
+    });
+  </script>
+</body>
+</html>
+'''
+
+with open('/Users/annamei/notes/pitch_presentation.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print('Successfully generated updated pitch_presentation.html with 11 slides!')
