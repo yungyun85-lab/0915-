@@ -1073,6 +1073,14 @@
       gap: 6px;
       transition: 0.15s;
     }
+    /* Visibility control between Web Presentation and PDF Export */
+    .pdf-only-link, .pdf-only-block {
+      display: none !important;
+    }
+    .web-only {
+      display: inline-flex !important;
+    }
+
     /* =========================================================================
        PRINT TO PDF STYLES (Supports 16:9 Landscape Slide PDF Export)
        ========================================================================= */
@@ -1147,6 +1155,15 @@
       }
       .sandbox-container {
         max-height: 480px !important;
+      }
+      .pdf-only-link {
+        display: inline-flex !important;
+      }
+      .pdf-only-block {
+        display: block !important;
+      }
+      .web-only {
+        display: none !important;
       }
     }
   </style>
@@ -1226,7 +1243,7 @@
             下一頁 <i class="fa-solid fa-chevron-right"></i>
           </button>
         </div>
-        <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="side-portfolio-link">
+        <a href="index.html" class="side-portfolio-link">
           <i class="fa-solid fa-house-user"></i> 個人作品集首頁
         </a>
       </div>
@@ -1395,7 +1412,8 @@
               <h3 style="font-size:1.45rem; font-weight:800; color:var(--sage-primary); margin-bottom:4px;">陳詠芸 Anna Chen</h3>
               <div style="font-size:0.95rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">中原大學四年級學生</div>
               <div style="font-size:0.9rem; color:var(--text-muted); font-weight:600; margin-bottom:10px;">科系：應用外語＆財務金融學系</div>
-              <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" style="background:#FFFFFF; border:1.5px solid var(--sage-primary); border-radius:10px; padding:6px 14px; display:inline-flex; align-items:center; gap:8px; text-decoration:none; box-shadow:0 2px 8px rgba(45,90,67,0.08);">
+              <!-- PDF Only Link -->
+              <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="pdf-only-link" style="background:#FFFFFF; border:1.5px solid var(--sage-primary); border-radius:10px; padding:6px 14px; align-items:center; gap:8px; text-decoration:none; box-shadow:0 2px 8px rgba(45,90,67,0.08); margin-top:8px;">
                 <i class="fa-solid fa-globe" style="color:var(--sage-primary); font-size:0.9rem;"></i>
                 <span style="font-size:0.82rem; font-weight:800; color:var(--sage-primary);">個人作品集：https://yungyun85-lab.github.io/0915-/</span>
               </a>
@@ -1783,10 +1801,11 @@
             <p class="slide-subtitle">左側：國小教材上傳 ➔ AI 30 秒切片 ➔ 二次修改 ➔ 派發 ｜ 右側：國小學生手機 90 秒微任務多階段操作體驗</p>
           </div>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8" target="_blank" class="nav-btn" style="text-decoration:none; background:var(--terracotta-cta); color:#fff; border:none; padding:8px 16px; font-weight:800; font-size:0.85rem; box-shadow:0 3px 10px rgba(224,122,95,0.3);">
+            <!-- PDF Only Link -->
+            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8" target="_blank" class="nav-btn pdf-only-link" style="text-decoration:none; background:var(--terracotta-cta); color:#fff; border:none; padding:8px 16px; font-weight:800; font-size:0.85rem; box-shadow:0 3px 10px rgba(224,122,95,0.3);">
               <i class="fa-solid fa-play"></i> 線上雙端實操模擬：https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8
             </a>
-            <a href="https://yungyun85-lab.github.io/0915-/focuslingua_live_app.html" target="_blank" class="nav-btn" style="text-decoration:none; background:#0284c7; color:#fff; border:none; padding:8px 12px; font-weight:700; font-size:0.82rem;">
+            <a href="focuslingua_live_app.html" target="_blank" class="nav-btn" style="text-decoration:none; background:#0284c7; color:#fff; border:none; padding:8px 12px; font-weight:700; font-size:0.82rem;">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> 獨立全屏系統
             </a>
             <button class="nav-btn" onclick="openIepModal()" style="background:var(--sage-primary); color:#fff; border:none; padding:8px 12px; font-size:0.82rem;">
@@ -2355,19 +2374,31 @@
           </div>
 
           <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:32px;">
-            <button class="nav-btn" onclick="goToSlide(8)" style="background:var(--terracotta-cta); color:#fff; border:none; padding:10px 20px; font-size:0.9rem;">
+            <!-- On Web: interactive slide buttons without external URLs -->
+            <button class="nav-btn web-only" onclick="goToSlide(8)" style="background:var(--terracotta-cta); color:#fff; border:none; padding:10px 20px; font-size:0.9rem;">
               <i class="fa-solid fa-play"></i> 進入雙端實操模擬
             </button>
-            <button class="nav-btn" onclick="goToSlide(2)" style="padding:10px 20px; font-size:0.9rem;">
+            <button class="nav-btn web-only" onclick="goToSlide(2)" style="padding:10px 20px; font-size:0.9rem;">
               <i class="fa-solid fa-list-check"></i> 查看簡報目錄
             </button>
-            <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="nav-btn" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
+            <a href="index.html" class="nav-btn web-only" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-house-user"></i> 前往個人作品集首頁
+            </a>
+
+            <!-- In PDF: Active hyperlinks to interactive simulation and portfolio -->
+            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-8" target="_blank" class="nav-btn pdf-only-link" style="text-decoration:none; background:var(--terracotta-cta); color:#fff; border:none; padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-play"></i> 進入雙端實操模擬
+            </a>
+            <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html#slide-2" target="_blank" class="nav-btn pdf-only-link" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
+              <i class="fa-solid fa-list-check"></i> 查看簡報目錄
+            </a>
+            <a href="https://yungyun85-lab.github.io/0915-/" target="_blank" class="nav-btn pdf-only-link" style="text-decoration:none; padding:10px 20px; font-size:0.9rem;">
               <i class="fa-solid fa-house-user"></i> 前往個人作品集首頁
             </a>
           </div>
 
-          <!-- Clickable URL at the bottom -->
-          <div style="font-size:1.02rem; font-family:'Plus Jakarta Sans', monospace; letter-spacing:0.5px;">
+          <!-- Clickable URL at the bottom: PDF only -->
+          <div class="pdf-only-block" style="font-size:1.02rem; font-family:'Plus Jakarta Sans', monospace; letter-spacing:0.5px;">
             <a href="https://yungyun85-lab.github.io/0915-/pitch_presentation.html" target="_blank" style="color:var(--sage-primary); font-weight:700; text-decoration:underline;">
               https://yungyun85-lab.github.io/0915-/pitch_presentation.html
             </a>
