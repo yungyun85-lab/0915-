@@ -1,683 +1,810 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yung-yun Chen | 個人作品集 & 專業簡介 Portfolio</title>
-  <meta name="description" content="中原大學雙主修應用外語與財務金融，Yung-yun Chen 的個人求職作品集網站。具備雅思 6.5、量化財務分析與 AI 數位應用之跨域優勢。">
-  
-  <!-- Fonts & Icons -->
+  <title>Yung-Yun Chen — Portfolio</title>
+
+  <!-- Editorial & Technical Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Subtle Architectural Grid Backdrop -->
+  <div class="bg-grid" aria-hidden="true"></div>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar" id="navbar">
-    <a href="#hero" class="navbar-brand">
-      <span class="brand-dot"></span>
-      <span>Yung-yun Chen</span>
-    </a>
-    
-    <ul class="nav-links">
-      <li><a href="#self-intro" class="nav-link">關於我</a></li>
-      <li><a href="#skills" class="nav-link">專業技能</a></li>
-      <li><a href="#projects" class="nav-link">精選作品</a></li>
-      <li><a href="#experience" class="nav-link">經歷與成果</a></li>
-      <li><a href="#contact" class="nav-link">聯絡方式</a></li>
-    </ul>
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#about" class="brand-mark" data-view-target="about">
+        <span class="brand-monogram">YYC</span>
+        <span class="brand-text">
+          <strong>Yung-Yun Chen</strong>
+          <small>Taoyuan, Taiwan</small>
+        </span>
+      </a>
 
-    <div class="nav-actions">
-      <button class="btn-primary" id="btn-live-edit" onclick="togglePortfolioEdit()" style="background:#fef3c7; color:#b45309; border:1px solid #f59e0b; padding:8px 14px; font-weight:700; border-radius:8px; cursor:pointer;">
-        <i class="fa-solid fa-pen-to-square"></i> 線上編輯
-      </button>
-      <button class="btn-icon" id="theme-toggle" title="切換深色/淺色模式">
-        <i class="fa-solid fa-moon"></i>
-      </button>
-      <button class="btn-primary" id="open-resume-btn">
-        <i class="fa-solid fa-file-pdf"></i> 檢視履歷
-      </button>
-      <button class="mobile-toggle" id="mobile-menu-btn">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
-  </nav>
+      <nav class="top-nav" id="top-nav" aria-label="Primary Navigation">
+        <a href="#about" class="nav-item active" data-view-target="about">
+          <span class="nav-index">00</span>
+          <span class="nav-label">About Me</span>
+        </a>
+        <a href="#project-emerging-tech" class="nav-item" data-view-target="project-emerging-tech">
+          <span class="nav-index">01</span>
+          <span class="nav-label">Emerging Tech Competition</span>
+        </a>
+        <a href="#project-mega-world" class="nav-item" data-view-target="project-mega-world">
+          <span class="nav-index">02</span>
+          <span class="nav-label">MEGA World Internship</span>
+        </a>
+      </nav>
 
-  <!-- Edit Mode Floating Banner for Portfolio -->
-  <div id="portfolioEditToolbar" style="display:none; background:#FFFBEB; border-bottom:2px solid #F59E0B; padding:10px 24px; position:sticky; top:70px; z-index:999; box-shadow:0 4px 12px rgba(245,158,11,0.15);">
-    <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-      <div style="font-size:0.88rem; color:#92400E; display:flex; align-items:center; gap:8px;">
-        <span style="width:10px; height:10px; border-radius:50%; background:#F59E0B; display:inline-block;"></span>
-        <strong>✍️ 作品集即時編輯模式：</strong> 點擊畫面上任何文字、自我介紹、經歷或專案描述即可直接打字修改！
-      </div>
-      <div style="display:flex; gap:8px;">
-        <button onclick="savePortfolioEdits()" style="background:#10B981; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-floppy-disk"></i> 儲存到瀏覽器</button>
-        <button onclick="downloadPortfolioHtml()" style="background:#0284C7; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-download"></i> 匯出下載 HTML</button>
-        <button onclick="resetPortfolioDefault()" style="background:#E2E8F0; color:#475569; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-rotate-left"></i> 恢復預設</button>
-        <button onclick="togglePortfolioEdit()" style="background:#F1F5F9; color:#64748B; border:1px solid #CBD5E1; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-xmark"></i> 結束編輯</button>
+      <div class="header-meta">
+        <a href="mailto:yungyun85@gmail.com" class="header-cta">
+          <span>Contact</span>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="container hero-grid">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-pulse"></span>
-          <span>尋求新挑戰 · 英語教育科技 / 跨域商業 / AI 數位專案</span>
-        </div>
-        <h1 class="hero-title">
-          嗨，我是 <span class="gradient-text">Yung-yun Chen</span><br>
-          外語溝通 × 財金量化 × AI 數位應用的跨域人才
-        </h1>
-        <p class="hero-subtitle">
-          中原大學應用外語系與財務金融學系雙主修。具備優秀的英語商務溝通能力（<strong>雅思 6.5 分</strong>）、嚴謹的財金量化分析邏輯，並榮獲首屆前瞻科技競賽優等。擅長融合語言、AI 數位工具與商業思維，打造高效解決方案。
-        </p>
+  <!-- Main Workspace -->
+  <main class="main-shell">
 
-        <!-- 一目了然的核心優勢標籤 (Key Advantages Bar) -->
-        <div class="hero-advantages">
-          <span class="adv-chip"><i class="fa-solid fa-graduation-cap"></i> 應外 × 財金雙主修 (GPA 3.7)</span>
-          <span class="adv-chip"><i class="fa-solid fa-earth-americas"></i> 國際語言能力：雅思 6.5 分 / 西語 A1</span>
-          <span class="adv-chip"><i class="fa-solid fa-chart-pie"></i> 財金量化數據：Excel 樞紐分析 / EViews / TEJ</span>
-          <span class="adv-chip"><i class="fa-solid fa-microchip"></i> 科技競賽優等 (Top 2) / 英語數位教材 PRD</span>
-        </div>
-        
-        <div class="hero-ctas">
-          <a href="#projects" class="btn-primary">
-            瀏覽專案作品 <i class="fa-solid fa-arrow-right"></i>
-          </a>
-          <a href="#contact" class="btn-secondary">
-            <i class="fa-regular fa-envelope"></i> 與我聯繫
-          </a>
-        </div>
+    <!-- ===================================================================
+         VIEW 00: ABOUT ME (Built strictly from CV)
+         =================================================================== -->
+    <section id="view-about" class="page-view active" aria-labelledby="about-heading">
 
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-number gradient-text">IELTS 6.5</div>
-            <div class="stat-label">雅思考試成績 (專業外語)</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number gradient-text">3.7</div>
-            <div class="stat-label">在校 GPA 分數 (雙主修)</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number gradient-text">Top 2</div>
-            <div class="stat-label">首屆前瞻科技競賽優等</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number gradient-text">雙主修</div>
-            <div class="stat-label">中原應外系 × 財金系</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Avatar & Graphic -->
-      <div class="hero-avatar">
-        <div class="avatar-wrapper">
-          <div class="avatar-card" style="box-shadow: 0 20px 40px -15px rgba(2, 132, 199, 0.15);">
-            <img src="assets/76D027CB-D86B-45E6-9014-1B50BDC2E92C.jpg" alt="Yung-yun Chen Profile Avatar" class="avatar-img">
-          </div>
-          <div class="floating-badge badge-1">
-            <span class="badge-icon">💬</span>
-            <div>
-              <strong style="display:block; font-size:0.9rem;">IELTS 6.5 / AFL</strong>
-              <small style="color:var(--text-muted); font-size:0.75rem;">English & Spanish</small>
-            </div>
-          </div>
-          <div class="floating-badge badge-2">
-            <span class="badge-icon">📊</span>
-            <div>
-              <strong style="display:block; font-size:0.9rem;">Financial Math</strong>
-              <small style="color:var(--text-muted); font-size:0.75rem;">Corporate Finance / EViews</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Self-Introduction Section -->
-  <section id="self-intro" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
-    <div class="container">
-      <div class="self-intro-box">
-        <h3 style="font-size: 1.35rem; margin-bottom: 16px; color: var(--accent-primary);"><i class="fa-regular fa-face-smile" style="margin-right: 8px;"></i> 關於我 / Self-Introduction</h3>
-        <p>
-          嗨，我是 <strong>Yung-yun Chen</strong>。目前就讀於中原大學應用外語學系與財務金融學系雙主修。
-        </p>
-        <p style="margin-top: 12px;">
-          在個人特質上，我是一位<strong>認真負責且具備高度創意與執行力</strong>的跨域整合者，面對學習與專案挑戰時，展現出<strong>堅韌不拔</strong>的求知態度。具備<strong>「語言 × 財金 × 數位 AI」</strong>的斜槓多元特質，讓我能將流暢的跨國溝通能力、嚴謹的量化分析邏輯與數位多媒體技術無縫結合，為團隊與專案創造獨特而實質的成果。
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section (4 大核心優勢一目了然) -->
-  <section id="about">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">CORE COMPETENCIES</div>
-        <h2 class="section-title">核心價值與個人優勢</h2>
-        <p style="color: var(--text-muted);">跨國語言溝通 × 財金量化邏輯 × 前瞻科技 AI × 團隊統籌領導之全方位展現</p>
-      </div>
-
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="card-icon"><i class="fa-solid fa-language"></i></div>
-          <h3>國際外語與商務溝通</h3>
-          <p>精通英語（<strong>雅思 6.5 分</strong>、多益 770 分）與基礎西班牙文（FLPT 92分 / A1）。曾任大學遠距英語課程教學助理 (TA) 與個別化英文課輔老師，具備出色的跨文化溝通與教學傳遞力。</p>
-        </div>
-
-        <div class="about-card">
-          <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <h3>財金量化與商業邏輯</h3>
-          <p>具備扎實財務分析邏輯，熟練運用 Excel 樞紐分析與進階函數處理大數據，並操作 EViews 建立計量經濟迴歸模型、TEJ 台灣經濟新報資料庫進行產業與公司財務研析。</p>
-        </div>
-
-        <div class="about-card">
-          <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
-          <h3>前瞻科技與 AI 數位落地</h3>
-          <p>榮獲首屆前瞻科技競賽個人優等第二名。主導 FocusLingua 英語數位教材系統規劃，撰寫完整 PRD 規格書與雙端架構，擅長運用生成式 AI (Gemini / Claude) 驅動數位創新。</p>
-        </div>
-
-        <div class="about-card">
-          <div class="card-icon"><i class="fa-solid fa-people-group"></i></div>
-          <h3>團隊領導與組織協調</h3>
-          <p>擔任嘻哈文化研究社迎新總召，統籌 30 餘人跨組團隊進度與活動執行；於希伯倫（大家說英語/空中英語教室）人資部實習，展現高度跨部門溝通與職場敏捷適應力。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">SKILLS & TOOLS</div>
-        <h2 class="section-title">專業技能與工具地圖</h2>
-      </div>
-
-      <div class="skills-wrapper">
-        <div class="skills-tabs">
-          <button class="tab-btn active" data-category="all">全部領域</button>
-          <button class="tab-btn" data-category="frontend">語言與商務溝通</button>
-          <button class="tab-btn" data-category="backend">財金與分析</button>
-          <button class="tab-btn" data-category="tools">數位工具與 AI 應用</button>
-        </div>
-
-        <div class="skills-grid" id="skills-container">
-          <!-- Dynamically populated / Default render -->
-          <div class="skill-item" data-category="frontend">
-            <div class="skill-info">
-              <span>英語商務溝通 (IELTS 6.5 / TOEIC 770)</span>
-              <span class="gradient-text">88%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="88%"></div>
-            </div>
+      <!-- Editorial Hero Band -->
+      <div class="hero-editorial">
+        <div class="hero-left">
+          <div class="eyebrow-row">
+            <span class="eyebrow-pill">PORTFOLIO / CURRICULUM VITAE</span>
+            <span class="eyebrow-mono">CYCU · BBA FINANCE &amp; BA APPLIED LINGUISTICS</span>
           </div>
 
-          <div class="skill-item" data-category="frontend">
-            <div class="skill-info">
-              <span>西班牙語 (FLPT 92分 / A1 / DELE A2)</span>
-              <span class="gradient-text">70%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="70%"></div>
-            </div>
+          <h1 id="about-heading" class="display-title">
+            Yung-Yun<br>
+            <span class="title-italic">Chen.</span>
+          </h1>
+
+          <div class="contact-strip">
+            <a href="mailto:yungyun85@gmail.com" class="contact-chip">
+              <i class="fa-regular fa-envelope"></i>
+              <span>yungyun85@gmail.com</span>
+            </a>
+            <span class="contact-chip">
+              <i class="fa-solid fa-phone"></i>
+              <span>+886 956005538</span>
+            </span>
+            <span class="contact-chip">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Taoyuan, Taiwan</span>
+            </span>
           </div>
 
-          <div class="skill-item" data-category="frontend">
-            <div class="skill-info">
-              <span>團隊溝通與跨部門協調 (活動統籌)</span>
-              <span class="gradient-text">90%</span>
+          <!-- Professional Summary (From CV) -->
+          <div class="summary-card">
+            <div class="card-kicker">
+              <span class="kicker-num">01</span>
+              <span>PROFESSIONAL SUMMARY</span>
             </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="90%"></div>
-            </div>
-          </div>
-
-          <div class="skill-item" data-category="backend">
-            <div class="skill-info">
-              <span>Excel 大數據處理 (樞紐分析與函數)</span>
-              <span class="gradient-text">92%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="92%"></div>
-            </div>
-          </div>
-
-          <div class="skill-item" data-category="backend">
-            <div class="skill-info">
-              <span>財金軟體與資料庫 (EViews / TEJ)</span>
-              <span class="gradient-text">80%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="80%"></div>
-            </div>
-          </div>
-
-          <div class="skill-item" data-category="tools">
-            <div class="skill-info">
-              <span>AI 工具應用 (ChatGPT / Claude 專案管理)</span>
-              <span class="gradient-text">90%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="90%"></div>
-            </div>
-          </div>
-
-          <div class="skill-item" data-category="tools">
-            <div class="skill-info">
-              <span>多媒體影音剪輯 (CapCut / Buzz)</span>
-              <span class="gradient-text">85%</span>
-            </div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar-fill" data-progress="85%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">PORTFOLIO SHOWCASE</div>
-        <h2 class="section-title">精選專案與競賽成果</h2>
-        <p style="color: var(--text-muted);">呈現實際參與之競賽、活動企劃與多媒體創作成果。</p>
-      </div>
-
-      <div class="projects-grid">
-        <!-- Project 1: Canada Athabasca VIP Research Internship -->
-        <div class="project-card">
-          <div class="project-img-container" style="background: #0d1424; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-            <img src="assets/截圖 2026-09-09 晚上10.01.52.png" 
-                 alt="加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發" 
-                 class="project-img" 
-                 style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 23%; transform: scale(1.35); transform-origin: 50% 23%;">
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="tag" style="background:rgba(2,132,199,0.12); color:var(--accent-primary);">海外研究實習</span>
-              <span class="tag">VIP Research Group</span>
-              <span class="tag">MEGA World</span>
-              <span class="tag">TPR & CLT 教學法</span>
-            </div>
-            <h3 class="project-title">加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發</h3>
-            <p class="project-desc">
-              赴加拿大阿薩巴斯卡大學 VIP (Virtual &amp; Intelligent Platforms) 研究團隊進行海外實習。運用自主研發之 MEGA World (Multiplayer Educational Game for All) 線上教育平台開發英語學習遊戲，將 TPR（全身肢體反應法）與 CLT（溝通式教學法）等語言教學理論轉化為 2D 沉浸式遊戲機制，賦能師資培育生（師培生）靈活實踐數位遊戲化教學。
+            <p class="summary-copy">
+              Interdisciplinary undergraduate in Finance and Applied Linguistics and Language Studies with a growing interest in data analytics and technology-driven problem-solving. Through academic projects and work experience, I have developed foundational skills in statistical analysis, financial data processing, data validation, and digital content development. My experience working with financial datasets, Excel-based records, and technology-assisted projects has motivated me to pursue graduate study in Applied Data Analytics to strengthen my technical expertise and transform data into meaningful insights for practical applications.
             </p>
-            <div class="project-footer">
-              <span style="font-size:0.85rem; color:var(--text-sub);">Game-Based ESL / VIP Lab</span>
-              <a href="#" class="project-link" onclick="openProjectModal('加拿大 Athabasca 大學 VIP Research - MEGA World 英語教學遊戲開發', 'Virtual &amp; Intelligent Platforms Lab × MEGA World 教育遊戲化', '<p style=\'margin-bottom:12px;\'><strong>【研究團隊背景】</strong><br>於加拿大阿薩巴斯卡大學（Athabasca University）之 <strong>VIP (Virtual &amp; Intelligent Platforms) Research Group</strong> 進行海外研發實習，深入接觸頂尖教育科技與多人在線遊戲化學習架構。</p><p style=\'margin-bottom:12px;\'><strong>【專案核心：MEGA World】</strong><br>運用 <strong>MEGA World (Multiplayer Educational Game for All)</strong> 平台進行網頁端互動關卡與英語數位教材建置，探索以學生為中心的學習動態。</p><p style=\'margin-bottom:12px;\'><strong>【語言教學理論深度融合】</strong><br>外語教學核心理論深度植入遊戲玩法：<br>• <strong>TPR (Total Physical Response 全身肢體反應法)</strong>：轉化為即時鍵盤動作反饋與動作指令互動關卡。<br>• <strong>CLT (Communicative Language Teaching 溝通式教學法)</strong>：建構任務導向之情境對話與同儕多人協作破關。</p><p><strong>【效益與成果】</strong><br>賦能<strong>師資培育生（師培生）</strong>克服傳統數位教材單向刻板的痛點，使其能在實習與未來教學現場中，靈活調度 2D 遊戲化工具落地語言教學理論，大幅增強學習者之參與感與口語反應動機。</p>'); return false;">
-                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
           </div>
         </div>
 
-        <!-- Project 2: FocusLingua EdTech System -->
-        <div class="project-card">
-          <div class="project-img-container" style="background: linear-gradient(135deg, #0f766e 0%, #0284c7 100%); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:3.5rem; min-height: 220px;">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="tag" style="background:rgba(15,118,110,0.15); color:var(--accent-primary);">產品規劃 (PRD)</span>
-              <span class="tag">特教輔助科技</span>
-              <span class="tag">雙端原型</span>
-            </div>
-            <h3 class="project-title">FocusLingua - 專注英語數位教材系統 (PRD & 雙端原型)</h3>
-            <p class="project-desc">
-              專為注意力不集中特定族群 (ADHD / 注意力缺失) 量身設計的 90 秒微感官英語學習方案。包含「教師 Web 智能備課與課綱切片」與「學生 App 沉浸沙盒」之雙端架構，並可一鍵生成特教 IEP 評估報告。
-            </p>
-            <div class="project-footer">
-              <span style="font-size:0.85rem; color:var(--text-sub);">EdTech / PRD / Prototype</span>
-              <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-                <a href="focuslingua_live_app.html" class="project-link" style="color:var(--accent-primary); font-weight:800; font-size:0.9rem;">
-                  教師 Web 實體系統 (含學生側拉艙) <i class="fa-solid fa-laptop-code"></i>
-                </a>
-                <a href="pitch_presentation.html" class="project-link" style="color:var(--text-main); font-weight:700; font-size:0.85rem;">
-                  簡報演示動態艙 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-                <a href="focuslingua_wireframes.html" class="project-link" style="color:#059669; font-weight:700; font-size:0.85rem;">
-                  雙端完整線稿 <i class="fa-solid fa-pen-ruler"></i>
-                </a>
-                <a href="prd_dashboard.html" class="project-link" style="color:var(--text-muted); font-size:0.85rem;">
-                  PRD 規模書
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Portrait Photo 01 -->
+        <aside class="hero-right">
+          <figure class="photo-frame photo-frame--portrait photo-frame--filled">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+            <img src="assets/about_portrait.jpg" alt="Yung-Yun Chen portrait" class="framed-photo framed-photo--portrait">
+          </figure>
 
-        <!-- Project 3: Tech Competition -->
-        <div class="project-card">
-          <div class="project-img-container">
-            <img src="assets/截圖 2026-08-04 下午3.00.37.png" alt="前瞻場域科技競賽專案" class="project-img">
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="tag">互動設計</span>
-              <span class="tag">AI 工具生成</span>
-              <span class="tag">多面牆投影</span>
+          <!-- Key Academic Metrics Bar from CV -->
+          <div class="metrics-strip">
+            <div class="metric-cell">
+              <span class="metric-label">GPA</span>
+              <strong class="metric-value">3.679 / 4.00</strong>
             </div>
-            <h3 class="project-title">前瞻場域科技競賽專案（優等第二名）</h3>
-            <p class="project-desc">
-              獨立規劃並製作沉浸式互動體驗空間，設計連動式多面牆投影內容，並在影音創作中導入 AI 工具進行影片素材生成與修剪。
-            </p>
-            <div class="project-footer">
-              <span style="font-size:0.85rem; color:var(--text-sub);">Interactive Media</span>
-              <a href="#" class="project-link" onclick="openProjectModal('前瞻場域科技競賽專案', '首屆科技競賽優等（第二名）', '獨立規劃沉浸式空間投影展示，並結合 AI 工具生成高質感影片素材，以出色的多媒體整合呈現榮獲競賽第二名優等獎。專案作品影片連結：https://reurl.cc/nxVX16'); return false;">
-                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+            <div class="metric-cell">
+              <span class="metric-label">WEIGHTED AVG</span>
+              <strong class="metric-value">81.85 / 100</strong>
+            </div>
+            <div class="metric-cell">
+              <span class="metric-label">IELTS</span>
+              <strong class="metric-value">6.5</strong>
             </div>
           </div>
-        </div>
-
-        <!-- Project 4: Leadership & Event Planning -->
-        <div class="project-card">
-          <div class="project-img-container">
-            <img src="assets/中原嘻研J49.jpeg" alt="活動統籌與專案管理" class="project-img">
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="tag">專案管理</span>
-              <span class="tag">團隊協作</span>
-              <span class="tag">活動策劃</span>
-            </div>
-            <h3 class="project-title">嘻哈文化研究社 - 迎新活動總召</h3>
-            <p class="project-desc">
-              負責策劃與統籌 30 餘人的工作團隊分工，包含節目設計、進度掌控與社課教學進度安排，具備卓越的專案溝通與執行力。
-            </p>
-            <div class="project-footer">
-              <span style="font-size:0.85rem; color:var(--text-sub);">Leadership & Event Planning</span>
-              <a href="#" class="project-link" onclick="openProjectModal('迎新活動總召與舞蹈社課教學', '大型活動統籌與領導力', '統籌 30 多人團隊，規劃詳細工作進度與跨部門分工細節，並擔任主課老師在短時間內完成教學，成功促成活動順利執行並展現出色的團隊執行力與組織調度才能。'); return false;">
-                詳細資訊 <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Work Experience Section -->
-  <section id="experience">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">WORK & MILESTONES</div>
-        <h2 class="section-title">經歷與成果</h2>
-        <p style="color: var(--text-muted);">跨越教育科技研發、企業實務、海外研究與校園教學的多元歷練（最新至最舊橫向時序）。</p>
+        </aside>
       </div>
 
-      <div class="timeline-horizontal-container">
-        <div class="timeline-h-header-bar">
-          <div class="timeline-scroll-hint">
-            <i class="fa-solid fa-arrow-right-arrow-left"></i> 左右滑動或點擊按鈕探索時序
-          </div>
-          <div class="timeline-nav-controls">
-            <button class="timeline-nav-btn" onclick="scrollTimeline(-1)" title="向左捲動" aria-label="向左捲動">
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button class="timeline-nav-btn" onclick="scrollTimeline(1)" title="向右捲動" aria-label="向右捲動">
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
+      <!-- About Me Supporting Photos -->
+      <div class="photo-gallery-strip photo-gallery-strip--three">
+        <figure class="photo-frame photo-frame--gallery photo-frame--filled">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="assets/about_ta.jpg" alt="Yung-Yun Chen as Teaching Assistant in CYCU EMI classroom" class="framed-photo framed-photo--ta">
+          <figcaption class="photo-caption">Teaching Assistant · CYCU Applied Linguistics</figcaption>
+        </figure>
+
+        <figure class="photo-frame photo-frame--gallery photo-frame--filled">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="assets/about_immersive.jpg" alt="CYCU MetaDisplay immersive projection space" class="framed-photo framed-photo--immersive">
+          <figcaption class="photo-caption">CYCU MetaDisplay Immersive Space</figcaption>
+        </figure>
+
+        <figure class="photo-frame photo-frame--gallery photo-frame--filled">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="assets/about_dance_stage.jpg" alt="CYCU Hip-Hop Dance Club stage group photo" class="framed-photo framed-photo--stage">
+          <figcaption class="photo-caption">CYCU Hip-Hop Dance Club</figcaption>
+        </figure>
+      </div>
+
+      <!-- Section: Education & Academic Coursework -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">02</span>
+          <div>
+            <span class="block-eyebrow">ACADEMIC BACKGROUND</span>
+            <h2 class="block-title">Education</h2>
           </div>
         </div>
 
-        <div class="timeline-horizontal-track" id="timeline-track">
-          <!-- 1. 2026.03 - 現今 -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
-              <span class="timeline-h-date-badge">2026.03 - 現今</span>
+        <div class="education-grid">
+          <div class="edu-card edu-card--accent-blue">
+            <div class="edu-top">
+              <span class="mono-date">Sep 2023 – Expected Jun 2027</span>
+              <span class="degree-badge">BBA</span>
             </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">沈浸展覽空間工讀生</h3>
-              <div class="timeline-h-company">中原大學 · 藝術中心 / 前瞻場域</div>
-              <ul class="timeline-h-bullets">
-                <li>負責沈浸式互動展覽空間之日常營運、投影系統巡檢維護與參觀者接待。</li>
-                <li>協助展區多媒體內容導覽與即時設備障礙排除，具備優良現場應變與跨團隊溝通力。</li>
-              </ul>
+            <h3>BBA in Finance</h3>
+            <p class="edu-school">Chung Yuan Christian University</p>
+            <div class="coursework-box">
+              <span class="coursework-label">Quantitative &amp; Finance Coursework</span>
+              <p>Statistics, Financial Econometrics, Financial Statement Analysis</p>
             </div>
           </div>
 
-          <!-- 2. 2026.01 - 2026.02 (LiveABC R&D) -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
-              <span class="timeline-h-date-badge">2026.01 - 2026.02</span>
+          <div class="edu-card edu-card--accent-rust">
+            <div class="edu-top">
+              <span class="mono-date">Sep 2022 – Expected Jun 2027</span>
+              <span class="degree-badge">BA</span>
             </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">數位研發實習生 (R&D Intern)</h3>
-              <div class="timeline-h-company">希伯倫股份有限公司 (LiveABC) · 研發三處</div>
-              <ul class="timeline-h-bullets">
-                <li>負責英語數位教材之教學音檔剪輯、教材內容校對與勘誤核實。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 3. 2026.01 - 2026.02 (LiveABC HR) -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot" style="border-color: #0d9488;"></div>
-              <span class="timeline-h-date-badge" style="color: #0d9488; border-color: rgba(13,148,136,0.3);">2026.01 - 2026.02</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">人力資源部工讀生 (HR Assistant)</h3>
-              <div class="timeline-h-company">希伯倫股份有限公司 (LiveABC) · 人力資源部</div>
-              <ul class="timeline-h-bullets">
-                <li>協助人事行政流程、內部教育訓練資料歸檔、出勤核算與內部人事系統維護。</li>
-                <li>展現跨部門行政支援與細心嚴謹的組織協調能力，深入了解企業組織運作與人才管理流程。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 4. 2025.09 - 現今 -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot"></div>
-              <span class="timeline-h-date-badge">2025.09 - 現今</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">教學助理 (Teaching Assistant)</h3>
-              <div class="timeline-h-company">中原大學 · 應用外語學系 (英文遠距課程)</div>
-              <ul class="timeline-h-bullets">
-                <li>管理課程影片上傳與校內教學系統維護，協助影片字幕編輯與影音教材校對。</li>
-                <li>支援遠距線上監考與學生成績管理，熟練運用 Excel 進行大量數據整理與自動化分析。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 5. 2025.09 - 2026.06 -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot"></div>
-              <span class="timeline-h-date-badge">2025.09 - 2026.06</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">通識中心工讀生</h3>
-              <div class="timeline-h-company">中原大學 · 通識教育中心</div>
-              <ul class="timeline-h-bullets">
-                <li>處理全校通識教育課程行政作業、公文收發與相關教學研討資料歸檔整理。</li>
-                <li>支援通識講座與校級學術活動場地布置、來賓接待與現場流程引導事宜。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 6. 2025.07 - 2025.08 -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot" style="border-color: var(--accent-primary);"></div>
-              <span class="timeline-h-date-badge" style="color: var(--accent-primary);">2025.07 - 2025.08</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">海外教育遊戲研發實習生</h3>
-              <div class="timeline-h-company">加拿大阿薩巴斯卡大學 · VIP Research Group</div>
-              <ul class="timeline-h-bullets">
-                <li>赴加拿大 Athabasca University VIP (Virtual &amp; Intelligent Platforms) 實驗室進行海外研究實習。</li>
-                <li>運用 MEGA World 研發英語教育遊戲，將 TPR 與 CLT 等教學理論融入 2D 關卡，賦能師培生落實遊戲化教學。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 7. 2023.09 - 現今 -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot"></div>
-              <span class="timeline-h-date-badge">2023.09 - 現今</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">英文課輔老師</h3>
-              <div class="timeline-h-company">中原大學 · 應用外語學系</div>
-              <ul class="timeline-h-bullets">
-                <li>針對個別學生學習困難，規劃客製化課後英文輔導進度與教學解說。</li>
-                <li>有效幫助多位學生突破學習瓶頸，顯著提升學習動機、自信心與測驗表現。</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 8. 2022.09 - 2027 (預計) -->
-          <div class="timeline-h-item">
-            <div class="timeline-h-node">
-              <div class="timeline-h-dot" style="border-color: var(--accent-cyan);"></div>
-              <span class="timeline-h-date-badge" style="color: var(--accent-cyan); border-color: rgba(6,182,212,0.3);">2022.09 - 2027 (預計)</span>
-            </div>
-            <div class="timeline-h-card">
-              <h3 class="timeline-h-role">應用外國語文學系 主修 / 財務金融學系 雙主修</h3>
-              <div class="timeline-h-company">中原大學 (CYCU) · GPA: 3.7</div>
-              <ul class="timeline-h-bullets">
-                <li>跨領域雙學位養成：兼具英語教學、語言學與商管財金核心學門（經濟學、會計學、統計學、財務管理）。</li>
-                <li>實務與量化工具：熟練操作財務分析軟體 EViews 進行迴歸模型建立與 TEJ 台灣經濟新報資料庫。</li>
-              </ul>
+            <h3>BA in Applied Linguistics and Language Studies</h3>
+            <p class="edu-school">Chung Yuan Christian University</p>
+            <div class="coursework-box">
+              <span class="coursework-label">Linguistics &amp; Technology Coursework</span>
+              <p>Computer-Assisted Language Learning (CALL), Business English, English Public Speaking</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-container">
-        <div class="contact-info">
-          <div class="section-subtitle">GET IN TOUCH</div>
-          <h2 style="font-size: 2rem; margin-bottom: 16px;">期待與您攜手合作！</h2>
-          <p style="color: var(--text-muted);">
-            如果您正在尋找一位具備多元學科背景、優秀溝通協調能力與高度執行力的跨領域人才，歡迎隨時聯絡我！
+      <!-- Section: Work Experience (Part-Time) -->
+      <div class="editorial-block editorial-block--dark">
+        <div class="block-header">
+          <span class="block-num">03</span>
+          <div>
+            <span class="block-eyebrow">PART-TIME ROLES &amp; INTERNSHIPS</span>
+            <h2 class="block-title">Work Experience</h2>
+          </div>
+        </div>
+
+        <div class="experience-list">
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">July 2025 – Aug 2025</span>
+              <span class="exp-org">Athabasca University, Canada</span>
+            </div>
+            <div class="exp-body">
+              <h3>MEGA World Research Intern</h3>
+              <ul>
+                <li>Contributed to the design of a virtual learning environment and the digitalization of educational materials.</li>
+                <li>Built and edited HTML-based digital learning content and assisted with system quality testing for a virtual learning environment.</li>
+                <li>Gained practical experience in an international project environment involving digital learning.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">Jan 2026 – Feb 2026</span>
+              <span class="exp-org">Hebron Co., Ltd. (LiveABC Group)</span>
+            </div>
+            <div class="exp-body">
+              <h3>HR Dept. Part-time Assistant</h3>
+              <ul>
+                <li>Reconciled branch-office payroll data with the company payroll ledger; work reviewed by supervisor.</li>
+                <li>Checked monthly payroll expenses across more than 10 categories, matching data from Excel sheets, paper records, and calculations from another department.</li>
+                <li>Verified bonus calculations by comparing employees' product sales ratios with their actual bonus payouts.</li>
+              </ul>
+              <h3 class="sub-role">R&amp;D Dept. 3 Intern (64 Hours)</h3>
+              <ul>
+                <li>Proofread digital learning materials and checked errors between the magazine and the online learning website's text materials.</li>
+                <li>Assisted editing reading pen's audio files, matching the audio with magazines and online learning website for proofreading.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">Sep 2025 – Present</span>
+              <span class="exp-org">CYCU Dept. of Applied Linguistics and Language Studies</span>
+            </div>
+            <div class="exp-body">
+              <h3>Teaching Assistant</h3>
+              <ul>
+                <li>Supported four professors at once, managing at least three courses per semester, including exam proctoring, grading, and grade recording.</li>
+                <li>Handled lecture filming, video subtitling, learning files uploads, and event documentation for service-learning courses.</li>
+                <li>Assisted with expense reimbursements and financial reporting.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">Sep 2025 – Present</span>
+              <span class="exp-org">College of Humanities and Education</span>
+            </div>
+            <div class="exp-body">
+              <h3>Immersive Space Teaching Assistant</h3>
+              <ul>
+                <li>Assisted with projection playback and operated audio-visual equipment during sessions.</li>
+                <li>Provided guided tours and on-site support for courses held in the immersive space.</li>
+                <li>Documented immersive workshops and handled related administrative tasks.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">Sep 2024 – Present</span>
+              <span class="exp-org">CYCU Special Education Resource Center</span>
+            </div>
+            <div class="exp-body">
+              <h3>English Tutor</h3>
+              <ul>
+                <li>One-on-one tutoring for university students with special learning needs.</li>
+                <li>Provided tutoring for TOEIC exams and A1-level Spanish.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Section: Projects & Leadership from CV -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">04</span>
+          <div>
+            <span class="block-eyebrow">COURSEWORK &amp; CAMPUS INVOLVEMENT</span>
+            <h2 class="block-title">Academic Project &amp; Leadership</h2>
+          </div>
+        </div>
+
+        <div class="two-col-grid">
+          <article class="detail-card">
+            <span class="mono-date">Spring 2025 · Financial Econometrics (Team Project)</span>
+            <h3>Pairs Trading Strategy Evaluation in Taiwan's CoWoS Supply Chain</h3>
+            <ul>
+              <li>Extracted and cleaned 2022–2024 financial time-series from Taiwan Economic Journal (TEJ) database for empirical analysis.</li>
+              <li>Conducted mean-reversion half-life and volatility calculations using EViews to evaluate pairs trading viability across CoWoS supply chain equities.</li>
+              <li>Led the literature review and structured empirical output tables to translate statistical findings into actionable trading strategy insights.</li>
+            </ul>
+          </article>
+
+          <article class="detail-card detail-card--tinted">
+            <span class="mono-date">Leadership &amp; Volunteer Experience</span>
+            <h3>CYCU Hip-Hop Dance Club</h3>
+            <ul>
+              <li>Coordinated the planning and execution of the club's orientation event.</li>
+              <li>Taught dance and supported club members' participation in dance activities.</li>
+            </ul>
+            <div class="awards-inline">
+              <span class="coursework-label">Awards</span>
+              <ul>
+                <li>Excellence Award (Second Place), CYCU Emerging Technology Exhibition Competition (2026)</li>
+                <li>Silver Award, National Professional Ethics Case Competition (2025)</li>
+                <li>Academic Performance Improvement Award, CYCU (2025)</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Section: Skills & Certifications (From CV) -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">05</span>
+          <div>
+            <span class="block-eyebrow">TOOLS, LANGUAGES &amp; CREDENTIALS</span>
+            <h2 class="block-title">Skills &amp; Certifications</h2>
+          </div>
+        </div>
+
+        <div class="skills-bento">
+          <div class="skill-box">
+            <span class="skill-cat">Data &amp; Financial Analysis</span>
+            <p>EViews (time-series analysis), Microsoft Excel (Financial Modeling, VLOOKUP, Data Analysis), TEJ Database, Statistics</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">Media &amp; Interactive Design</span>
+            <p>360° Video Production, Multi-Projection Design, CapCut, Storyboarding, Audio Synchronization</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">Educational Technology</span>
+            <p>Digital Curriculum Proofreading, Computer-Assisted Language Learning (CALL), Human-AI Collaboration</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">Languages</span>
+            <p>Mandarin (Native), English (IELTS 6.5), Spanish (A1)</p>
+          </div>
+          <div class="skill-box skill-box--wide">
+            <span class="skill-cat">Certifications</span>
+            <p>Microsoft Azure AI Fundamentals (AI-901), Google Gemini Certified Educator, Financial Knowledge and Professional Ethics</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Switch Prompt to Empty Project Frames -->
+      <div class="next-projects-bar">
+        <button type="button" class="switch-btn" data-view-target="project-emerging-tech">
+          <span>01 · Emerging Tech Competition</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button type="button" class="switch-btn" data-view-target="project-mega-world">
+          <span>02 · MEGA World Internship</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         VIEW 01: EMERGING TECH COMPETITION — A WORLD WAITING TO BE SAVED
+         =================================================================== -->
+    <section id="view-project-emerging-tech" class="page-view" aria-labelledby="proj1-heading">
+
+      <!-- Project Header -->
+      <div class="case-hero">
+        <div class="case-hero-main">
+          <div class="eyebrow-row">
+            <span class="eyebrow-pill">PROJECT 01 · SPATIAL NARRATIVE</span>
+            <span class="award-badge"><i class="fa-solid fa-award"></i> Excellence Award (2nd Place) · June 4, 2026</span>
+          </div>
+          <h1 id="proj1-heading" class="case-title">A World Waiting to Be Saved</h1>
+          <p class="case-lead">
+            A 1-to-3-minute three-wall surround projection work exploring sustainable environmental issues through spatial configuration, musical rhythm, and human-AI collaboration.
           </p>
+          <div class="case-links">
+            <a href="https://www.youtube.com/watch?v=gjRqGxeMExE" target="_blank" rel="noopener noreferrer" class="case-btn case-btn--primary">
+              <i class="fa-brands fa-youtube"></i>
+              <span>Watch Project Recording</span>
+            </a>
+            <a href="https://cyche.cycu.edu.tw/115%E5%B9%B4metadisplay%E7%AB%B6%E8%B3%BD%E4%BD%9C%E5%93%81/" target="_blank" rel="noopener noreferrer" class="case-btn case-btn--secondary">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <span>115 MetaDisplay Exhibition Archive</span>
+            </a>
+          </div>
+        </div>
 
-          <div class="contact-info-list">
-            <div class="contact-info-item" onclick="copyEmail()">
-              <div class="contact-icon"><i class="fa-regular fa-envelope"></i></div>
-              <div>
-                <strong style="display:block; font-size:0.95rem;">電子郵件 Email</strong>
-                <span style="color:var(--accent-cyan); font-size:0.9rem;">yungyun85@gmail.com <i class="fa-regular fa-copy" style="font-size:0.8rem; margin-left:4px;"></i></span>
+        <div class="case-meta-grid">
+          <div class="case-meta-cell">
+            <span class="metric-label">ROLE</span>
+            <strong>Independent Creator</strong>
+            <small>Concept, script, editing, projection layout, on-site playback</small>
+          </div>
+          <div class="case-meta-cell">
+            <span class="metric-label">OUTPUT FORMAT</span>
+            <strong>5670 × 1080 · 60 fps</strong>
+            <small>3-wall synchronized surround projection (Left / Center / Right)</small>
+          </div>
+          <div class="case-meta-cell">
+            <span class="metric-label">COMPETITION</span>
+            <strong>CYCU Emerging Tech</strong>
+            <small>2nd Place Excellence Award &amp; Oct 2026 Workshop Share</small>
+          </div>
+          <div class="case-meta-cell">
+            <span class="metric-label">TOOLS USED</span>
+            <strong>CapCut · Gemini Pro · Arena</strong>
+            <small>Pexels, Pinterest, PremiumBeat, Artlist</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Three-Wall Visual -->
+      <div class="case-hero-media">
+        <figure class="photo-frame photo-frame--filled photo-frame--strip">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="assets/proj1_hud_restoration.png" alt="Three-wall HUD technological restoration layout" class="framed-photo framed-photo--contain">
+          <figcaption class="photo-caption">Three-Wall Surround Composite (5670 × 1080) · Technological Restoration Segment</figcaption>
+        </figure>
+      </div>
+
+      <!-- 01: Why & Problem -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">01</span>
+          <div>
+            <span class="block-eyebrow">BACKGROUND &amp; PROBLEM DEFINITION</span>
+            <h2 class="block-title">Why &amp; Problem</h2>
+          </div>
+        </div>
+
+        <div class="two-col-grid">
+          <article class="detail-card">
+            <span class="mono-date">OBSERVATION &amp; PERSONAL TRIGGER</span>
+            <h3>From Banff National Park to Multi-Wall Space</h3>
+            <ul>
+              <li>While working as a student assistant in CYCU's immersive venue, I saw how extending visuals across multiple walls creates spatial enclosure that a single flat screen cannot provide.</li>
+              <li>During a trip to Lake Louise in Banff National Park, witnessing majestic mountain scenery followed later by wildfire sirens and news reports caused a sharp shift from awe to anxiety.</li>
+              <li>That contrast led to the central theme: <em>"the nature in your memory may no longer exist."</em></li>
+            </ul>
+          </article>
+
+          <article class="detail-card detail-card--tinted">
+            <span class="mono-date">CORE PROBLEM</span>
+            <h3>Psychological Distance &amp; Single-Screen Limits</h3>
+            <ul>
+              <li>Climate change and ecological destruction involve long timescales and cross-regional impacts, so viewers often perceive them as distant events rather than urgent daily realities.</li>
+              <li>Text and data alone rarely trigger emotional connection; the project aimed to reduce psychological distance through spatial imagery and sound.</li>
+              <li>Traditional single rectangular screens restrict viewing to one front-facing frame, limiting peripheral immersion.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <!-- 02: Spatial & Narrative Design -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">02</span>
+          <div>
+            <span class="block-eyebrow">SPATIAL CONFIGURATION &amp; TIMELINE</span>
+            <h2 class="block-title">Spatial &amp; Narrative Design</h2>
+          </div>
+        </div>
+
+        <div class="two-col-grid" style="margin-bottom: 24px;">
+          <article class="detail-card">
+            <span class="mono-date">MODE A · VISUAL ENCLOSURE</span>
+            <h3>Three-Wall Panorama</h3>
+            <p class="card-copy">
+              Pristine natural landscapes extend continuously across the left, center, and right walls, wrapping viewers inside a unified visual environment.
+            </p>
+            <div class="inline-figure">
+              <img src="assets/proj1_mode_panorama.png" alt="Three-wall unified panorama mode" class="framed-photo framed-photo--contain">
+            </div>
+          </article>
+          <article class="detail-card">
+            <span class="mono-date">MODE B · SPATIAL GAZE GUIDANCE</span>
+            <h3>Asymmetric Contrast</h3>
+            <p class="card-copy">
+              Differentiated clips play simultaneously across the three walls—contrasting pre-disaster nature and post-disaster ruins—to prompt viewers to scan across the space.
+            </p>
+            <div class="inline-figure">
+              <img src="assets/proj1_mode_contrast.png" alt="Three-wall asymmetric contrast mode" class="framed-photo framed-photo--contain">
+            </div>
+          </article>
+        </div>
+
+        <!-- 6-Shot Table from Table 4-1 -->
+        <div class="shot-table-wrap">
+          <div class="shot-table-head">
+            <span>SHOT</span>
+            <span>AUDIO PACE</span>
+            <span>THREE-WALL VISUAL ARRANGEMENT</span>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">01</span>
+            <span class="shot-audio">Build-up · Rising Tension</span>
+            <p>Unified three-wall panorama with slow transitions synced to the music to establish calm natural atmosphere.</p>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">02</span>
+            <span class="shot-audio">Climax · Peak Energy</span>
+            <p>Asymmetric stepped multi-grid switching on the beat (Center: 12 slices, Left: 8 slices, Right: 4 slices) to raise visual density.</p>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">03</span>
+            <span class="shot-audio">Release · Driving Rhythm</span>
+            <p>All three walls play identical visuals synchronously, merging back into a single unified panorama.</p>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">04</span>
+            <span class="shot-audio">Acceleration · High Urgency</span>
+            <p>Fast cuts on heavy beats: Left wall shows intact forests, oceans, and cities; Center shows a rotating Earth timeline; Right wall shows dead trees, desert sand, and ruins.</p>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">05</span>
+            <span class="shot-audio">Transition · Deceleration</span>
+            <p>Visuals slow down, overexpose, or fade to black as volume drops, shifting intensity into quiet mourning.</p>
+          </div>
+          <div class="shot-row">
+            <span class="shot-num">06</span>
+            <span class="shot-audio">Resolution · Lingering Resonance</span>
+            <p>On-screen text fades in and out sentence by sentence across black space and acoustic silence, leaving room for reflection.</p>
+          </div>
+        </div>
+
+        <!-- Shot 4 Visual + Audio-Visual Timeline Diagram -->
+        <div class="timeline-figures-stack">
+          <figure class="photo-frame photo-frame--filled photo-frame--strip">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <img src="assets/proj1_hero_earth.png" alt="Shot 04 before, rotating Earth, and after three-wall layout" class="framed-photo framed-photo--contain">
+            <figcaption class="photo-caption">Shot 04 Layout · Pre-Disaster (Left) / Rotating Earth Timeline (Center) / Post-Disaster (Right)</figcaption>
+          </figure>
+
+          <figure class="photo-frame photo-frame--filled photo-frame--diagram">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <img src="assets/proj1_timeline.png" alt="Musical beats and narrative timeline diagram" class="framed-photo framed-photo--contain">
+            <figcaption class="photo-caption">Musical Beats &amp; Narrative Timeline Sync Diagram</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- 03: Production & Technical Execution (Dark Editorial Block) -->
+      <div class="editorial-block editorial-block--dark">
+        <div class="block-header">
+          <span class="block-num">03</span>
+          <div>
+            <span class="block-eyebrow">TECHNICAL CHALLENGES &amp; HUMAN-AI WORKFLOW</span>
+            <h2 class="block-title">Production &amp; Execution</h2>
+          </div>
+        </div>
+
+        <div class="experience-list" style="margin-bottom: 28px;">
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">MULTI-SCREEN EDITING</span>
+              <span class="exp-org">CapCut + Split Script + Arena</span>
+            </div>
+            <div class="exp-body">
+              <h3>Solving Ultra-Wide Distortion Across Three Walls</h3>
+              <ul>
+                <li><strong>Challenge:</strong> Stretching a single video asset across three projection walls caused severe pixelation and distortion.</li>
+                <li><strong>Solution:</strong> Multiplied single-wall resolution (1890 × 1080) by three to build an ultra-wide <strong>5670 × 1080, 60 fps</strong> timeline in CapCut.</li>
+                <li>Stitched multiple assets side-by-side with edge feathering and color adjustment, processed the export through a lab assistant's splitting script, and synchronized playback via Arena software.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="exp-row">
+            <div class="exp-meta">
+              <span class="mono-date">AI COLLABORATION</span>
+              <span class="exp-org">Human-in-the-Loop</span>
+            </div>
+            <div class="exp-body">
+              <h3>Maintaining Continuity in AI-Generated Restoration Clips</h3>
+              <ul>
+                <li><strong>Challenge:</strong> AI-generated clips can break spatial continuity or diverge from the narrative pace if generated without strict constraints.</li>
+                <li><strong>Solution:</strong> Used Gemini Pro for prompt iteration and generated three specific restoration segments—water purification, vegetation regrowth on scorched earth, and urban smog dissipation.</li>
+                <li>Tuned prompts with constraints such as <em>"keep composition static, only transition water from murky to clear,"</em> while handling all story structure, asset selection, editing, and audio mixing independently.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- AI Restoration Before -> After Pairs (Figure 4-5) -->
+        <div class="wf-three-col" style="margin-bottom: 24px;">
+          <div class="ai-pair-card">
+            <span class="ai-pair-title">01 · Water Purification</span>
+            <div class="ai-pair-stack">
+              <div class="ai-step">
+                <span class="ai-step-tag">BEFORE</span>
+                <img src="assets/proj1_ai_water_before.png" alt="Polluted water frame before restoration" class="framed-photo">
+              </div>
+              <div class="ai-step">
+                <span class="ai-step-tag ai-step-tag--after">AFTER</span>
+                <img src="assets/proj1_ai_water_after.png" alt="Clear purified water frame after Gemini Pro generation" class="framed-photo">
               </div>
             </div>
+          </div>
 
-            <div class="contact-info-item">
-              <div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div>
-              <div>
-                <strong style="display:block; font-size:0.95rem;">LinkedIn</strong>
-                <span style="color:var(--text-muted); font-size:0.9rem;">www.linkedin.com/in/chen-anna-423779389</span>
+          <div class="ai-pair-card">
+            <span class="ai-pair-title">02 · Vegetation Regrowth</span>
+            <div class="ai-pair-stack">
+              <div class="ai-step">
+                <span class="ai-step-tag">BEFORE</span>
+                <img src="assets/proj1_ai_forest_before.png" alt="Scorched earth before regrowth" class="framed-photo">
+              </div>
+              <div class="ai-step">
+                <span class="ai-step-tag ai-step-tag--after">AFTER</span>
+                <img src="assets/proj1_ai_forest_after.png" alt="Vegetation regrowth on scorched earth" class="framed-photo">
               </div>
             </div>
+          </div>
 
-            <div class="contact-info-item">
-              <div class="contact-icon"><i class="fa-brands fa-github"></i></div>
-              <div>
-                <strong style="display:block; font-size:0.95rem;">GitHub</strong>
-                <span style="color:var(--text-muted); font-size:0.9rem;">github.com/yungyun85-lab</span>
+          <div class="ai-pair-card">
+            <span class="ai-pair-title">03 · Urban Smog Dissipation</span>
+            <div class="ai-pair-stack">
+              <div class="ai-step">
+                <span class="ai-step-tag">BEFORE</span>
+                <img src="assets/proj1_ai_city_before.png" alt="Urban smog before dissipation" class="framed-photo">
+              </div>
+              <div class="ai-step">
+                <span class="ai-step-tag ai-step-tag--after">AFTER</span>
+                <img src="assets/proj1_ai_city_after.png" alt="Clear sky over city after smog dissipation" class="framed-photo">
               </div>
             </div>
           </div>
         </div>
 
-        <form class="contact-form" id="contact-form">
-          <div class="form-group">
-            <label for="name">您的姓名 Name</label>
-            <input type="text" id="name" class="form-input" placeholder="例如：王小明" required>
-          </div>
+        <!-- Multi-Screen Spec & CapCut Settings (Figure 4-7) -->
+        <div class="wf-two-col">
+          <figure class="photo-frame photo-frame--filled photo-frame--diagram">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <img src="assets/proj1_multiscreen_spec.png" alt="Three-screen 1890x1080 stitched into 5670x1080 layout" class="framed-photo framed-photo--contain">
+            <figcaption class="photo-caption">Multi-Screen Stitching Diagram (1890 × 3 = 5670 × 1080)</figcaption>
+          </figure>
 
-          <div class="form-group">
-            <label for="email">電子郵件 Email</label>
-            <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
-          </div>
-
-          <div class="form-group">
-            <label for="message">訊息內容 Message</label>
-            <textarea id="message" class="form-input" placeholder="請填寫您想說的話或職缺相關資訊..." required></textarea>
-          </div>
-
-          <button type="submit" class="btn-primary" style="justify-content: center; padding: 14px;">
-            發送訊息 <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </form>
+          <figure class="photo-frame photo-frame--filled photo-frame--diagram">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <img src="assets/proj1_capcut_settings.png" alt="CapCut 5670x1080 60fps timeline settings" class="framed-photo framed-photo--contain">
+            <figcaption class="photo-caption">CapCut Timeline Settings (5670 × 1080 · 60.00 fps)</figcaption>
+          </figure>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>© 2026 Yung-yun Chen. All Rights Reserved.</p>
+      <!-- 04: Outcomes & Documentation -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">04</span>
+          <div>
+            <span class="block-eyebrow">RESULTS &amp; PUBLIC PRESENTATION</span>
+            <h2 class="block-title">Outcomes</h2>
+          </div>
+        </div>
+
+        <div class="outcomes-grid" style="margin-bottom: 24px;">
+          <div class="outcome-card">
+            <span class="mono-date">JUNE 4, 2026</span>
+            <strong>2nd Place · Excellence Award</strong>
+            <p>Awarded Second Place at the CYCU Emerging Technology Exhibition Competition.</p>
+          </div>
+          <div class="outcome-card">
+            <span class="mono-date">DELIVERABLE</span>
+            <strong>5670 × 1080 3-Wall Output</strong>
+            <p>Independently completed concept, script, AI integration, sound mixing, and live multi-wall playback.</p>
+          </div>
+          <div class="outcome-card">
+            <span class="mono-date">OCTOBER 20, 2026</span>
+            <strong>Workshop Presentation</strong>
+            <p>Shared design insights at <em>Display &amp; Projection Tech Workshop: One Frame, One Reflection</em>.</p>
+          </div>
+        </div>
+
+        <figure class="photo-frame photo-frame--filled photo-frame--live">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="assets/proj1_exhibition_live.png" alt="Live three-wall projection playback in CYCU immersive space" class="framed-photo">
+          <figcaption class="photo-caption">Live Three-Wall Projection Playback · CYCU Immersive Space</figcaption>
+        </figure>
+      </div>
+
+      <!-- 05: Limitations & Next Steps -->
+      <div class="editorial-block">
+        <div class="block-header">
+          <span class="block-num">05</span>
+          <div>
+            <span class="block-eyebrow">DESIGN REFLECTION</span>
+            <h2 class="block-title">Limitations &amp; Next Steps</h2>
+          </div>
+        </div>
+
+        <div class="skills-bento">
+          <div class="skill-box">
+            <span class="skill-cat">01 · IMMERSION VS. INTERACTIVITY</span>
+            <p>Without gesture sensing or real-time viewer input, this piece functions as a pre-sequenced spatial narrative rather than an interactive system.</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">02 · SCOPE &amp; PACING CONSTRAINTS</span>
+            <p>Production time limits prevented finishing the planned floor projection, and the mid-video shift from crisis to technological recovery was relatively abrupt.</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">03 · LACK OF AUDIENCE DATA</span>
+            <p>Because I am no longer working as a student assistant at the venue, I could not re-exhibit the work or run questionnaires and interviews to test psychological distance.</p>
+          </div>
+          <div class="skill-box">
+            <span class="skill-cat">04 · FUTURE RESEARCH DIRECTION</span>
+            <p>Future iterations will introduce behavior-responsive sensing, smoother narrative transitions, and structured studies on viewer attention allocation across multiple walls.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-projects-bar">
+        <button type="button" class="switch-btn" data-view-target="about">
+          <span><i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i>00 · Back to About Me</span>
+          <span>CV</span>
+        </button>
+        <button type="button" class="switch-btn" data-view-target="project-mega-world">
+          <span>02 · MEGA World Internship</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         VIEW 02: PROJECT FRAME ONLY (NO PROJECT TEXT, NO REAL IMAGES)
+         =================================================================== -->
+    <section id="view-project-mega-world" class="page-view" aria-label="Project 02 Structural Frame">
+      <div class="wireframe-canvas">
+        <div class="wf-header-frame">
+          <div class="wf-slot-stack">
+            <div class="wf-pill-slot"></div>
+            <div class="wf-title-slot"></div>
+            <div class="wf-line-slot wf-line-slot--lg"></div>
+            <div class="wf-line-slot wf-line-slot--md"></div>
+          </div>
+          <div class="wf-meta-grid">
+            <div class="wf-meta-box"></div>
+            <div class="wf-meta-box"></div>
+            <div class="wf-meta-box"></div>
+          </div>
+        </div>
+
+        <div class="wf-split-media">
+          <div class="photo-frame photo-frame--square">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <div class="photo-frame-inner">
+              <div class="frame-icon"><i class="fa-regular fa-image"></i></div>
+            </div>
+          </div>
+          <div class="wf-panel wf-panel--tall">
+            <div class="wf-line-slot wf-line-slot--sm"></div>
+            <div class="wf-line-slot wf-line-slot--lg"></div>
+            <div class="wf-line-slot wf-line-slot--lg"></div>
+            <div class="wf-line-slot wf-line-slot--lg"></div>
+            <div class="wf-line-slot wf-line-slot--md"></div>
+          </div>
+        </div>
+
+        <div class="wf-two-col">
+          <div class="photo-frame photo-frame--landscape">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <div class="photo-frame-inner">
+              <div class="frame-icon"><i class="fa-regular fa-image"></i></div>
+            </div>
+          </div>
+          <div class="photo-frame photo-frame--landscape">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <div class="photo-frame-inner">
+              <div class="frame-icon"><i class="fa-regular fa-image"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Yung-Yun Chen · Portfolio</span>
+      <span>yungyun85@gmail.com</span>
     </div>
   </footer>
 
-  <!-- Resume Preview Modal -->
-  <div class="modal-overlay" id="resume-modal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('resume-modal')">&times;</button>
-      <h2 style="margin-bottom: 8px;">Yung-yun Chen - 個人履歷摘要</h2>
-      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">中原大學 應用外語系 × 財務金融系（雙主修）</p>
-
-      <div style="background:var(--bg-primary); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:24px; font-size:0.95rem; line-height:1.7;">
-        <p><strong>【核心優勢】</strong> 具備優秀的跨國語文溝通（<strong>雅思 6.5 分</strong> / 多益 770分 / 西班牙文 FLPT 92分）與嚴謹的財金數據分析（EViews / Excel 樞紐分析）邏輯。擅長團隊溝通協調與專案策劃。</p>
-        <p style="margin-top:10px;"><strong>【重要經歷】</strong> 具備加拿大 Athabasca 大學海外教育遊戲開發實習、知名英語教育出版集團（LiveABC 希伯倫）研發三處實習，並榮獲首屆前瞻科技競賽個人優等（第二名）。</p>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; gap:12px;">
-        <button class="btn-secondary" onclick="closeModal('resume-modal')">關閉視窗</button>
-        <a href="陳詠芸_CV.pdf" download="Yung-yun_Chen_CV.pdf" class="btn-primary">
-          <i class="fa-solid fa-download"></i> 下載完整履歷檔案
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Project Detail Modal -->
-  <div class="modal-overlay" id="project-modal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('project-modal')">&times;</button>
-      <h2 id="modal-project-title" style="margin-bottom: 8px;">專案名稱</h2>
-      <p id="modal-project-subtitle" style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:20px;">專案副標題</p>
-
-      <div style="background:var(--bg-primary); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:24px;">
-        <p id="modal-project-desc" style="color:var(--text-muted); font-size:0.95rem; line-height:1.7;">專案詳細說明內容...</p>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end;">
-        <button class="btn-primary" onclick="closeModal('project-modal')">完成並關閉</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Notification Toast -->
-  <div class="toast" id="toast">訊息已發送成功！</div>
-
-  <!-- JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
